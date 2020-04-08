@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+rm -rf ~/.zshlib ~/.zshrc ~/.zshenv
+~/dotfiles/dotdrop.sh -b install
+echo
+echo "*** please restart your shell to autoinstall zplug and plugins ***"

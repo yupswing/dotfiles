@@ -1,0 +1,221 @@
+# ========================================================================== #
+# # DOTDROP Configuration
+# see https://github.com/deadc0de6/dotdrop/wiki/
+# ========================================================================== #
+
+config:
+  backup: true
+  create: true
+  dotpath: dotfiles
+  cmpignore:
+    - "*/README.md"
+  upignore:
+    - "*/README.md"
+  instignore:
+    - "*/README.md"
+
+# ========================================================================== #
+# ========================================================================== #
+
+variables:
+  HOME_HOST: FoxPC
+  WORK_HOST: simopc # archfox_work
+  VBOX_HOST: archsimo # archfox_vbox"
+  DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
+
+# ========================================================================== #
+# ========================================================================== #
+
+actions:
+  wal: wal -R
+  # need double {{}} to have {} (otherwise arguments substitution)
+  ssh_permissions: find ~/.ssh -type f -name '*' -exec chmod 600 {{}} \;
+
+trans_read:
+  gpg: gpg2 -q --for-your-eyes-only --no-tty -d {0} > {1}
+
+# ========================================================================== #
+# ========================================================================== #
+
+dotfiles:
+  bin:
+    src: bin
+    dst: ~/.bin
+    link: link_children
+
+  # SSH Keys =================================================================
+  ssh_config:
+    src: ssh/config
+    dst: ~/.ssh/config
+
+  ssh_dv:
+    src: ssh/dv.gpg
+    dst: ~/.ssh/dv
+    trans_read: gpg
+
+  ssh_dv_pub:
+    src: ssh/dv.pub
+    dst: ~/.ssh/dv.pub
+
+  ssh_yupswing:
+    src: ssh/yupswing.gpg
+    dst: ~/.ssh/yupswing
+    trans_read: gpg
+
+  ssh_yupswing_pub:
+    src: ssh/yupswing.pub
+    dst: ~/.ssh/yupswing.pub
+
+  # ZSH ======================================================================
+  zshlib:
+    src: zsh/zshlib
+    dst: ~/.zshlib
+    upignore:
+      - "zplug"
+    cmpignore:
+      - "zplug"
+  zshenv:
+    src: zsh/zshenv.zsh
+    dst: ~/.zshenv
+  zshrc:
+    src: zsh/zshrc.zsh
+    dst: ~/.zshrc
+
+  # Programs =================================================================
+  nvim:
+    src: config/nvim
+    dst: ~/.config/nvim
+  irbrc:
+    src: irbrc
+    dst: ~/.irbrc
+
+  # GUI Basics ===============================================================
+  xprofile:
+    src: xprofile.sh
+    dst: ~/.xprofile
+  gtkrc-2.0:
+    src: gtkrc-2.0
+    dst: ~/.gtkrc-2.0
+  gtk-3.0:
+    src: config/gtk-3.0
+    dst: ~/.config/gtk-3.0
+  mimeapps.list:
+    src: config/mimeapps.list
+    dst: ~/.config/mimeapps.list
+
+  # Terminals ================================================================
+  alacritty:
+    src: config/alacritty
+    dst: ~/.config/alacritty
+  kitty:
+    src: config/kitty
+    dst: ~/.config/kitty
+
+  # i3 Environment ===========================================================
+  i3:
+    src: config/i3
+    dst: ~/.config/i3
+  picom:
+    src: config/picom
+    dst: ~/.config/picom
+  polybar:
+    src: config/polybar
+    dst: ~/.config/polybar
+  rofi:
+    src: config/rofi
+    dst: ~/.config/rofi
+  wal:
+    src: config/wal
+    dst: ~/.config/wal
+    actions:
+      - wal
+  dunst:
+    src: config/dunst
+    dst: ~/.config/dunst
+  gsimplecal:
+    src: config/gsimplecal
+    dst: ~/.config/gsimplecal
+
+  # Others ===================================================================
+  fontconfig: # fix for fira code ligatures
+    src: config/fontconfig
+    dst: ~/.config/fontconfig
+
+# ========================================================================== #
+# ========================================================================== #
+
+profiles:
+  # Base =====================================================================
+
+  base_ssh:
+    dotfiles:
+      - ssh_config
+      - ssh_dv
+      - ssh_dv_pub
+      - ssh_yupswing
+      - ssh_yupswing_pub
+    actions:
+      - ssh_permissions
+
+  base_line:
+    include:
+      - zsh
+      - base_ssh
+    dotfiles:
+      - irbrc
+      - nvim
+      - bin
+
+  base_gui:
+    dotfiles:
+      - xprofile
+      - gtkrc-2.0
+      - gtk-3.0
+      - kitty
+      - alacritty
+      - fontconfig
+      - mimeapps.list
+
+  # Groups ===================================================================
+
+  zsh:
+    dotfiles:
+      - zshlib
+      - zshenv
+      - zshrc
+
+  i3:
+    dotfiles:
+      - i3
+      - dunst
+      - rofi
+      - picom
+      - polybar
+      - wal
+      - gsimplecal
+
+  wsl:
+    include:
+      - base_line
+
+  # Hosts ====================================================================
+
+  archsimo:
+    include:
+      - base_line
+      - base_gui
+      - i3
+    variables:
+      DEFAULT_BROWSER: chromium-browser # firefox, chromium-browser, google-chrome
+
+  FoxPC:
+    include:
+      - base_line
+
+  simopc:
+    include:
+      - base_line
+      - base_gui
+      - i3
+    variables:
+      DEFAULT_BROWSER: "chromium-browser"

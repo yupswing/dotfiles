@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+hflag=no # help
+nflag=no # nodelete - do not delete files
+rflag=no # recursion
+lflag=no # list files (performs delete anyway)
+aflag=no # all - flags r + p
+dflag=no # specify directory
+pflag=no # pyc - consider .pyc file
+directory=""
+startdir=`pwd`
+TMP=bak`date +%s`
+
+####################################################################################
+# GETOPT
+
+set -- $(getopt hnrplasd: "$@")
+while [ $# -gt 0 ]
+do
+    case "$1" in
+    (-h) hflag=yes;;
+    (-n) nflag=yes;;
+    (-r) rflag=yes;;
+    (-p) pflag=yes;;
+    (-l) lflag=yes;;
+    (-a) pflag=yes; rflag=yes;;
+    (-d) dflag=yes; directory="$directory $2"; shift;;
+    (--) shift; break;;
+    (-*) echo "$0: error - unrecognized option $1" 1>&2; exit 1;;
+    (*)  break;;
+    esac
+    shift
+done
+
+####################################################################################
+# HELP FLAG
+# print help and exit
+
+if [ $hflag = yes ]; then
+	echo "Usage: bak [-rpslna] [-d DIRECTORY]"
+    echo "  Deletes backup files ( *~ )"
+    echo "  If no DIRECTORY deletes in current directory"
+    echo
+    echo "Options:"
+    echo "   -r     Recursive"
+    echo "   -p     Delete also .pyc"
+    echo "   -l     Print files list"
+    echo "   -n     Dry run (no delete)"
+    echo "   -a     Alias for -prs"
+	echo
+    exit 0
+fi
+
+####################################################################################
+# PREPARE
+
+# Directory
+if [ $dflag = yes ]; then
+    # check if given directory is a directory
+    if [ ! -d $directory ] ; then
+        echo "'$directory' is not a directory"
+        exit 1
+    fi
+else
+    # no directory given, assumes .
+    directory=`pwd`
+fi
+
+# Recursion
+depth='-maxdepth 1'
+andits=''
+if [ $rflag = yes ]; then
+    depth='' #recursive
+    andits=' and its subdirectories'
+fi
+
+####################################################################################
+# EXEC
+
+cd $directory
+
+# http://en.wikipedia.org/wiki/ANSI_escape_code#CSI_Codes
+esc_red='\033[91m'
+esc_green='\033[92m'
+esc_reset='\033[0m'
+
+#list files in TMP file
+find . -name "*~" $depth -exec echo "\"{}\"" \; > /tmp/$TMP 2> /dev/null
+find . -name ".DS_Store" $depth -exec echo "\"{}\"" \; >> /tmp/$TMP 2> /dev/null
+find . -name "*.dotdropbak" $depth -exec echo "\"{}\"" \; >> /tmp/$TMP 2> /dev/null
+
+if [ $pflag = yes ]; then
+    find . -name "*pyc" $depth -exec echo "\"{}\"" \; >> /tmp/$TMP 2> /dev/null
+fi
+
+
+FILES=`wc -l /tmp/$TMP | cut -d/ -f1 | sed 's/[ ]//g' `
+if [ ${FILES} -ge 1 ] ; then
+
+    if [ $lflag = yes ]; then
+        # list files
+        cat -n /tmp/$TMP | sed 's/"//g'
+        echo
+    fi
+
+    if [ $nflag = no ]; then
+        cat /tmp/$TMP | xargs rm -f #delete
+        echo -e "$FILES bak files ${esc_red}deleted${esc_reset} in ${esc_green}$directory${esc_reset}$andits"
+    else
+        echo -e "$FILES bak files listed in ${esc_green}$directory${esc_reset}$andits"
+    fi
+
+else
+    echo -e "No bak files listed in ${esc_green}$directory${esc_reset}$andits"
+fi
+
+#remove TMP file
+rm -f /tmp/$TMP
+
+# return to startdir
+cd $startdir
+
+exit 0

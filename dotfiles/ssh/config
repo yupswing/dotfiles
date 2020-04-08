@@ -1,0 +1,4 @@
+AddKeysToAgent yes
+
+IdentityFile ~/.ssh/yupswing
+IdentityFile ~/.ssh/dv

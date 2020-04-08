@@ -1,0 +1,476 @@
+# vim: set ft=ini
+
+# yupswing's i3 config
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+# interactive events:
+#   xev
+# list keycode:
+#   xmodmap -pke
+# determine window class:
+#   xprop | grep CLASS
+# see what combination are free:
+#   cat $HOME/.config/i3/config | grep 'bindsym $mod' | uniq | sort
+
+
+
+### Keybindings
+###############################################################################
+
+# Modifier: WinKey
+# Mod4: WinKey, Mod1: Alt_L
+#set $mod Mod4
+set $mod Mod1
+
+
+
+### Variables
+###############################################################################
+
+# ## Workspaces' names #THEME_WORKSPACES
+# (polybar splits name on : and use <left> to match and <right> to show,
+#  so we can bind an icon to the <left> part and show nothing else)
+
+# Special workspaces
+set $ws_im "_im:"
+set $ws_mail "_mail:"
+set $ws_music "_spotify:"
+
+{%@@ if profile == WORK_HOST @@%}
+# Numeric workspaces
+set $ws01 "01_firefox:"
+set $ws02 "02_chrome:"
+set $ws03 "03"
+set $ws04 "04"
+set $ws05 "05"
+set $ws06 "06_code:"
+set $ws07 "07_terminal:"
+set $ws08 "08"
+set $ws09 "09"
+set $ws10 "10"
+# Named
+set $ws_code "06_code:"
+set $ws_firefox "01_firefox:"
+set $ws_chrome "02_chrome:"
+{%@@ else @@%}
+set $ws01 "01_code:"
+set $ws02 "02_chrome:"
+set $ws03 "03"
+set $ws04 "04"
+set $ws05 "05"
+set $ws06 "06"
+set $ws07 "07"
+set $ws08 "08"
+set $ws09 "09"
+set $ws10 "10"
+# Named
+set $ws_code "01_code:"
+set $ws_firefox "10"
+set $ws_chrome "02_chrome:"
+{%@@ endif @@%}
+
+# ## Workspace binding
+# run xranrd to see monitor names
+set $monitor_left "DP-1"
+set $monitor_right "HDMI-3"
+
+# Special workspaces
+workspace $ws_music output $monitor_left
+workspace $ws_im output $monitor_left
+workspace $ws_mail output $monitor_left
+# Numeric workspaces
+workspace $ws01 output $monitor_left
+workspace $ws02 output $monitor_left
+workspace $ws03 output $monitor_left
+workspace $ws04 output $monitor_left
+workspace $ws05 output $monitor_left
+workspace $ws06 output $monitor_right
+workspace $ws07 output $monitor_right
+workspace $ws08 output $monitor_right
+workspace $ws09 output $monitor_right
+workspace $ws10 output $monitor_right
+
+
+
+### Colors
+###############################################################################
+
+set_from_resource  $background i3wm.color0  #272822
+set_from_resource  $foreground i3wm.color7  #eeeeee
+# #THEME_MAIN_COLORS
+set_from_resource  $primary    i3wm.color4  #550080
+set_from_resource  $secondary  i3wm.color5  #550080
+set_from_resource  $alert      i3wm.color1  #900000
+
+# #THEME_FOREGROUND_COLOR: client.focused > text
+# class                 #border      #backgr.     #text        #indicator   #child_border
+client.focused          $secondary   $secondary   $foreground  $secondary   $secondary
+client.focused_inactive $background  $background  $foreground  $background  $background
+client.unfocused        $background  $background  $foreground  $background  $background
+client.urgent           $background  $alert       $foreground  $background  $background
+client.placeholder      $background  $background  $foreground  $background  $background
+
+client.background       $background
+
+
+
+### Windows
+###############################################################################
+
+# Windows borders
+default_border normal
+default_floating_border normal
+hide_edge_borders both
+
+# Windows title
+#THEME_FONT
+font pango:IBM Plex Sans 11
+title_align center
+for_window [class=".*"] title_format "<b>%title</b>"
+
+# Disable title bar (also this is needed for i3-gaps)
+for_window [class=".*"] border pixel 0
+
+# Automatic floating
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="task_dialog"] floating enable
+
+
+
+### Gaps (only i3-gaps)
+###############################################################################
+
+#gaps inner 10
+
+
+
+### Startup programs
+###############################################################################
+
+# Composite manager (highest priority)
+exec --no-startup-id "picom -bG"
+
+# Keyboard layout: (en keyboard + compose key on "menu key")
+exec --no-startup-id "setxkbmap en -option compose:menu"
+
+# Background
+exec --no-startup-id $HOME/.fehbg
+
+# Wal (theme) and polybar
+exec_always --no-startup-id "wal -R && $HOME/.config/polybar/launch.zsh"
+
+# Notifications
+exec --no-startup-id "dunst -config $HOME/.config/dunst/dunst.conf"
+
+# Clipboard
+exec --no-startup-id "greenclip daemon"
+
+# Redshift
+#exec --no-startup-id "redshift-gtk"
+
+# Applets
+#exec --no-startup-id "blueman-applet"
+#exec --no-startup-id "pasystray"
+exec --no-startup-id "nm-applet"
+
+# Autolock
+exec --no-startup-id "$HOME/.config/i3/scripts/autolock.zsh"
+
+# Daemons
+exec --no-startup-id "dropbox start"
+
+{%@@ if profile == WORK_HOST @@%}
+# Applications @ startup
+exec --no-startup-id "nextcloud" # daemon
+exec --no-startup-id "spotify"
+exec --no-startup-id "thunderbird"
+exec --no-startup-id "rambox"
+exec --no-startup-id "code"
+exec --no-startup-id "chromium"
+{%@@ elif profile == VBOX_HOST @@%}
+# Applications @ startup
+exec --no-startup-id "spotify"
+exec --no-startup-id "thunderbird"
+exec --no-startup-id "rambox"
+exec --no-startup-id "discord"
+exec --no-startup-id "code-oss"
+exec --no-startup-id "chromium"
+{%@@ endif @@%}
+
+
+
+### Scratchpad
+###############################################################################
+bindsym $mod+BackSpace move scratchpad
+bindsym $mod+grave scratchpad show
+
+# Enpass
+for_window [class="Enpass"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
+bindsym $mod+KP_Add [class="Enpass"] scratchpad show, move position center
+
+# Simplenote
+for_window [class="Simplenote"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
+bindsym $mod+KP_Subtract [class="Simplenote"] scratchpad show, move position center
+
+
+
+### Application window settings
+###############################################################################
+
+# Tray
+for_window [class="Gsimplecal"] floating enable
+for_window [class="Pavucontrol"] floating enable
+
+# Files
+for_window [class="Org.gnome.Nautilus"] floating enable
+for_window [class="File-roller"] floating enable
+for_window [class="Lxappearance"] floating enable
+
+# Apps
+# - Firefox picture-in-picture
+for_window [class="Firefox" instance="Toolkit"] border none
+
+
+
+### Application workspace binding #THEME_WORKSPACES
+###############################################################################
+# Use `xprop | grep CLASS` to get class name for a window
+# https://i3wm.org/docs/userguide.html#command_criteria
+# assign = just on start (does not work for many electron based)
+# for_window = every time it changes
+
+assign [class="Firefox"] → $ws_firefox
+assign [class="Chromium"] → $ws_chrome
+
+# Music
+for_window [class="Spotify"] move container to workspace $ws_music, workspace $ws_music
+
+# IM
+for_window [class="Rambox"] move container to workspace $ws_im, workspace $ws_im
+for_window [class="discord"] move container to workspace $ws_im, workspace $ws_im
+
+# Mailer
+for_window [class="Thunderbird"] move container to workspace $ws_mail, workspace $ws_mail
+
+# VSCode (Microsoft and non-microsoft)
+for_window [class="code-oss"] move container to workspace $ws_code, workspace $ws_code
+for_window [class="Code"] move container to workspace $ws_code, workspace $ws_code
+
+
+
+### Modes
+###############################################################################
+
+# Window resizing mode:
+bindsym $mod+r mode "RESIZE"
+
+# Window resizing modality (keyboard):
+mode "RESIZE"
+{
+  # Keys to resize with:
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+
+  # Exit resizing mode:
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $mod+r mode "default"
+}
+
+
+
+### Keybindings: media keys
+###############################################################################
+
+# Volume down:
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% && py3-cmd refresh volume_status
+
+# Volume up:
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% && py3-cmd refresh volume_status
+
+# Mute:
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle && py3-cmd refresh volume_status
+
+# Brightness down:
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 20 && py3-cmd refresh backlight
+
+# Brightness up:
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 20 && py3-cmd refresh backlight
+
+# Media player play:
+bindsym XF86AudioPlay exec --no-startup-id playerctl play
+
+# Media player pause:
+bindsym XF86AudioPause exec --no-startup-id playerctl pause
+
+# Media player next:
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+
+# Media player previous:
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+
+
+
+### Keybindings: tools
+###############################################################################
+
+# Menu (.desktop files)
+bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
+
+# Menu (executables within $PATH)
+bindsym $mod+Shift+space exec --no-startup-id rofi -show run
+
+# Windows switcher
+bindsym $mod+Tab exec --no-startup-id rofi -show window -show-icons
+
+# Screenshot (with scrot)
+bindsym Print exec --no-startup-id scrot '%Y-%m-%dT%H:%M:%S_$wx$h.png' -e 'mv $f $$HOME/Pictures/screenshots/'
+
+# Screenshot of an area (with scrot)
+bindsym --release Shift+Print exec --no-startup-id scrot -s '%Y-%m-%dT%H:%M:%S_$wx$h.png' -e 'mv $f $$HOME/Pictures/screenshots/'
+
+# Open screenshot folder
+bindsym Ctrl+Print exec --no-startup-id xdg-open "$HOME/Pictures/screenshots"
+
+# Clipboard (with greenclip)
+bindsym $mod+c exec --no-startup-id $HOME/.config/i3/scripts/rofi-greenclip.zsh
+
+# Calculator (with qalc)
+bindsym $mod+Shift+c exec --no-startup-id $HOME/.config/i3/scripts/rofi-calc.zsh
+
+# Locate files (with locate)
+bindsym $mod+s exec --no-startup-id $HOME/.config/i3/scripts/rofi-locate.zsh
+
+
+### Keybindings: session behaviour
+###############################################################################
+
+# Reload the configuration file:
+# bindsym $mod+Shift+c reload
+
+# Restart i3 (preserves session, even after an i3 update):
+bindsym $mod+Shift+r restart
+
+# Session menu:
+bindsym $mod+p exec --no-startup-id $HOME/.config/i3/scripts/rofi-power.zsh
+
+# Lock session:
+bindsym $mod+l exec --no-startup-id $HOME/.config/i3/scripts/lock.zsh
+
+# End i3 session:
+bindsym $mod+Shift+e exec i3-nagbar -t warning -m "End the current session and logout?" -b "Yes" "i3-msg exit"
+
+
+
+### Keybindings: windows behaviour
+###############################################################################
+
+# Start the terminal:
+bindsym $mod+Return exec kitty
+
+# Close focused window:
+bindsym $mod+q kill
+
+# Fullscreen for focused window:
+bindsym $mod+f fullscreen toggle
+
+# Toggle tiling/floating for focused window:
+bindsym $mod+Shift+f floating toggle
+
+# Hold down to drag floating windows with the mouse:
+floating_modifier $mod
+
+# Change focused window:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Will split the focused window horizontally:
+bindsym $mod+h split h
+
+# Will split the focused window vertically:
+bindsym $mod+v split v
+
+# Change layout (stacked, tabbed, split):
+bindsym $mod+z layout stacking
+bindsym $mod+x layout tabbed
+bindsym $mod+d layout toggle split
+
+# Change the focus between tiling and floating windows:
+bindsym $mod+g focus mode_toggle
+
+# Focus the parent container
+bindsym $mod+a focus parent
+
+# Focus the child container
+bindsym $mod+Shift+a focus child
+
+
+
+### Keybindings: workspaces behaviour
+###############################################################################
+
+# Switch to special workspace: (see workspace names)
+bindsym $mod+KP_Divide workspace $ws_im
+bindsym $mod+KP_Multiply workspace $ws_mail
+bindsym $mod+Shift+KP_Multiply workspace $ws_music
+# bindsym $mod+Shift+KP_Divide workspace #NOT BOUND YET
+
+# Switch to urgent workspace:
+bindsym $mod+t [urgent=latest] focus
+
+# Switch to workspace:
+bindsym $mod+1 workspace $ws01
+bindsym $mod+2 workspace $ws02
+bindsym $mod+3 workspace $ws03
+bindsym $mod+4 workspace $ws04
+bindsym $mod+5 workspace $ws05
+bindsym $mod+6 workspace $ws06
+bindsym $mod+7 workspace $ws07
+bindsym $mod+8 workspace $ws08
+bindsym $mod+9 workspace $ws09
+bindsym $mod+0 workspace $ws10
+# Switch to workspace: (Mod2+KP_1 == Numeric Keyboard 1)
+bindsym $mod+Mod2+KP_1 workspace $ws01
+bindsym $mod+Mod2+KP_2 workspace $ws02
+bindsym $mod+Mod2+KP_3 workspace $ws03
+bindsym $mod+Mod2+KP_4 workspace $ws04
+bindsym $mod+Mod2+KP_5 workspace $ws05
+bindsym $mod+Mod2+KP_6 workspace $ws06
+bindsym $mod+Mod2+KP_7 workspace $ws07
+bindsym $mod+Mod2+KP_8 workspace $ws08
+bindsym $mod+Mod2+KP_9 workspace $ws09
+bindsym $mod+Mod2+KP_0 workspace $ws10
+
+# Move focused to workspace:
+bindsym $mod+Shift+1 move container to workspace $ws01
+bindsym $mod+Shift+2 move container to workspace $ws02
+bindsym $mod+Shift+3 move container to workspace $ws03
+bindsym $mod+Shift+4 move container to workspace $ws04
+bindsym $mod+Shift+5 move container to workspace $ws05
+bindsym $mod+Shift+6 move container to workspace $ws06
+bindsym $mod+Shift+7 move container to workspace $ws07
+bindsym $mod+Shift+8 move container to workspace $ws08
+bindsym $mod+Shift+9 move container to workspace $ws09
+bindsym $mod+Shift+0 move container to workspace $ws10
+# Move focused window to workspace: (Shift+Mod2+KP_End == Shift+Numeric Keyoard 1)
+#                                   (ememeber that Shift inverts all KB, as NumLock does)
+bindsym $mod+Shift+Mod2+KP_End move container to workspace $ws01
+bindsym $mod+Shift+Mod2+KP_Down move container to workspace $ws02
+bindsym $mod+Shift+Mod2+KP_Next move container to workspace $ws03
+bindsym $mod+Shift+Mod2+KP_Left move container to workspace $ws04
+bindsym $mod+Shift+Mod2+KP_Begin move container to workspace $ws05
+bindsym $mod+Shift+Mod2+KP_Right move container to workspace $ws06
+bindsym $mod+Shift+Mod2+KP_Home move container to workspace $ws07
+bindsym $mod+Shift+Mod2+KP_Up move container to workspace $ws08
+bindsym $mod+Shift+Mod2+KP_Prior move container to workspace $ws09
+bindsym $mod+Shift+Mod2+KP_Insert move container to workspace $ws10

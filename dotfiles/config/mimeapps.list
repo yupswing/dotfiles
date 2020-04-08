@@ -1,0 +1,15 @@
+# vim: set ft=ini
+
+# xdg-mime query default MIMETYPE
+
+[Default Applications]
+inode/directory=org.gnome.Nautilus.desktop
+application/x-gnome-saved-search=org.gnome.Nautilus.desktop
+x-scheme-handler/http={{@@ DEFAULT_BROWSER @@}}.desktop
+text/html={{@@ DEFAULT_BROWSER @@}}.desktop
+text/xml={{@@ DEFAULT_BROWSER @@}}.desktop
+application/xhtml_xml={{@@ DEFAULT_BROWSER @@}}.desktop
+image/webp={{@@ DEFAULT_BROWSER @@}}.desktop
+x-scheme-handler/https={{@@ DEFAULT_BROWSER @@}}.desktop
+x-scheme-handler/ftp={{@@ DEFAULT_BROWSER @@}}.desktop
+text/plain=code.desktop
