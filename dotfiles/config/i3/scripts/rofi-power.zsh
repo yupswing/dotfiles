@@ -2,25 +2,30 @@
 # Original script by Oliver Kraitschy - http://okraits.de
 # Modified by Simone Cingano @yupswing
 
-OPTIONS="Lock screen\nEnd session\nReboot system\nPower-off system\nSuspend system\nHibernate system"
+OPTIONS=" Power-off system
+ Reboot system
+ End session
+ Lock screen
+ Suspend system
+ Hibernate system"
 LOCKER=$HOME/.config/i3/scripts/lock.sh
 
 LAUNCHER="rofi -dmenu -i -p  -width -30"
-option=$(echo -e "$OPTIONS" | ${(s: :)LAUNCHER} | awk '{print $1}' | tr -d '\r\n')
+option=$(echo -e "$OPTIONS" | ${(s: :)LAUNCHER} | awk '{print $2}' | tr -d '\r\n')
 
 if [ ${#option} -gt 0 ]; then
   case $option in
-  Lock)
-    eval $LOCKER
-    ;;
-  End)
-    i3-msg exit
+  Power-off)
+    systemctl poweroff
     ;;
   Reboot)
     systemctl reboot
     ;;
-  Power-off)
-    systemctl poweroff
+  End)
+    i3-msg exit
+    ;;
+  Lock)
+    eval $LOCKER
     ;;
   Suspend)
     systemctl suspend
