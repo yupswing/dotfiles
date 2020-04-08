@@ -26,7 +26,7 @@ configuration {
 
   /* #THEME_FONT */
   /*font: "IBM Plex Sans 14";*/
-  font: "Fira Code 16";
+  font: "FiraCode Nerd Font 16";
 }
 
 * {

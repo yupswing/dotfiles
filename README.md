@@ -20,7 +20,7 @@ pip3 install -r ~/dotfiles/dotdrop/requirements.txt
 ~/dotfiles/dotdrop.sh install
 ```
 
-- we need to install `Fira Code Nerd Font` (https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode)
+- we need to install `FiraCode Nerd Font` (https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode)
 
 ## Usage
 
