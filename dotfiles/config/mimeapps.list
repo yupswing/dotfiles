@@ -3,8 +3,8 @@
 # xdg-mime query default MIMETYPE
 
 [Default Applications]
-inode/directory=org.gnome.Nautilus.desktop
-application/x-gnome-saved-search=org.gnome.Nautilus.desktop
+inode/directory={{@@ DEFAULT_FILE_MANAGER @@}}.desktop
+application/x-gnome-saved-search={{@@ DEFAULT_FILE_MANAGER @@}}.desktop
 x-scheme-handler/http={{@@ DEFAULT_BROWSER @@}}.desktop
 text/html={{@@ DEFAULT_BROWSER @@}}.desktop
 text/xml={{@@ DEFAULT_BROWSER @@}}.desktop

@@ -21,7 +21,9 @@ variables:
   HOME_HOST: FoxPC
   WORK_HOST: simopc # archfox_work
   VBOX_HOST: archsimo # archfox_vbox"
+  # adds .desktop to defaults
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
+  DEFAULT_FILE_MANAGER: nemo
 
 # ========================================================================== #
 # ========================================================================== #
@@ -48,15 +50,6 @@ dotfiles:
     src: ssh/config
     dst: ~/.ssh/config
 
-  ssh_dv:
-    src: ssh/dv.gpg
-    dst: ~/.ssh/dv
-    trans_read: gpg
-
-  ssh_dv_pub:
-    src: ssh/dv.pub
-    dst: ~/.ssh/dv.pub
-
   ssh_yupswing:
     src: ssh/yupswing.gpg
     dst: ~/.ssh/yupswing
@@ -65,6 +58,15 @@ dotfiles:
   ssh_yupswing_pub:
     src: ssh/yupswing.pub
     dst: ~/.ssh/yupswing.pub
+
+  ssh_dv:
+    src: ssh/dv.gpg
+    dst: ~/.ssh/dv
+    trans_read: gpg
+
+  ssh_dv_pub:
+    src: ssh/dv.pub
+    dst: ~/.ssh/dv.pub
 
   # ZSH ======================================================================
   zshlib:
@@ -99,6 +101,9 @@ dotfiles:
   gtk-3.0:
     src: config/gtk-3.0
     dst: ~/.config/gtk-3.0
+  dconf:
+    src: config/dconf
+    dst: ~/.config/dconf
   mimeapps.list:
     src: config/mimeapps.list
     dst: ~/.config/mimeapps.list
@@ -150,10 +155,10 @@ profiles:
   base_ssh:
     dotfiles:
       - ssh_config
-      - ssh_dv
-      - ssh_dv_pub
       - ssh_yupswing
       - ssh_yupswing_pub
+      - ssh_dv
+      - ssh_dv_pub
     actions:
       - ssh_permissions
 
@@ -171,10 +176,11 @@ profiles:
       - xprofile
       - gtkrc-2.0
       - gtk-3.0
+      - dconf
+      - mimeapps.list
+      - fontconfig
       - kitty
       - alacritty
-      - fontconfig
-      - mimeapps.list
 
   # Groups ===================================================================
 

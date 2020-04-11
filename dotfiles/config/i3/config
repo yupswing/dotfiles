@@ -7,7 +7,7 @@
 #   xev
 # list keycode:
 #   xmodmap -pke
-# determine window class:
+# determine window class (last string in output):
 #   xprop | grep CLASS
 # see what combination are free:
 #   cat $HOME/.config/i3/config | grep 'bindsym $mod' | uniq | sort
@@ -223,6 +223,7 @@ for_window [class="Pavucontrol"] floating enable
 
 # Files
 for_window [class="Org.gnome.Nautilus"] floating enable
+for_window [class="Nemo"] floating enable
 for_window [class="File-roller"] floating enable
 for_window [class="Lxappearance"] floating enable
 
