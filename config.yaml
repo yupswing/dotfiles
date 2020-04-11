@@ -20,7 +20,7 @@ config:
 variables:
   HOME_HOST: FoxPC
   WORK_HOST: simopc # archfox_work
-  VBOX_HOST: archsimo # archfox_vbox"
+  VM_HOST: archsimo # archfox_vbox"
   # adds .desktop to defaults
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
   DEFAULT_FILE_MANAGER: nemo

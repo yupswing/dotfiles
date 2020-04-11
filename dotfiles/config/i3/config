@@ -187,7 +187,7 @@ exec --no-startup-id "thunderbird"
 exec --no-startup-id "rambox"
 exec --no-startup-id "code"
 exec --no-startup-id "chromium"
-{%@@ elif profile == VBOX_HOST @@%}
+{%@@ elif profile == VM_HOST @@%}
 # Applications @ startup
 exec --no-startup-id "spotify"
 exec --no-startup-id "thunderbird"
