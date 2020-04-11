@@ -68,6 +68,12 @@ dotfiles:
     src: ssh/dv.pub
     dst: ~/.ssh/dv.pub
 
+  # BASH =====================================================================
+
+  bash_profile:
+    src: bash_profile.sh
+    dst: ~/.bash_profile
+
   # ZSH ======================================================================
   zshlib:
     src: zsh/zshlib
@@ -165,6 +171,7 @@ profiles:
   base_line:
     include:
       - zsh
+      - bash
       - base_ssh
     dotfiles:
       - irbrc
@@ -183,6 +190,10 @@ profiles:
       - alacritty
 
   # Groups ===================================================================
+
+  bash:
+    dotfiles:
+      - bash_profile
 
   zsh:
     dotfiles:
