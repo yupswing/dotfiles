@@ -10,9 +10,11 @@ alias l='ls -lAFh --color'
 # alias la='ls -A'
 # alias ll='ls -l'
 
+# enable alias in sudo
+alias sudo='sudo '
 # sudo
 alias fu='sudo $(fc -ln -1)'
-alias _=sudo
+alias _='sudo '
 alias __='sudo -s'
 
 # defaults
@@ -42,4 +44,3 @@ alias dc=cd
 
 # ps
 alias p='ps -ef'
-
