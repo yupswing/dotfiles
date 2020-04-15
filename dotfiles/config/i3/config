@@ -147,8 +147,10 @@ for_window [window_role="task_dialog"] floating enable
 ### Startup programs
 ###############################################################################
 
+{%@@ if profile != VM_HOST @@%}
 # Composite manager (highest priority)
 exec --no-startup-id "picom -bG"
+{%@@ endif @@%}
 
 # Keyboard layout: (en keyboard + compose key on "menu key")
 exec --no-startup-id "setxkbmap en -option compose:menu"
