@@ -16,8 +16,7 @@ while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 # Launch `primary` polybar for primary monitor and `secondary` for everything else
 # (or just `primary` if only 1 monitor)
-
-export POLYBAR_SHELL=/bin/bash
+export POLYBAR_SHELL=/bin/sh
 MONITORS=$(polybar --list-monitors)
 
 if [[ $(echo -e $MONITORS | wc -l) -eq 1 ]]; then
