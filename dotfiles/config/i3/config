@@ -232,6 +232,8 @@ for_window [class="Lxappearance"] floating enable
 for_window [class="Firefox" instance="Toolkit"] border none
 
 
+focus_on_window_activation focus
+
 
 ### Application workspace binding #THEME_WORKSPACES
 ###############################################################################

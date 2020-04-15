@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
+# UNRELIABLE
 # https://ifconfig.co/json
 # {
 #   "ip": "12.34.56.78",
@@ -16,27 +17,38 @@
 #   "asn_org": "Organization",
 # }
 
+# WORKS OK, NO LOGGING
+# https://api.ipify.org?format=json
+# {
+#   "ip":"151.30.240.62"
+# }
+
 import requests
 import signal
 import time
 import sys
 
+INTERVAL = 60
 ICON = ""
-COLOR_UPDATE = "f4bf75"
-COLOR_OFFLINE = "f92672"
-COLOR_ONLINE = "a6e22e"
+COLOR_UPDATE = "#f4bf75"
+COLOR_OFFLINE = "#f92672"
+COLOR_ONLINE = "#a6e22e"
 
 
 class Checker(object):
-    def __init__(self):
+    def __init__(self, icon, color_online, color_offline, color_update):
         self.ip = None
         self.online = False
         self.showIp = False
         self.updating = False
+        self.icon = icon
+        self.color_online = color_online
+        self.color_offline = color_offline
+        self.color_update = color_update
 
     def update(self):
         self.ip = None
-        url = 'https://ifconfig.co/json'
+        url = 'https://api.ipify.org?format=json'
 
         self.updating = True
         self._print()
@@ -63,27 +75,40 @@ class Checker(object):
 
     def _print(self):
         if self.updating:
-            color = COLOR_UPDATE
+            color = self.color_update
         elif self.online:
-            color = COLOR_ONLINE
+            color = self.color_online
         else:
-            color = COLOR_OFFLINE
-        output = "%%{F#%s}%s%%{F-}" % (color, ICON)
+            color = self.color_offline
+        output = "%%{F%s}%s%%{F-}" % (color, self.icon)
         if self.showIp:
             output = "%s %s" % (output, self.ip)
         print("%s" % output)
         sys.stdout.flush()
 
 
+def getArgv(index, default=None):
+    if len(sys.argv) > index:
+        return sys.argv[index]
+    else:
+        return default
+
+
 if __name__ == '__main__':
 
-    checker = Checker()
-    signal.signal(signal.SIGUSR1, lambda signal,
-                  frame: checker.update())
+    interval = int(getArgv(1, INTERVAL))
+    icon = getArgv(2, ICON)
+    color_online = getArgv(3, COLOR_ONLINE)
+    color_offline = getArgv(4, COLOR_OFFLINE)
+    color_update = getArgv(5, COLOR_UPDATE)
 
-    signal.signal(signal.SIGUSR2, lambda signal,
-                  frame: checker.toggleShowIp())
+    checker = Checker(icon, color_online, color_offline, color_update)
+    signal.signal(signal.SIGUSR1,
+                  lambda signal, frame: checker.update())
+
+    signal.signal(signal.SIGUSR2,
+                  lambda signal, frame: checker.toggleShowIp())
 
     while True:
         checker.update()
-        time.sleep(90)
+        time.sleep(interval)
