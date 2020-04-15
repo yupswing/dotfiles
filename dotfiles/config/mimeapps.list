@@ -1,5 +1,7 @@
 # vim: set ft=ini
 
+# {{@@ header() @@}}
+
 # xdg-mime query default MIMETYPE
 
 [Default Applications]

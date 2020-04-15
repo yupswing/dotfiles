@@ -1,0 +1,7 @@
+#!/bin/sh
+# vim: set ft=sh
+
+# {{@@ header() @@}}
+# FILE: ~/.fehbg
+
+feh --no-fehbg --bg-fill '/home/simo/.config/backgrounds/topos.jpg'

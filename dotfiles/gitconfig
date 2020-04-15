@@ -1,0 +1,8 @@
+# vim: set ft=ini
+
+# {{@@ header() @@}}
+# FILE: ~/.gitconfig
+
+[user]
+email = yupswing@protonmail.com
+name = Simone Cingano

@@ -146,11 +146,20 @@ dotfiles:
   gsimplecal:
     src: config/gsimplecal
     dst: ~/.config/gsimplecal
+  fehbg:
+    src: fehbg
+    dst: ~/.fehbg
 
   # Others ===================================================================
   fontconfig: # fix for fira code ligatures
     src: config/fontconfig
     dst: ~/.config/fontconfig
+  dir_colors:
+    src: dir_colors
+    dst: ~/.dir_colors
+  gitconfig:
+    src: gitconfig
+    dst: ~/.gitconfig
 
 # ========================================================================== #
 # ========================================================================== #
@@ -177,6 +186,8 @@ profiles:
       - irbrc
       - nvim
       - bin
+      - dir_colors
+      - gitconfig
 
   base_gui:
     dotfiles:
@@ -210,6 +221,7 @@ profiles:
       - polybar
       - wal
       - gsimplecal
+      - fehbg
 
   wsl:
     include:
