@@ -4,4 +4,4 @@
 # {{@@ header() @@}}
 # FILE: ~/.fehbg
 
-feh --no-fehbg --bg-fill '/home/simo/.config/backgrounds/topos.jpg'
+feh --no-fehbg --bg-fill '/home/simo/Pictures/backgrounds/topos.jpg'

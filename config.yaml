@@ -160,6 +160,9 @@ dotfiles:
   gitconfig:
     src: gitconfig
     dst: ~/.gitconfig
+  backgrounds:
+    src: data/backgrounds
+    dst: ~/Pictures/backgrounds
 
 # ========================================================================== #
 # ========================================================================== #
@@ -199,6 +202,7 @@ profiles:
       - fontconfig
       - kitty
       - alacritty
+      - backgrounds
 
   # Groups ===================================================================
 
