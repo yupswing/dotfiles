@@ -29,7 +29,7 @@ import time
 import sys
 
 INTERVAL = 60
-ICON = ""
+ICON = "󰀃"
 COLOR_UPDATE = "#f4bf75"
 COLOR_OFFLINE = "#f92672"
 COLOR_ONLINE = "#a6e22e"
@@ -47,7 +47,7 @@ class Checker(object):
         self.color_update = color_update
 
     def update(self):
-        self.ip = None
+        self.ip = "Checking..."
         url = 'https://api.ipify.org?format=json'
 
         self.updating = True
@@ -63,7 +63,7 @@ class Checker(object):
             self.ip = data['ip']
             self.online = True
         else:
-            self.ip = 'offline'
+            self.ip = 'Offline'
             self.online = False
 
         self.updating = False
