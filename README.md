@@ -133,6 +133,7 @@ alt + c ........................... clipboard menu (greenclip)
 alt + shift + c ................... calculator (qalc)
 
 alt + l ........................... lock screen (i3lock)
+alt + k ........................... change keyboard layout (xkb-switch)
 
 print ............................. screenshot
 shift + print ..................... screenshot area

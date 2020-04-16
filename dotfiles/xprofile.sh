@@ -12,3 +12,6 @@ xrandr --output HDMI-3 --primary --right-of DP-1
 
 # Numlock ON
 numlockx &
+
+# Layouts
+setxkbmap -model pc105 -layout us,it

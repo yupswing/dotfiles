@@ -348,6 +348,10 @@ bindsym $mod+Shift+c exec --no-startup-id $HOME/.config/i3/scripts/rofi-calc.zsh
 # Locate files (with locate)
 bindsym $mod+s exec --no-startup-id $HOME/.config/i3/scripts/rofi-locate.zsh
 
+# Change keyboard layout (with xkb-switch)
+bindsym $mod+k exec --no-startup-id xkb-switch -n
+
+
 
 ### Keybindings: session behaviour
 ###############################################################################
