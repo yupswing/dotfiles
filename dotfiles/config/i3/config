@@ -224,7 +224,6 @@ for_window [class="Gsimplecal"] floating enable
 for_window [class="Pavucontrol"] floating enable
 
 # Files
-for_window [class="Org.gnome.Nautilus"] floating enable
 for_window [class="Nemo"] floating enable
 for_window [class="File-roller"] floating enable
 for_window [class="Lxappearance"] floating enable
