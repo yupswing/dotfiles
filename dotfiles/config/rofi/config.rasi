@@ -1,6 +1,7 @@
 /**
  * rofi
  * yupswing theme
+ * {{@@ header() @@}}
  * see: https://github.com/davatorium/rofi/blob/next/doc/rofi-theme.5.markdown
  **/
 
@@ -61,8 +62,8 @@ error-message {
   padding: 2em;
 }
 
-textbox {
-}
+/* textbox {
+} */
 
 listview {
   padding: 0;

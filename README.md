@@ -4,7 +4,7 @@ This is **yupswing** personal configuration
 
 I am using `dotdrop` as a dotfiles manager (https://github.com/deadc0de6/dotdrop)
 
-## TODO
+## #TODO
 
 - Look for `#TODO` in code
 

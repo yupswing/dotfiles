@@ -1,3 +1,5 @@
+# vim: set ft=ini
+# {{@@ header() @@}}
 ## See ` man gsimplecal`
 show_calendar = 1
 show_timezones = 1

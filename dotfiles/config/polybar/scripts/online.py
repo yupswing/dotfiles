@@ -30,9 +30,9 @@ import sys
 
 INTERVAL = 60
 ICON = "󰀃"
-COLOR_UPDATE = "#f4bf75"
+COLOR_UPDATE = "#f19d3a"
 COLOR_OFFLINE = "#f92672"
-COLOR_ONLINE = "#a6e22e"
+COLOR_ONLINE = "#dddddd"
 
 
 class Checker(object):

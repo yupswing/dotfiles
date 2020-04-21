@@ -113,6 +113,9 @@ dotfiles:
   mimeapps.list:
     src: config/mimeapps.list
     dst: ~/.config/mimeapps.list
+  redshift:
+    src: config/redshift
+    dst: ~/.config/redshift
 
   # Terminals ================================================================
   alacritty:
@@ -121,6 +124,11 @@ dotfiles:
   kitty:
     src: config/kitty
     dst: ~/.config/kitty
+
+  # Environments =============================================================
+  session-startup:
+    src: config/session-startup.sh
+    dst: ~/.config/session-startup.sh
 
   # i3 Environment ===========================================================
   i3:
@@ -203,6 +211,8 @@ profiles:
       - kitty
       - alacritty
       - backgrounds
+      - redshift
+      - session-startup
 
   # Groups ===================================================================
 

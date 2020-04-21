@@ -11,7 +11,7 @@ xrandr --output HDMI-3 --primary --right-of DP-1
 {%@@ endif @@%}
 
 # Numlock ON
-numlockx &
+numlockx
 
-# Layouts
-setxkbmap -model pc105 -layout us,it
+# Layouts + compose on ALTGR
+setxkbmap -model pc105 -layout us,it -option compose:ralt
