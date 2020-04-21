@@ -295,6 +295,7 @@ bindsym Ctrl+Print exec --no-startup-id xdg-open "$HOME/Pictures/screenshots"
 
 # Clipboard (with greenclip)
 bindsym $mod+c exec --no-startup-id $HOME/.config/i3/scripts/rofi-greenclip.zsh
+bindsym $mod+j exec --no-startup-id $HOME/.config/i3/scripts/clear-greenclip.zsh
 
 # Calculator (with qalc)
 bindsym $mod+Shift+c exec --no-startup-id $HOME/.config/i3/scripts/rofi-calc.zsh

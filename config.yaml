@@ -157,6 +157,12 @@ dotfiles:
   fehbg:
     src: fehbg
     dst: ~/.fehbg
+  greenclip:
+    src: config/greenclip.cfg
+    dst: ~/.config/greenclip.cfg
+  greenclip_static_history:
+    src: config/greenclip.staticHistory
+    dst: ~/.config/greenclip.staticHistory
 
   # Others ===================================================================
   fontconfig: # fix for fira code ligatures
@@ -236,6 +242,8 @@ profiles:
       - wal
       - gsimplecal
       - fehbg
+      - greenclip
+      - greenclip_static_history
 
   wsl:
     include:

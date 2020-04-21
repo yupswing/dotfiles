@@ -130,6 +130,7 @@ alt + tab ......................... window menu
 alt + p ........................... power menu
 alt + s ........................... search menu (mlocate)
 alt + c ........................... clipboard menu (greenclip)
+alt + j ........................... clear clipboard (greenclip)
 alt + shift + c ................... calculator (qalc)
 
 alt + l ........................... lock screen (i3lock)
@@ -200,6 +201,12 @@ see https://sw.kovidgoyal.net/kitty/faq.html#kitty-is-not-able-to-use-my-favorit
 
 - added `~/.config/fontconfig/fonts.conf`
 - remember to run `fc-cache -r`
+
+### Greenclip
+
+- Static history (permanent history) is located at `~/.config/greenclic.staticHistory`
+- Standard history is located in `.cache`
+- To add a blacklisted app see `https://github.com/erebe/greenclip`
 
 ## NVIM
 
