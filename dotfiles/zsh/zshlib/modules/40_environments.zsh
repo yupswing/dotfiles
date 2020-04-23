@@ -36,3 +36,11 @@ if [[ -d $PYENV_ROOT ]]; then
   eval "$(pyenv init -)"
   alias pyenv_list="pyenv install -l | \grep -E '^[ ]*[0-9]+\.[0-9]+\.[0-9]+$'"
 fi
+
+# ----------------------------------------------------------------------------
+
+function updatenv() {
+  (( $+commands[nodenv] )) && echo "\n=== NODENV Update ===" && nodenv update
+  (( $+commands[rbenv] )) && echo "\n=== RBENV Update ===" && rbenv update
+  (( $+commands[pyenv] )) && echo "\n=== PYENV Update ===" && pyenv update
+}
