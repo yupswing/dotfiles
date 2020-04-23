@@ -25,3 +25,12 @@ alias gsu='git submodule foreach git pull origin master'
 #   git pull origin master
 #   git push origin master
 # }
+
+function glall() {
+  find . -maxdepth 1 -type d  | while read line; do
+    if [[ -d $line/.git ]]; then
+      echo "\n❯ git -C $line pull"
+      git -C $line pull
+    fi
+  done
+}
