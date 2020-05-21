@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # vim: set ft=ruby
 
 # {{@@ header() @@}}
@@ -77,12 +79,6 @@ if ENV['RAILS_ENV']
   rails_env = ENV['RAILS_ENV']
   rails_root = File.basename(Dir.pwd)
 
-  # Redirect log to STDOUT, which means the console itself
-  IRB.conf[:IRB_RC] = proc do
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
-    ActiveRecord::Base.instance_eval { alias :[] :find }
-  end
-
   # #{ANSI[:GREEN]}#{rails_root}
   prompt = "#{ANSI[:BOLD]}rails#{ANSI[:GREEN]}[#{rails_env.sub('production', 'prod').sub('development', 'dev')}]#{ANSI[:RESET]}"
   IRB.conf[:PROMPT][:RAILS] = {
@@ -96,18 +92,34 @@ if ENV['RAILS_ENV']
 
   IRB.conf[:PROMPT_MODE] = :RAILS
 
-  extend_console 'rails3', defined?(ActiveSupport::Notifications), false do
-    $odd_or_even_queries = false
-    ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
-      $odd_or_even_queries = !$odd_or_even_queries
-      color = $odd_or_even_queries ? ANSI[:CYAN] : ANSI[:MAGENTA]
-      event = ActiveSupport::Notifications::Event.new(*args)
-      time  = '%.1fms' % event.duration
-      name  = event.payload[:name]
-      sql   = event.payload[:sql].gsub("\n", ' ').squeeze(' ')
-      puts "  #{ANSI[:UNDERLINE]}#{color}#{name} (#{time})#{ANSI[:RESET]}  #{sql}"
+  # if IRB.conf[:VERBOSE]
+
+    # Redirect log to STDOUT, which means the console itself
+    IRB.conf[:IRB_RC] = proc do
+      ActiveRecord::Base.logger = Logger.new(STDOUT)
+      ActiveRecord::Base.instance_eval { alias :[] :find }
     end
-  end
+
+    extend_console 'rails3', defined?(ActiveSupport::Notifications), false do
+      $odd_or_even_queries = false
+      ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
+        $odd_or_even_queries = !$odd_or_even_queries
+        color = $odd_or_even_queries ? ANSI[:CYAN] : ANSI[:MAGENTA]
+        event = ActiveSupport::Notifications::Event.new(*args)
+        time  = '%.1fms' % event.duration
+        name  = event.payload[:name]
+        sql   = event.payload[:sql].gsub("\n", ' ').squeeze(' ')
+        puts "  #{ANSI[:UNDERLINE]}#{color}#{name} (#{time})#{ANSI[:RESET]}  #{sql}"
+      end
+    end
+
+  # else
+
+  #   IRB.conf[:IRB_RC] = proc do
+  #     ActiveRecord::Base.logger = nil
+  #   end
+
+  # end
 
   def tables
     ActiveRecord::Base.connection.tables.sort!

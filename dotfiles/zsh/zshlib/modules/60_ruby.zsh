@@ -5,6 +5,7 @@
 
 alias ra='rails'
 alias rc='rails console'
+alias rcc='./bin/spring stop && rails console'
 alias rs='rails server'
 alias rbi='bundle install --path="vendor/bundle"'
 alias rbu='bundle update'
