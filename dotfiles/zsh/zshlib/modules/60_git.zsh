@@ -14,6 +14,9 @@ alias gaa='git add --all'
 
 alias gr='git rm'
 
+alias gk='git checkout'
+alias gm='git merge'
+
 alias gd='git diff'
 alias gds='git diff --staged'
 
