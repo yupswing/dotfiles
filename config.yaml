@@ -19,7 +19,7 @@ config:
 
 variables:
   HOME_HOST: FoxPC
-  WORK_HOST: simopc # archfox_work
+  WORK_HOST: simodotpc # archfox_work
   VM_HOST: archsimo # archfox_vbox"
   # adds .desktop to defaults
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
@@ -263,7 +263,7 @@ profiles:
     include:
       - base_line
 
-  simopc:
+  simodotpc:
     include:
       - base_line
       - base_gui
