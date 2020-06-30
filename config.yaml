@@ -251,19 +251,19 @@ profiles:
 
   # Hosts ====================================================================
 
-  archsimo:
+  FoxPC: # Home (windows)
+    include:
+      - base_line
+
+  archsimo: # Work (Virtualbox)
     include:
       - base_line
       - base_gui
       - i3
     variables:
-      DEFAULT_BROWSER: chromium-browser # firefox, chromium-browser, google-chrome
+      DEFAULT_BROWSER: chromium-browser
 
-  FoxPC:
-    include:
-      - base_line
-
-  simodotpc:
+  simodotpc: # Work (Office)
     include:
       - base_line
       - base_gui

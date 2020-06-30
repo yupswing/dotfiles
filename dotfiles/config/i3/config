@@ -38,12 +38,13 @@ set $ws_mail "_mail:"
 set $ws_music "_spotify:"
 
 {%@@ if profile == WORK_HOST @@%}
-# Numeric workspaces
+# First screen
 set $ws01 "01_firefox:"
 set $ws02 "02_chrome:"
 set $ws03 "03"
 set $ws04 "04"
 set $ws05 "05"
+# Second screen
 set $ws06 "06_code:"
 set $ws07 "07_terminal:"
 set $ws08 "08"
