@@ -1,4 +1,5 @@
-if [[ $(uname -a) =~ "arch" ]]; then
+# if [[ $(uname -a) =~ "arch" ]]; then
+if [ -f "/etc/arch-release" ]; then
   alias y=yay
   alias pac=pacman
 
