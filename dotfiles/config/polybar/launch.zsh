@@ -21,7 +21,7 @@ MONITORS=$(polybar --list-monitors)
 
 if [[ $(echo -e $MONITORS | wc -l) -eq 1 ]]; then
 
-  MONITOR=$(echo -e $MONITORS | cut -d":" -f1) polybar -c $HOME/.config/polybar/config.conf --reload primary &
+  MONITOR=$(echo -e $MONITORS | cut -d":" -f1) polybar -c $HOME/.config/polybar/config.conf --reload single &
 
 else
 
