@@ -18,12 +18,17 @@ config:
 # ========================================================================== #
 
 variables:
+  # --- Hosts
   HOME_HOST: FoxPC
   WORK_HOST: simodotpc # archfox_work
   VM_HOST: archsimo # archfox_vbox"
-  # adds .desktop to defaults
+  # --- Defaults (adds .desktop to defaults)
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
   DEFAULT_FILE_MANAGER: nemo
+  # --- Config (changeable by host)
+  GAPS: true
+  COMPOSITOR: true
+  COMPOSITOR_FANCY: true # blur and opacity
 
 # ========================================================================== #
 # ========================================================================== #
@@ -262,6 +267,8 @@ profiles:
       - i3
     variables:
       DEFAULT_BROWSER: chromium-browser
+      GAPS: false
+      COMPOSITOR_FANCY: false # only minimal compositing
 
   simodotpc: # Work (Office)
     include:

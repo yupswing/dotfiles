@@ -19,7 +19,7 @@ dropbox start &
 ###############################################################################
 case ${GDMSESSION:l} in
 i3)
-  {%@@ if profile != VM_HOST @@%}
+  {%@@ if COMPOSITOR @@%}
   # Composite manager (highest priority)
   picom -bG &
   {%@@ endif @@%}

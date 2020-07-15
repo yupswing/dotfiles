@@ -31,19 +31,21 @@ configuration {
 }
 
 * {
-  background: #333333dd;
+  background-color: #333333dd;
   foreground: #eeeeee;
   accent: #550080;
   scrollbar: #55008033;
   spacing: 2;
+  border: 0;
 
   text-color: @foreground;
-  background-color: transparent;
 }
 
 window {
   padding: 0;
+  {%@@ if not COMPOSITOR_FANCY @@%}
   transparency: "screenshot";
+  {%@@ endif @@%}
   border: 3px;
   border-radius: 1em;
   background-color: @background;

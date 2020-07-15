@@ -37,27 +37,9 @@ set $ws_im "_im:"
 set $ws_mail "_mail:"
 set $ws_music "_spotify:"
 
-{%@@ if profile == WORK_HOST @@%}
-# First screen
-set $ws01 "01_firefox:"
-set $ws02 "02_chrome:"
-set $ws03 "03"
-set $ws04 "04"
-set $ws05 "05"
-# Second screen
-set $ws06 "06_code:"
-set $ws07 "07_terminal:"
-set $ws08 "08"
-set $ws09 "09"
-set $ws10 "10"
-# Named
-set $ws_code "06_code:"
-set $ws_firefox "01_firefox:"
-set $ws_chrome "02_chrome:"
-{%@@ else @@%}
 set $ws01 "01_code:"
-set $ws02 "02_chrome:"
-set $ws03 "03"
+set $ws02 "02_browser:"
+set $ws03 "03_terminal:"
 set $ws04 "04"
 set $ws05 "05"
 set $ws06 "06"
@@ -67,9 +49,8 @@ set $ws09 "09"
 set $ws10 "10"
 # Named
 set $ws_code "01_code:"
-set $ws_firefox "10"
-set $ws_chrome "02_chrome:"
-{%@@ endif @@%}
+set $ws_firefox "02_browser:"
+set $ws_chrome "02_browser:"
 
 # ## Workspace binding
 # run xranrd to see monitor names
@@ -81,16 +62,16 @@ workspace $ws_music output $monitor_left
 workspace $ws_im output $monitor_left
 workspace $ws_mail output $monitor_left
 # Numeric workspaces
-workspace $ws01 output $monitor_left
+workspace $ws01 output $monitor_right
 workspace $ws02 output $monitor_left
-workspace $ws03 output $monitor_left
+workspace $ws03 output $monitor_right
 workspace $ws04 output $monitor_left
-workspace $ws05 output $monitor_left
-workspace $ws06 output $monitor_right
+workspace $ws05 output $monitor_right
+workspace $ws06 output $monitor_left
 workspace $ws07 output $monitor_right
-workspace $ws08 output $monitor_right
+workspace $ws08 output $monitor_left
 workspace $ws09 output $monitor_right
-workspace $ws10 output $monitor_right
+workspace $ws10 output $monitor_left
 
 
 
@@ -142,11 +123,14 @@ focus_follows_mouse yes
 
 
 
+{%@@ if GAPS @@%}
+
 ### Gaps (only i3-gaps)
 ###############################################################################
 
-#gaps inner 10
+gaps inner 5
 
+{%@@ endif @@%}
 
 
 ### Startup programs
@@ -208,6 +192,11 @@ for_window [class="Spotify"] move container to workspace $ws_music, workspace $w
 # IM
 for_window [class="Rambox"] move container to workspace $ws_im, workspace $ws_im
 for_window [class="discord"] move container to workspace $ws_im, workspace $ws_im
+{%@@ if profile == WORK_HOST @@%}
+# tabbed layout in IM workspace
+for_window [class="Rambox"] layout tabbed
+for_window [class="discord"] layout tabbed
+{%@@ endif @@%}
 
 # Mailer
 for_window [class="Thunderbird"] move container to workspace $ws_mail, workspace $ws_mail
