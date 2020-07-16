@@ -268,7 +268,7 @@ profiles:
     variables:
       DEFAULT_BROWSER: chromium-browser
       GAPS: false
-      COMPOSITOR_FANCY: false # only minimal compositing
+      COMPOSITOR: false
 
   simodotpc: # Work (Office)
     include:
