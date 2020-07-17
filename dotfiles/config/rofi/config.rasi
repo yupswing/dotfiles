@@ -30,25 +30,50 @@ configuration {
   font: "FiraCode Nerd Font 16";
 }
 
-* {
-  background-color: #333333dd;
+/* * {
+  background: #333333dd;
+  background-color: transparent;
   foreground: #eeeeee;
   accent: #550080;
   scrollbar: #55008033;
   spacing: 2;
   border: 0;
-
   text-color: @foreground;
 }
 
 window {
   padding: 0;
-  {%@@ if not COMPOSITOR_FANCY @@%}
+  %@@ if not COMPOSITOR_FANCY @@%
+  background-color: @background;
   transparency: "screenshot";
-  {%@@ endif @@%}
+  %@@ endif @@%
   border: 3px;
   border-radius: 1em;
+} */
+
+* {
+  {%@@ if COMPOSITOR @@%}
+  background: #33333300;
+  {%@@ else @@%}
+  background: #333333dd;
+  {%@@ endif @@%}
+  background-color: transparent;
+  foreground: #eeeeee;
+  accent: #550080;
+  scrollbar: #55008033;
+  spacing: 2;
+  text-color: @foreground;
+}
+
+window {
+  padding: 0;
+  {%@@ if COMPOSITOR @@%}
+  {%@@ else @@%}
+  transparency: "screenshot";
+  {%@@ endif @@%}
   background-color: @background;
+  border: 3px;
+  border-radius: {{@@ ROUNDED @@}}px;
 }
 
 mainbox {

@@ -27,6 +27,7 @@ variables:
   DEFAULT_FILE_MANAGER: nemo
   # --- Config (changeable by host)
   GAPS: true
+  ROUNDED: 10
   COMPOSITOR: true
   COMPOSITOR_FANCY: true # blur and opacity
 
@@ -101,6 +102,9 @@ dotfiles:
   irbrc:
     src: irbrc
     dst: ~/.irbrc
+  bashtop:
+    src: config/bashtop
+    dst: ~/.config/bashtop
 
   # GUI Basics ===============================================================
   xprofile:
