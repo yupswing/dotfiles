@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-OUTPUT=~/.zshrc2
+OUTPUT=~/.zshrc
 BASEURL=https://raw.githubusercontent.com/yupswing/dotfiles/master/
 DOTFILE=dotfiles/zsh/zshlib/modules/
 SRVFILE=server/zsh/
