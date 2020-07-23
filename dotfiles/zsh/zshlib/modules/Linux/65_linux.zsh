@@ -20,3 +20,4 @@ function yuptheme() {
 alias open='xdg-open'
 alias fonts='fc-list --format="%{family[0]}\n" | sort | uniq'
 alias gotop='gotop -a -c monokai'
+alias sshp='ssh -p 63988'
