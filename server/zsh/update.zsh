@@ -36,5 +36,5 @@ for FILE in "${FILES[@]}"; do
   wget --no-cache $BASEURL$FILE -O - >>$OUTPUT 2>/dev/null
 done
 
-echo "Remember to source the new `.zshrc`"
+echo "Remember to source the new '.zshrc'"
 echo "Goodbye"
