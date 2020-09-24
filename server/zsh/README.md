@@ -1,7 +1,7 @@
 # Create .zshrc file
 
 ```sh
-wget --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/yupswing/dotfiles/master/server/zsh/update.zsh -O /tmp/update.zsh && chmod +x /tmp/update.zsh && /tmp/update.zsh && rm /tmp/update.zsh
+wget --no-cache --no-http-keep-alive https://raw.githubusercontent.com/yupswing/dotfiles/master/server/zsh/update.zsh -O /tmp/update.zsh && chmod +x /tmp/update.zsh && /tmp/update.zsh && rm /tmp/update.zsh
 ```
 
 # Local config
