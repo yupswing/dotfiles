@@ -5,7 +5,7 @@ PROMPT="%F{green}%n%f@%F{magenta}%m%f %F{blue}%B%"$'~%-30(l::\n)'"%b%f %# "
 RPROMPT='[%F{yellow}%?%f]'
 
 # Updater
-alias update_zshrc="wget --no-cache https://raw.githubusercontent.com/yupswing/dotfiles/master/server/zsh/update.zsh -O /tmp/update.zsh && chmod +x /tmp/update.zsh && /tmp/update.zsh && rm /tmp/update.zsh"
+alias update_zshrc="wget --no-check-certificate --no-cache --no-cookies --no-http-keep-alive https://raw.githubusercontent.com/yupswing/dotfiles/master/server/zsh/update.zsh -O /tmp/update.zsh && chmod +x /tmp/update.zsh && /tmp/update.zsh && rm /tmp/update.zsh"
 
 # Local (per Host) customizations
 for localDir in ~ /etc/zsh /etc /usr/local/etc /usr/local/etc/zsh; do
