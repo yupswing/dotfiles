@@ -33,7 +33,8 @@ rm $OUTPUT
 echo "Download and merge zshrc"
 for FILE in "${FILES[@]}"; do
   echo " - $BASEURL$FILE > $OUTPUT"
-  wget --no-cache $BASEURL$FILE -O - >>$OUTPUT 2>/dev/null
+  wget --no-cache --no-http-keep-alive $BASEURL$FILE -O - >>$OUTPUT 2>/dev/null
 done
 
-echo "All done."
+echo "Remember to source the new .zshrc"
+echo "Goodbye"
