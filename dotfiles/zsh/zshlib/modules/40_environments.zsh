@@ -9,7 +9,12 @@ export NODENV_ROOT="${HOME}/.nodenv"
 if [[ -d $NODENV_ROOT ]]; then
   export PATH="$NODENV_ROOT/bin:$PATH"
   eval "$(nodenv init -)"
-  alias nodenv_list="nodenv install -l | \grep -E '^[ ]*[0-9]+\.[0-9]+\.[0-9]+$'"
+  function nodenv_list() {
+    echo " # nodenv install -l\n # filtered to show only last node versions\n"
+    nodenv install -l | \grep -P '^\s*\d+\.\d+\.\d+$' | awk -F. '{a[$1]=$0} END {for (i in a) print a[i]}'
+    echo "\n # nodenv global"
+    nodenv global
+  }
 fi
 
 # ----------------------------------------------------------------------------
@@ -22,7 +27,12 @@ export RBENV_ROOT="${HOME}/.rbenv"
 if [[ -d $RBENV_ROOT ]]; then
   export PATH="$RBENV_ROOT/bin:$PATH"
   eval "$(rbenv init -)"
-  alias rbenv_list="rbenv install -l | \grep -E '^[ ]*[0-9]+\.[0-9]+\.[0-9]+$'"
+  function rbenv_list() {
+    echo " # rbenv install -l\n # filtered to show only last ruby versions\n"
+    rbenv install -l | \grep -P '^\s*\d+\.\d+\.\d+$'
+    echo "\n # rbenv global"
+    rbenv global
+  }
 fi
 
 # ----------------------------------------------------------------------------
@@ -34,7 +44,12 @@ export PYENV_ROOT="$HOME/.pyenv"
 if [[ -d $PYENV_ROOT ]]; then
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
-  alias pyenv_list="pyenv install -l | \grep -E '^[ ]*[0-9]+\.[0-9]+\.[0-9]+$'"
+  function pyenv_list() {
+    echo " # pyenv install -l\n # filtered to show only last python versions\n"
+    pyenv install -l | \grep -P '^\s*\d+\.\d+\.\d+$' | awk -F. '{a[$1$2]=$0} END {for (i in a) print a[i]}' | sort
+    echo "\n # pyenv global"
+    pyenv global
+  }
 fi
 
 # ----------------------------------------------------------------------------
