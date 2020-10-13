@@ -278,6 +278,7 @@ class Player:
             _url        = _getProperty(self._metadata, 'xesam:url', '')
             _cover      = _getProperty(self._metadata, 'xesam:artUrl', '') or _getProperty(self._metadata, 'mpris:artUrl', '')
             _duration   = _getDuration(_length_int)
+
             # Update metadata
             self.metadata['artist']     = re.sub(SAFE_TAG_REGEX, """\1\1""", _firstIfList(_artist))
             self.metadata['album']      = re.sub(SAFE_TAG_REGEX, """\1\1""", _firstIfList(_album))
@@ -445,11 +446,16 @@ def _getProperty(properties, property, default = None):
         return value
 
 def _getDuration(t: int):
-        seconds = t / 1000000
-        return time.strftime("%M:%S", time.gmtime(seconds))
+    seconds = t / 1000000
+    return time.strftime("%M:%S", time.gmtime(seconds))
 
 def _firstIfList(_value):
-    return _value[0] if type(_value) is list and len(_value) else _value
+    if type(_value) is list:
+      if len(_value):
+        return _value[0]
+      else:
+        return ""
+    return _value or ""
 
 class CleanSafeDict(dict):
     def __missing__(self, key):
