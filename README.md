@@ -222,7 +222,8 @@ Very basic config taken from https://github.com/amix/vimrc
 
 - To choose the main colors change all places where you find the tag `#THEME_MAIN_COLORS`
 
-  ```
+  ```sh
+  wal --theme monokai # default
   wal --theme desat
   wal --theme random
   ```
