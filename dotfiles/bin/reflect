@@ -4,6 +4,7 @@
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from optparse import OptionParser
+import sys
 
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -40,7 +41,9 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 def main():
-    port = 8500
+    port = 8080
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
     print('Listening on localhost:%s' % port)
     server = HTTPServer(('', port), RequestHandler)
     server.serve_forever()

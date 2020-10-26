@@ -3,4 +3,4 @@
 rm -rf ~/.zshlib ~/.zshrc ~/.zshenv
 ~/dotfiles/dotdrop.sh -b install
 echo
-echo "*** please restart your shell to autoinstall zplug and plugins ***"
+echo "*** please restart your shell to autoinstall zinit and plugins ***"
