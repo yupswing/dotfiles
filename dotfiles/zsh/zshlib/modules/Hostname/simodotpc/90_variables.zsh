@@ -1,0 +1,1 @@
+XLOCAL_MAINTENANCE_DIR=~/Dropbox/Dotvocal

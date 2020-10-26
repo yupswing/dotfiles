@@ -11,4 +11,38 @@ if [ -f "/etc/arch-release" ]; then
     discord &
     spotify &
   }
+
+  function maintenance() {
+    if [[ -z "${LOCAL_MAINTENANCE_DIR}" ]]; then;
+      LOCAL_MAINTENANCE_DIR=$HOME/maintenance
+    fi
+    echo "* Maintenance dir: $LOCAL_MAINTENANCE_DIR"
+
+    LOCAL_MAINTENANCE_PACMAN_DIR="$LOCAL_MAINTENANCE_DIR/pacman_backup"
+    \mkdir -p $LOCAL_MAINTENANCE_PACMAN_DIR
+    \rm $LOCAL_MAINTENANCE_PACMAN_DIR/date*
+    touch $LOCAL_MAINTENANCE_PACMAN_DIR/date_$(date '+%Y_%m_%d')
+    echo "---------------------------------------"
+    echo "* Backup packages list"
+    pacman -Qqe >$LOCAL_MAINTENANCE_PACMAN_DIR/packages.txt
+    echo "---------------------------------------"
+    echo "* Backup pacman database"
+    tar -cjf $LOCAL_MAINTENANCE_PACMAN_DIR/pacman_database.tar.bz2 /var/lib/pacman/local
+    echo "---------------------------------------"
+    echo "* Remove orphaned packages"
+    pacman -Qtdq | sudo pacman -Rns - # if no orphans were found the output is a error. all good
+
+    echo "---------------------------------------"
+    echo ""
+    echo "You may use 'ncdu' to check space usage"
+    echo "You may use GUI 'BleachBit' to clean up unused space"
+    echo "You may check broken link with 'find / -xtype l -print | less'"
+
+    pacman -Qi linux-lts >/dev/null
+    if [ $? -eq 1 ]; then
+      echo ""
+      echo "*** PLEASE INSTALL linux-lts FOR YOUR SAFETY***"
+    fi
+
+  }
 fi
