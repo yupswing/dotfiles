@@ -17,10 +17,16 @@ alias gr='git rm'
 alias gk='git checkout'
 alias gm='git merge'
 
+alias gba='git branch -a'
+
 alias gd='git diff'
 alias gds='git diff --staged'
 
 alias gsu='git submodule foreach git pull origin master'
+
+alias gll='git log'
+alias glo='git log --oneline'
+alias glb='git log --graph --decorate --oneline'
 
 # function ginit() {
 #   git init
