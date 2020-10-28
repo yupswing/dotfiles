@@ -1,41 +1,54 @@
 #!/usr/bin/env bash
 
+# FLAGS
 help_flag=no      # help
 dryrun_flag=no    # nodelete - do not delete files
 recursive_flag=no # recursion
 listfiles_flag=no # list files (performs delete anyway)
 all_flag=no       # all - flags r + p
 directory_flag=no # specify directory
-python_flag=no    # pyc - consider .pyc file
-node_flag=no      # node_modules
-ruby_flag=no      # gems
 autoyes_flag=no   # do not ask for confirmation
-directory=""
-startdir=$(pwd)
-TMP=bak$(date +%s)
+# MATCHES
+backup_flag=no  # backup files
+garbage_flag=no # garbage files
+python_flag=no  # pyc - consider .pyc file
+node_flag=no    # node_modules
+ruby_flag=no    # gems
 
+directory=""       # operating directory
+startdir=$(pwd)    # starting directory
+TMP=bak$(date +%s) # temporary list
+
+# COLORS
 # http://en.wikipedia.org/wiki/ANSI_escape_code#CSI_Codes
+esc_reset='\033[0m'
 esc_red='\033[91m'
 esc_green='\033[92m'
 esc_cyan='\033[96m'
 esc_yellow='\033[93m'
-esc_reset='\033[0m'
+esc_ruby='\033[31m'   # red
+esc_python='\033[34m' # blue
+esc_node='\033[32m'   # green
 
 ####################################################################################
 # GETOPT
 
-set -- $(getopt hynrpoblasd: "$@")
+set -- $(getopt hynrkgpoblasd: "$@")
 while [ $# -gt 0 ]; do
   case "$1" in
   -h) help_flag=yes ;;
   -y) autoyes_flag=yes ;;
   -n) dryrun_flag=yes ;;
   -r) recursive_flag=yes ;;
+  -k) backup_flag=yes ;;
+  -g) garbage_flag=yes ;;
   -p) python_flag=yes ;;
   -o) node_flag=yes ;;
   -b) ruby_flag=yes ;;
   -l) listfiles_flag=yes ;;
   -a)
+    backup_flag=yes
+    garbage_flag=yes
     python_flag=yes
     recursive_flag=yes
     listfiles_flag=yes
@@ -64,21 +77,24 @@ done
 
 if [ $help_flag = yes ]; then
   echo -e "${esc_cyan}Usage:${esc_reset}"
-  echo -e "  bak [${esc_yellow}-rpslna${esc_reset}] [${esc_yellow}-d DIRECTORY${esc_reset}]"
+  echo -e "  bak [${esc_yellow}-arlkgpobyn${esc_reset}] [${esc_yellow}-d DIRECTORY${esc_reset}]"
   echo
   echo -e "${esc_cyan}Infos:${esc_reset}"
   echo -e "  Utility to delete backup and temporary files such as ${esc_red}*~${esc_reset} or ${esc_red}.DS_Store${esc_reset}"
   echo -e "  Default ${esc_yellow}DIRECTORY${esc_reset} is ${esc_yellow}.${esc_reset}"
   echo
   echo -e "${esc_cyan}Options:${esc_reset}"
-  echo -e "   ${esc_yellow}-a${esc_reset}     Alias for ${esc_yellow}-rlp${esc_reset}"
+  echo -e "   ${esc_yellow}-a${esc_reset}     Alias for ${esc_yellow}-rlkgp${esc_reset}"
   echo -e "   ${esc_yellow}-r${esc_reset}     Recursive"
-  echo -e "   ${esc_yellow}-l${esc_reset}     Print files list"
-  echo -e "   ${esc_yellow}-p${esc_reset}     Delete also Python ${esc_red}*pyc${esc_reset}"
-  echo -e "   ${esc_yellow}-o${esc_reset}     Delete also Node ${esc_red}node_modules${esc_reset}"
-  echo -e "   ${esc_yellow}-b${esc_reset}     Delete also Ruby ${esc_red}vendor/bundle${esc_reset}"
+  echo -e "   ${esc_yellow}-l${esc_reset}     Show files list"
   echo -e "   ${esc_yellow}-y${esc_reset}     Do not ask for confirmation to delete"
   echo -e "   ${esc_yellow}-n${esc_reset}     Dry run (no delete)"
+  echo -e "${esc_cyan}Matches options:${esc_reset}"
+  echo -e "   ${esc_yellow}-k${esc_reset}     Matches backup files ${esc_red}*~${esc_reset} and ${esc_red}more${esc_reset}"
+  echo -e "   ${esc_yellow}-g${esc_reset}     Matches garbage files ${esc_red}.DS_Store${esc_reset} and ${esc_red}more${esc_reset}"
+  echo -e "   ${esc_yellow}-p${esc_reset}     Matches ${esc_python}Python${esc_reset} compiled ${esc_red}*pyc${esc_reset}"
+  echo -e "   ${esc_yellow}-b${esc_reset}     Matches ${esc_ruby}Ruby${esc_reset} bundle folders ${esc_red}vendor/bundle${esc_reset}"
+  echo -e "   ${esc_yellow}-o${esc_reset}     Matches ${esc_node}Node${esc_reset} libraries folders ${esc_red}node_modules${esc_reset}"
   echo
   exit 0
 fi
@@ -106,38 +122,59 @@ if [ $recursive_flag = yes ]; then
   andits=' and its subdirectories'
 fi
 
+# Dry run info
+if [ $dryrun_flag = yes ]; then
+  echo -e "--> ${esc_yellow}Dry run mode${esc_reset} <--"
+fi
+
 ####################################################################################
 # EXEC
 
 cd $directory
 
-#list files in TMP file
-echo -e "Looking for ${esc_yellow}*~${esc_reset}"
-find . -name "*~" $depth -exec echo "\"{}\"" \; >/tmp/$TMP 2>/dev/null
-echo -e "Looking for ${esc_yellow}.DS_Store${esc_reset}"
-find . -name ".DS_Store" $depth -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
-echo -e "Looking for ${esc_yellow}*.dotdropbak${esc_reset}"
-find . -name "*.dotdropbak" $depth -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
+touch /tmp/$TMP
 
+# BACKUP Matches
+if [ $backup_flag = yes ]; then
+  # Temporary files
+  echo -e "Looking for text backup ${esc_yellow}*~${esc_reset}"
+  find . $depth -name "*~" -exec echo "\"{}\"" \; >/tmp/$TMP 2>/dev/null
+
+  # dotdrop backups (https://github.com/deadc0de6/dotdrop)
+  echo -e "Looking for dotdrop backup files ${esc_yellow}*.dotdropbak${esc_reset}"
+  find . $depth -name "*.dotdropbak" -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
+fi
+
+# GARBAGE Matches
+if [ $garbage_flag = yes ]; then
+  # Apple and Windows garbage
+  echo -e "Looking for garbage ${esc_yellow}.DS_Store${esc_reset}, ${esc_yellow}desktop.ini${esc_reset}, ${esc_yellow}thumbs.db${esc_reset}"
+  find . $depth -regex ".*\(\.DS_Store\|thumbs\.db\|desktop\.ini\)" -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
+fi
+
+# PYTHON Matches
 if [ $python_flag = yes ]; then
-  echo -e "Looking for ${esc_yellow}*pyc${esc_reset}"
+  echo -e "Looking for ${esc_python}Python${esc_reset} compiled files ${esc_yellow}*pyc${esc_reset}"
   find . -name "*pyc" $depth -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
 fi
 
+# RUBY Matches
 if [ $ruby_flag = yes ]; then
-  echo -e "Looking for ${esc_yellow}vendor/bundle${esc_reset}"
+  echo -e "Looking for ${esc_ruby}Ruby${esc_reset} bundle folders ${esc_yellow}vendor/bundle${esc_reset}"
   # find all `vendor/bundle`
   find . -type d -name "vendor" -o -type d -name "bundle" -prune $depth -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
 fi
 
+# NODE Matches
 if [ $node_flag = yes ]; then
-  echo -e "Looking for ${esc_yellow}node_modules${esc_reset}"
+  echo -e "Looking for ${esc_node}Node${esc_reset} libraries folders ${esc_yellow}node_modules${esc_reset}"
   # find all `node_modules` (except if inside a `gem` folder)
   find . -type d -name "gems" -prune -o -type d -name "node_modules" -prune $depth -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
 fi
 
 echo
 
+# FINAL MATCHES
 FILES=$(wc -l /tmp/$TMP | cut -d/ -f1 | sed 's/[ ]//g')
 if [ ${FILES} -ge 1 ]; then
 
@@ -147,13 +184,16 @@ if [ ${FILES} -ge 1 ]; then
     echo
   fi
 
+  echo -e "$FILES bak matches found in ${esc_green}$directory${esc_reset}$andits"
+
   if [ $dryrun_flag = no ]; then
 
     confirm=no
     if [ $autoyes_flag = yes ]; then
       confirm=yes
     else
-      read -n 1 -p "Delete files and directories? (y/N)? " answer
+      echo -en "${esc_red}Delete${esc_reset} files and directories? (y/${esc_yellow}N${esc_reset})? "
+      read -n 1 -p "" answer
       case ${answer:0:1} in
       y | Y)
         confirm=yes
@@ -164,22 +204,21 @@ if [ ${FILES} -ge 1 ]; then
 
     if [ $confirm = yes ]; then
       cat /tmp/$TMP | xargs rm -rf #delete
-      echo -e "$FILES bak files ${esc_red}deleted${esc_reset} in ${esc_green}$directory${esc_reset}$andits"
+      echo -e "$FILES bak matches ${esc_red}deleted${esc_reset} in ${esc_green}$directory${esc_reset}$andits"
     else
       echo -e "Aborted"
     fi
-  else
-    echo -e "$FILES bak files listed in ${esc_green}$directory${esc_reset}$andits"
   fi
 
 else
-  echo -e "No bak files listed in ${esc_green}$directory${esc_reset}$andits"
+  echo -e "No bak matches found in ${esc_green}$directory${esc_reset}$andits"
 fi
 
-#remove TMP file
+# remove TMP file
 rm -f /tmp/$TMP
 
 # return to startdir
 cd $startdir
 
+# goodbye
 exit 0
