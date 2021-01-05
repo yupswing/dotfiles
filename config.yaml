@@ -56,6 +56,15 @@ dotfiles:
     src: ssh/config
     dst: ~/.ssh/config
 
+  ssh_simonecingano:
+    src: ssh/simonecingano.gpg
+    dst: ~/.ssh/simonecingano
+    trans_read: gpg
+
+  ssh_simonecingano_pub:
+    src: ssh/simonecingano.pub
+    dst: ~/.ssh/simonecingano.pub
+
   ssh_yupswing:
     src: ssh/yupswing.gpg
     dst: ~/.ssh/yupswing
@@ -196,6 +205,8 @@ profiles:
   base_ssh:
     dotfiles:
       - ssh_config
+      - ssh_simonecingano
+      - ssh_simonecingano_pub
       - ssh_yupswing
       - ssh_yupswing_pub
       - ssh_dv
