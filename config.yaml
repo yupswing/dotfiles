@@ -111,6 +111,9 @@ dotfiles:
   irbrc:
     src: irbrc
     dst: ~/.irbrc
+  pryrc:
+    src: pryrc
+    dst: ~/.pryrc
   bashtop:
     src: config/bashtop
     dst: ~/.config/bashtop
@@ -221,6 +224,7 @@ profiles:
       - base_ssh
     dotfiles:
       - irbrc
+      - pryrc
       - nvim
       - bin
       - dir_colors

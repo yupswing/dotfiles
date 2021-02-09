@@ -97,6 +97,7 @@ Using
 - **dunst** notifications
 - **rofi+dmenu** launcher
   - **rofi-calc** bridge `qalc` with `rofi`
+- **xclip** clipboard tool
 - **greenclip** clipboard
 - **kitty** terminal
 - **i3lock** screenlock (with `scrot`)
