@@ -274,11 +274,11 @@ bindsym $mod+Shift+space exec --no-startup-id rofi -show run
 # Windows switcher
 bindsym $mod+Tab exec --no-startup-id rofi -show window -show-icons
 
-# Screenshot (with scrot)
-bindsym Print exec --no-startup-id scrot '%Y-%m-%dT%H:%M:%S_$wx$h.png' -e 'mv $f $$HOME/Pictures/screenshots/'
+# Screenshot (with scrot+xclip)
+bindsym --release Print exec --no-startup-id $HOME/.config/i3/scripts/screenshot.zsh
 
-# Screenshot of an area (with scrot)
-bindsym --release Shift+Print exec --no-startup-id scrot -s '%Y-%m-%dT%H:%M:%S_$wx$h.png' -e 'mv $f $$HOME/Pictures/screenshots/'
+# Screenshot of an area (with scrot+xclip)
+bindsym --release Shift+Print exec --no-startup-id $HOME/.config/i3/scripts/screenshot.zsh -s
 
 # Open screenshot folder
 bindsym Ctrl+Print exec --no-startup-id xdg-open "$HOME/Pictures/screenshots"
