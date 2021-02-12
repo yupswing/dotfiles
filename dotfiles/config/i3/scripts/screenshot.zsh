@@ -11,7 +11,7 @@ case "$1" in
   scrot $scrot_file -e 'xclip -selection clipboard -t image/png -i $f && notify-send "screenshot taken $f"'
   ;;
 --select | -s)
-  notify-send 'select an area for the screenshot' &
+  # notify-send 'select an area for the screenshot' &
   scrot -s $scrot_file -e 'xclip -selection clipboard -t image/png -i $f && notify-send "screenshot taken $f"'
   ;;
 esac

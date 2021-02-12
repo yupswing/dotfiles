@@ -137,10 +137,9 @@ alt + shift + c ................... calculator (qalc)
 alt + l ........................... lock screen (i3lock)
 alt + k ........................... change keyboard layout (xkb-switch)
 
-print ............................. screenshot
-shift + print ..................... screenshot area
+print ............................. screenshot screen (file+clipboard)
+shift + print / alt + y ........... screenshot area (file+clipboard)
 ctrl + print ...................... open screenshot folder (~/Pictures/screenshots)
-
 
 alt + [1-9] ....................... move to workspace
 alt + shift + [1-9] ............... move window to workspace

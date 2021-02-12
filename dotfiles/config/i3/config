@@ -4,6 +4,8 @@
 # yupswing's i3 config
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# i3 themes:
+#   see: https://thomashunter.name/i3-configurator/
 # interactive events:
 #   xev
 # list keycode:
@@ -11,16 +13,17 @@
 # determine window class (last string in output):
 #   xprop | grep CLASS
 # see what combination are free:
-#   cat $HOME/.config/i3/config | grep 'bindsym $mod' | uniq | sort
+#   cat $HOME/.config/i3/config | grep 'bindsym' | awk '{$1=$1};1' | uniq | LC_ALL=C sort
 
 
 
 ### Keybindings
 ###############################################################################
 
-# Modifier: WinKey
-# Mod4: WinKey, Mod1: Alt_L
-#set $mod Mod4
+# Modifier:
+# (use `xmodmap` to see them all)
+# Mod1 -> Alt_L
+# Mod4 -> WinKey
 set $mod Mod1
 
 
@@ -279,6 +282,7 @@ bindsym --release Print exec --no-startup-id $HOME/.config/i3/scripts/screenshot
 
 # Screenshot of an area (with scrot+xclip)
 bindsym --release Shift+Print exec --no-startup-id $HOME/.config/i3/scripts/screenshot.zsh -s
+bindsym --release $mod+y exec --no-startup-id $HOME/.config/i3/scripts/screenshot.zsh -s
 
 # Open screenshot folder
 bindsym Ctrl+Print exec --no-startup-id xdg-open "$HOME/Pictures/screenshots"
