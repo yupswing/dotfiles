@@ -21,7 +21,8 @@ alias gba='git branch -a'
 
 alias gd='git diff'
 alias gds='git diff --staged'
-
+# alias gdc='git diff-tree --no-commit-id --name-only -r'
+alias gst='git show --stat --oneline'
 alias gsu='git submodule foreach git pull origin master'
 
 alias gll='git log'
@@ -36,7 +37,7 @@ alias glb='git log --graph --decorate --oneline'
 # }
 
 function glall() {
-  find . -maxdepth 1 -type d  | while read line; do
+  find . -maxdepth 1 -type d | while read line; do
     if [[ -d $line/.git ]]; then
       echo "\n❯ git -C $line pull"
       git -C $line pull
