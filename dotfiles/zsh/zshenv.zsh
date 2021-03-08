@@ -2,10 +2,10 @@
 # ================================== ZSHENV ==================================
 # ----------------------------------------------------------------------------
 
-export LANGUAGE='en_GB.UTF-8'
-export LANG='en_GB.UTF-8'
-export LC_ALL='en_GB.UTF-8'
-export TZ='Europe/Rome'
+export LANGUAGE="en_GB.UTF-8"
+export LANG="en_GB.UTF-8"
+export LC_ALL="en_GB.UTF-8"
+export TZ="Europe/Rome"
 
 export EDITOR='nvim'
 export VISUAL=$EDITOR
