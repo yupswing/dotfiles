@@ -188,6 +188,7 @@ focus_on_window_activation focus
 
 assign [class="Firefox"] → $ws_firefox
 assign [class="Chromium"] → $ws_chrome
+assign [class="Google-chrome"] → $ws_chrome
 
 # Music
 for_window [class="Spotify"] move container to workspace $ws_music, workspace $ws_music

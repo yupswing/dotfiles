@@ -285,7 +285,7 @@ profiles:
       - base_gui
       - i3
     variables:
-      DEFAULT_BROWSER: chromium-browser
+      DEFAULT_BROWSER: google-chrome #chromium-browser
       GAPS: false
       COMPOSITOR: false
 
@@ -295,4 +295,4 @@ profiles:
       - base_gui
       - i3
     variables:
-      DEFAULT_BROWSER: "chromium-browser"
+      DEFAULT_BROWSER: google-chrome #chromium-browser
