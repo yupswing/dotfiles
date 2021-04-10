@@ -1,6 +1,6 @@
 # if [[ $(uname -a) =~ "arch" ]]; then
 if [ -f "/etc/arch-release" ]; then
-  alias y=yay
+  alias y=paru
   alias pac=pacman
 
   function pulseagain() {

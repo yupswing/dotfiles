@@ -104,10 +104,10 @@ Using
 
 ## Theme
 
-- yay ibm-plex
-- yay bibata
-- yay tela
-- yay mojave-gtk-theme-git
+- paru ibm-plex
+- paru bibata
+- paru tela
+- paru mojave-gtk-theme-git
 
 ## Shortcuts
 
