@@ -148,13 +148,17 @@ exec --no-startup-id $HOME/.config/session-startup.sh
 bindsym $mod+BackSpace move scratchpad
 bindsym $mod+grave scratchpad show
 
+# Linphone
+for_window [class="linphone"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
+bindsym $mod+KP_Add [class="linphone"] scratchpad show, move position center
+
 # Enpass
 for_window [class="Enpass"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
-bindsym $mod+KP_Add [class="Enpass"] scratchpad show, move position center
+bindsym $mod+KP_Subtract [class="Enpass"] scratchpad show, move position center
 
 # Simplenote
 for_window [class="Simplenote"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
-bindsym $mod+KP_Subtract [class="Simplenote"] scratchpad show, move position center
+bindsym $mod+Shift+KP_Subtract [class="Simplenote"] scratchpad show, move position center
 
 
 

@@ -56,3 +56,4 @@ rambox &
 code &
 chromium &
 discord &
+linphone &
