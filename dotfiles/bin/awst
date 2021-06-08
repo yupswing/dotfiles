@@ -1,0 +1,149 @@
+#!/usr/bin/env ruby
+
+# Created by Maurizio Oliveri
+
+require 'json'
+require 'optparse'
+
+# Default options:
+options = {
+  port: 63_988,
+  instance_id: nil,
+  instance_name: nil,
+  list_only: false,
+  ip_only: false,
+  user: `whoami`.chomp
+}
+
+# Parameters parser:
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: #{$PROGRAM_NAME.split(%r{[\\/]}).last} <switches>"
+
+  opts.on '-L', '--list-only', 'Lists available instances' do
+    options[:list_only] = true
+  end
+
+  opts.on '-I', '--ip-only', 'Only prints the public ip of the instance' do
+    options[:ip_only] = true
+  end
+
+  opts.on '-p p', '--port p', Integer,
+          "Port to use for ssh (default: #{options[:port]})" do |p|
+    options[:port] = p
+  end
+
+  opts.on '-u u', '--user u',
+          "User to use (default: #{options[:user]})" do |u|
+    options[:user] = u
+  end
+
+  opts.on '-i i', '--instance-id i', 'Instance id to use' do |i|
+    options[:instance_id] = i
+  end
+
+  opts.on '-n n', '--instance-name n', 'Instance name to use' do |n|
+    options[:instance_name] = n
+  end
+
+  opts.on '-h', '--help', 'Displays the help reference' do
+    puts opts
+    exit
+  end
+end
+parser.parse!
+
+# Get data from aws:
+data = JSON.parse `aws ec2 describe-instances --instance-ids`
+
+# Parse data:
+instances = {}
+data['Reservations'].each do |d|
+  d['Instances'].each do |i|
+    name = i['Tags'].select { |x| x['Key'] == 'Name' }&.first
+    name = name['Value'] unless name.nil?
+    name = "unnamed_#{i['InstanceId']}" if name.nil? || name.empty?
+
+    public_ip = i['NetworkInterfaces'].first[ 'PrivateIpAddresses' ]
+                                      .first[ 'Association' ]
+    public_ip = public_ip['PublicIp'] unless public_ip.nil?
+
+    instances[ i['InstanceId'] ] = {
+      name: name,
+      instance_type: i['InstanceType'],
+      public_ip: public_ip,
+      private_ip: i['NetworkInterfaces'].first[ 'PrivateIpAddresses' ]
+                                        .first[ 'PrivateIpAddress' ],
+      security_groups: i['SecurityGroups'].map { |s| s['GroupName'] }
+    }
+  end
+end
+instances = instances.sort_by { |_k, v| v[:name] }.to_h
+
+# If we only need to print out the list, do so:
+if options[:list_only] && options[:instance_id].nil? &&
+   options[:instance_name].nil?
+  puts JSON.pretty_generate instances
+  exit
+end
+
+# VM of choice to connect to:
+choice = instances.select { |k, _v| k == options[:instance_id] }
+choice = nil if choice.empty?
+
+# If no valid choice id has been given, check if a valid name has been
+# specified:
+if choice.nil? && !options[:instance_name].nil?
+  choice = instances.select { |_k, v| v[:name] == options[:instance_name] }
+end
+
+# If we still got nothing, it's interactive prompt time:
+if choice.nil?
+  choices = instances.map { |_k, v| v[:name] }
+  while choice.nil?
+    puts 'Available instances:'
+    choices.each_with_index do |c, idx|
+      idx = "#{' ' * (choices.size.to_s.size - idx.to_s.size)}#{idx}"
+
+      puts " #{idx} => #{c}"
+    end
+    print 'Pick an instance to ssh to: '
+    choice = STDIN.gets.chomp
+
+    # If a number has been given:
+    if (choice == choice.to_i.to_s) &&
+       (0..choices.size - 1).include?(choice.to_i)
+      choice = choices[choice.to_i]
+
+    # If an invalid choice has been made:
+    elsif !choices.include? choice
+      choice = nil
+    end
+  end
+  choice = instances.select { |_k, v| v[:name] == choice }
+end
+
+# Data shorthands:
+id = choice.keys.first
+data = choice[id]
+
+# If we only have to print the ip, do so:
+if options[:ip_only]
+  puts data[:public_ip]
+  exit
+end
+
+# Print out some info:
+puts 'Choice details:'
+puts " - Instance id: #{id}"
+puts " - Name: #{data[:name]}"
+puts " - Instance type: #{data[:instance_type]}"
+puts " - Public IP: #{data[:public_ip]}"
+puts " - Private IP: #{data[:private_ip]}"
+puts " - Security groups: #{data[:security_groups].join ', '}"
+
+# If we only have to print out the info:
+exit if options[:list_only]
+
+# If we got here, it's ssh time:
+Kernel.exec "ssh #{options[:user]}@#{data[:public_ip]} " +
+            "-p #{options[:port]}"
