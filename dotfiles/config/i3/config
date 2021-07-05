@@ -148,15 +148,17 @@ exec --no-startup-id $HOME/.config/session-startup.sh
 bindsym $mod+BackSpace move scratchpad
 bindsym $mod+grave scratchpad show
 
-# Linphone
+# Linphone    (scratchpad MOD+KP_ADD)
 for_window [class="linphone"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
 bindsym $mod+KP_Add [class="linphone"] scratchpad show, move position center
 
-# Enpass
+# Enpass      (scratchpad MOD+KP_SUBTRACT)
 for_window [class="Enpass"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
 bindsym $mod+KP_Subtract [class="Enpass"] scratchpad show, move position center
 
-# Simplenote
+# UNUSED  (scratchpad MOD+SHIFT+KP_ADD)
+
+# Simplenote  (scratchpad MOD+SHIFT+KP_SUBTRACT)
 for_window [class="Simplenote"] floating enable, resize set 900 800, move position center, sticky enable, move scratchpad, scratchpad show
 bindsym $mod+Shift+KP_Subtract [class="Simplenote"] scratchpad show, move position center
 
@@ -171,7 +173,6 @@ for_window [class="Pavucontrol"] floating enable
 
 # Files
 for_window [class="Nemo"] floating enable
-for_window [class="Goick"] floating enable
 for_window [class="File-roller"] floating enable
 for_window [class="Lxappearance"] floating enable
 
@@ -209,9 +210,9 @@ for_window [class="Rambox"] layout tabbed
 # Mailer
 for_window [class="Thunderbird"] move container to workspace $ws_mail, workspace $ws_mail
 
-# VSCode (Microsoft and non-microsoft)
-for_window [class="code-oss"] move container to workspace $ws_code, workspace $ws_code
+# VSCode (Microsoft and non-microsoft
 for_window [class="Code"] move container to workspace $ws_code, workspace $ws_code
+for_window [class="code-oss"] move container to workspace $ws_code, workspace $ws_code
 
 
 

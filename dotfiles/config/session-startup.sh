@@ -50,10 +50,10 @@ sleep 1
 
 ### Applications
 ###############################################################################
-spotify &
-thunderbird &
+# spotify &
+# google-chrome-stable &
 rambox &
-code &
-chromium &
 discord &
 linphone &
+thunderbird &
+code &
