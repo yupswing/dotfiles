@@ -1,0 +1,30 @@
+#! /usr/bin/env zsh
+
+PIPE_SERVICES=(
+  pipewire-pulse.socket
+  pipewire-pulse.service
+  pipewire.socket
+  pipewire.service
+  pipewire-media-session.service
+)
+
+if [[ $1 == "pulse" ]]; then
+  doas pacman -S pulseaudio pulseaudio-equalizer pulseaudio-bluetooth
+  for s in ${PIPE_SERVICES}; do
+    systemctl stop --user ${s}
+    systemctl disable --user ${s}
+  done
+  systemctl enable --user --now pulseaudio.socket
+  systemctl enable --user --now pulseaudio.service
+
+elif [[ $1 == "pipe" ]]; then
+  doas pacman -Rcns pulseaudio-equalizer
+  doas pacman -S pipewire pipewire-pulse
+  for s in ${PIPE_SERVICES}; do
+    systemctl enable --now --user ${s}
+  done
+
+else
+  print "Give as parameter 'pulse' or 'pipe'."
+  exit -1
+fi
