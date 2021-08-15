@@ -2,10 +2,9 @@
 
     background: #{background.strip}cc;
     foreground: {foreground};
-    
+
     /* #THEME_MAIN_COLORS */
-    primary: {color4};
-    secondary: {color5};
+    primary: #FBC02D;
     alert: {color1};
 
     active-background: @background;
@@ -24,14 +23,14 @@
 
     /* #THEME_FOREGROUND_COLOR */
     selected-active-background: @primary;
-    selected-active-foreground: @foreground;
+    selected-active-foreground: #222222;
     selected-normal-background: @primary;
-    selected-normal-foreground: @foreground; 
+    selected-normal-foreground: #222222;
     selected-urgent-background: @primary;
-    selected-urgent-foreground: @foreground;
+    selected-urgent-foreground: #222222;
 
     /* background-color: @background; */
-    border-color: @secondary;
+    border-color: #00B19F;
 }}
 
 #window {{
@@ -128,3 +127,5 @@
 #prompt {{
     text-color: @primary;
 }}
+
+/* vim:ft=css */

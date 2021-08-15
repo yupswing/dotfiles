@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+
+if [ ! -n "$FEED_BOOKMARKS" ]; then export FEED_BOOKMARKS=$HOME/.config/feed_bookmarks; fi
+if [ ! -d "$FEED_BOOKMARKS" ]; then mkdir -p $FEED_BOOKMARKS; fi
+
+####################################################################################
+# GETOPT
+
+usage() {
+  echo "$0 usage:" && grep " .)\ #" $0
+  exit 0
+}
+
+feed_save() {
+  if [ -n "$name" ]; then
+    echo "$url" >$FEED_BOOKMARKS/$name
+    echo -e "\\n\\t\\e[01;37m==> \\e[01;31mBookmark saved as \\e[01;36m\\e[04m$name\\e[00m\\e[01;37m <==\\e[00m\\n"
+  fi
+  exit 0
+}
+
+feed_read() {
+  local rss_source="$(curl --silent $url | sed -e ':a;N;$!ba;s/\n/ /g')"
+
+  if [ ! -n "$rss_source" ]; then
+    echo "The feed is empty"
+    return 1
+  fi
+
+  # THE RSS PARSER
+  # The characters "£, §" are used as metacharacters. They should not be encountered in a feed...
+  echo -e "$(echo $rss_source |
+    sed -e 's/&amp;/\&/g
+		s/&lt;\|&#60;/</g
+		s/&gt;\|&#62;/>/g
+		s/<\/a>/£/g
+		s/href\=\"/§/g
+		s/<title>/\\n\\n\\n:: \\e[01;31m/g; s/<\/title>/\\e[00m ::\\n/g
+		s/<link>/[ \\e[01;36m/g; s/<\/link>/\\e[00m ]/g
+		s/<pubDate>/[ \\e[01;39m/g; s/<\/pubDate>/\\e[00m ]/g
+		s/<description>/\\n\\e[00;37m/g; s/<\/description>/\\e[00m\\n\\n/g
+		s/<p\( [^>]*\)\?>\|<br\s*\/\?>/\n/g
+		s/<b\( [^>]*\)\?>\|<strong\( [^>]*\)\?>/\\e[01;30m/g; s/<\/b>\|<\/strong>/\\e[00;37m/g
+		s/<i\( [^>]*\)\?>\|<em\( [^>]*\)\?>/\\e[41;37m/g; s/<\/i>\|<\/em>/\\e[00;37m/g
+		s/<u\( [^>]*\)\?>/\\e[4;37m/g; s/<\/u>/\\e[00;37m/g
+		s/<code\( [^>]*\)\?>/\\e[00m/g; s/<\/code>/\\e[00;37m/g
+		s/<a[^§]*§\([^\"]*\)\"[^>]*>\([^£]*\)[^£]*£/\\e[01;31m\2\\e[00;37m \\e[01;34m[\\e[00;37m \\e[04m\1\\e[00;37m\\e[01;34m ]\\e[00;37m/g
+		s/<li\( [^>]*\)\?>/\n \\e[01;34m*\\e[00;37m /g
+		s/<!\[CDATA\[\|\]\]>//g
+		s/\|>\s*<//g
+		s/ *<[^>]\+> */ /g
+		s/[<>£§]//g')\n\n"
+  # END OF THE RSS PARSER
+}
+
+feed_load() {
+  if [ ! -r "$FEED_BOOKMARKS/$name" ]; then
+    echo -e "\\n \\e[01;31mBookmark \\e[01;36m\\e[04m$name\\e[00m\\e[01;31m not found.\\n"
+    exit 1
+  fi
+  url="$(cat $FEED_BOOKMARKS/$name)"
+  if [ ! -n "$url" ]; then
+    echo -e "\\n \\e[01;31mBookmark \\e[01;36m\\e[04m$name\\e[00m\\e[01;31m is empty.\\n"
+    exit 1
+  fi
+  echo -e "\\n\\t\\e[01;37m==> \\e[01;31m$url\\e[01;37m <==\\e[00m"
+  feed_read
+}
+
+feed_list() {
+  for i in $(find $FEED_BOOKMARKS -maxdepth 1 -type f); do
+    echo -e "   \\e[01;36m\\e[04m$(basename $i)\\e[00m"
+  done
+}
+
+
+read_flag=yes
+add_flag=no
+remove_flag=no
+list_flag=no
+name=$1
+
+if [ $# -eq 0 ]; then
+  echo "List bookmarks"
+  feed_list
+else
+  shift
+  while getopts ":hda:n:" arg; do
+    case $arg in
+    a) # add bookmark
+      url=${OPTARG}
+      echo "Add bookmark ${name} for ${url}"
+      feed_save
+      ;;
+    d) #
+      echo "Remove bookmark ${name}"
+      # feed_remove
+      ;;
+    h | *) # Display help.
+      usage
+      exit 0
+      ;;
+    esac
+  done
+
+  echo "Read bookmark ${name}"
+  feed_load
+fi
+
+####################################################################################
