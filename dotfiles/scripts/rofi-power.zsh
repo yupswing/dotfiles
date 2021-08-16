@@ -23,6 +23,7 @@ if [ ${#option} -gt 0 ]; then
     ;;
   End)
     i3-msg exit
+    bspc quit
     ;;
   Lock)
     eval $LOCKER

@@ -18,7 +18,7 @@ dropbox start &
 ### DE Dependent
 ###############################################################################
 case ${GDMSESSION:l} in
-i3)
+i3|bspwm)
   {%@@ if COMPOSITOR @@%}
   # Composite manager (highest priority)
   picom -bG &

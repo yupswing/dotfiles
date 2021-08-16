@@ -304,7 +304,8 @@ endif
 
 " Normal mode shortcuts
 nmap <Space> i
-imap `` <Esc>
+imap ;; <Esc>
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

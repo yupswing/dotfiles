@@ -50,6 +50,10 @@ dotfiles:
     src: bin
     dst: ~/.bin
     link: link_children
+  scripts:
+    src: scripts
+    dst: ~/.scripts
+    link: link_children
 
   # SSH Keys =================================================================
   ssh_config:
@@ -146,6 +150,13 @@ dotfiles:
   i3:
     src: config/i3
     dst: ~/.config/i3
+
+  # bspwm Environment ========================================================
+  bspwm:
+    src: config/bspwm
+    dst: ~/.config/bspwm
+
+  # i3 / bspwm Environment ===================================================
   picom:
     src: config/picom
     dst: ~/.config/picom
@@ -170,11 +181,8 @@ dotfiles:
     src: fehbg
     dst: ~/.fehbg
   greenclip:
-    src: config/greenclip.cfg
-    dst: ~/.config/greenclip.cfg
-  greenclip_static_history:
-    src: config/greenclip.staticHistory
-    dst: ~/.config/greenclip.staticHistory
+    src: config/greenclip.toml
+    dst: ~/.config/greenclip.toml
 
   # Others ===================================================================
   fontconfig: # fix for fira code ligatures
@@ -216,6 +224,7 @@ profiles:
       - pryrc
       - nvim
       - bin
+      - scripts
       - dir_colors
       - gitconfig
 
@@ -256,7 +265,18 @@ profiles:
       - gsimplecal
       - fehbg
       - greenclip
-      - greenclip_static_history
+
+  bspwm:
+    dotfiles:
+      - bspwm
+      - dunst
+      - rofi
+      - picom
+      - polybar
+      - wal
+      - gsimplecal
+      - fehbg
+      - greenclip
 
   wsl:
     include:
@@ -273,6 +293,7 @@ profiles:
       - base_line
       - base_gui
       - i3
+      - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome #chromium-browser
       GAPS: false

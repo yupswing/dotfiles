@@ -18,3 +18,6 @@ xset r rate 300 50
 
 # Layouts + compose on ALTGR
 setxkbmap -model pc105 -layout us,it -option compose:ralt
+
+# Set cursor in root window (to avoid X in bspwm)
+xsetroot -cursor_name left_ptr
