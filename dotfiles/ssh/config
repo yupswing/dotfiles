@@ -1,5 +1,4 @@
 AddKeysToAgent yes
 
 IdentityFile ~/.ssh/simonecingano
-IdentityFile ~/.ssh/yupswing
-IdentityFile ~/.ssh/dv
+IdentityFile ~/.ssh/dotvocal

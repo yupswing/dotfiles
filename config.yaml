@@ -65,23 +65,14 @@ dotfiles:
     src: ssh/simonecingano.pub
     dst: ~/.ssh/simonecingano.pub
 
-  ssh_yupswing:
-    src: ssh/yupswing.gpg
-    dst: ~/.ssh/yupswing
+  ssh_dotvocal:
+    src: ssh/dotvocal.gpg
+    dst: ~/.ssh/dotvocal
     trans_read: gpg
 
-  ssh_yupswing_pub:
-    src: ssh/yupswing.pub
-    dst: ~/.ssh/yupswing.pub
-
-  ssh_dv:
-    src: ssh/dv.gpg
-    dst: ~/.ssh/dv
-    trans_read: gpg
-
-  ssh_dv_pub:
-    src: ssh/dv.pub
-    dst: ~/.ssh/dv.pub
+  ssh_dotvocal_pub:
+    src: ssh/dotvocal.pub
+    dst: ~/.ssh/dotvocal.pub
 
   # BASH =====================================================================
 
@@ -210,10 +201,8 @@ profiles:
       - ssh_config
       - ssh_simonecingano
       - ssh_simonecingano_pub
-      - ssh_yupswing
-      - ssh_yupswing_pub
-      - ssh_dv
-      - ssh_dv_pub
+      - ssh_dotvocal
+      - ssh_dotvocal_pub
     actions:
       - ssh_permissions
 

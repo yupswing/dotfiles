@@ -13,5 +13,8 @@ xrandr --output HDMI-3 --primary --right-of DP-1
 # Numlock ON
 numlockx
 
+# Increase key speed via a rate change
+xset r rate 300 50
+
 # Layouts + compose on ALTGR
 setxkbmap -model pc105 -layout us,it -option compose:ralt

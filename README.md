@@ -20,7 +20,14 @@ pip3 install -r ~/dotfiles/dotdrop/requirements.txt
 ~/dotfiles/dotdrop.sh install
 ```
 
-- we need to install `FiraCode Nerd Font` (https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/FiraCode)
+### Fonts
+
+- `Fira Code`
+- `FiraCode Nerd Font`
+- `Roboto Condensed`
+- `feather`
+- `Font Awesome 5`
+- `Material Design Icons`
 
 ## Usage
 
@@ -268,12 +275,14 @@ I keep settings in a `gist` (details in Enpass) using the extension `Settings Sy
 # Sensitive files
 
 Encode with `gnupg2`
+
 ```
 gpg2 -c -o file.txt.gpg file.txt
 ```
 
 Decode with (note that dotdrop decode transparently if you set up the config.yaml accordingly)
 See https://github.com/deadc0de6/dotdrop/wiki/sensitive-dotfiles
+
 ```
 gpg2 -d -o file.txt file.txt.gpg
 ```

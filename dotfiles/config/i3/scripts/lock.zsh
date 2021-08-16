@@ -57,8 +57,8 @@ i3lock \
   --indicator \
   --time-str="%H:%M:%S" \
   --date-str="%A, %m %Y" \
-  --verif-text="Verifying" \
-  --wrong-text="WRONG!" \
+  --verif-text="Maybe..." \
+  --wrong-text="NOPE!" \
   --layout-font=FiraCode Nerd Font
 
 # Remove files
