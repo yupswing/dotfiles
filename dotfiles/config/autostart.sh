@@ -9,9 +9,9 @@ sleep 1
 
 ### Applets
 ###############################################################################
-launch redshift-gtk
+# launch redshift-gtk
 launch pasystray
-launch blueman-applet
+# launch blueman-applet
 launch nm-applet
 
 ### Daemons

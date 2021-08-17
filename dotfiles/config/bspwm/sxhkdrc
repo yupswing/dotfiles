@@ -79,9 +79,9 @@ alt + l
 super + alt + {q,r}
   bspc {quit,wm -r}
 
-; # alternate between the tiled and monocle layout
-; alt + m
-;   bspc desktop -l next
+# alternate between the tiled and monocle layout
+alt + m
+  bspc desktop -l next
 
 ; # send the newest marked node to the newest preselected node
 ; alt + y
@@ -96,8 +96,8 @@ super + alt + {q,r}
 #
 
 # set the window state
-# alt + {t,shift + t,s,f}
-#   bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+alt + {t,shift + t,f,shift + f}
+  bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 # # set the node flags
 # alt + ctrl + {m,x,y,z}
@@ -108,8 +108,9 @@ super + alt + {q,r}
 # #
 
 # # focus the node in the given direction
-# alt + {_,shift + }{h,j,k,l}
-#   bspc node -{f,s} {west,south,north,east}
+; alt + {_,shift + }{h,j,k,l}
+alt + {_,shift + }{Left,Down,Up,Right}
+   bspc node -{f,s} {west,south,north,east}
 
 # # focus the node for the given path jump
 # alt + {p,b,comma,period}
@@ -143,15 +144,16 @@ alt + {_,shift + }{1-9,0,minus,equal,bracketright,grave}
 
 # # preselect the direction
 # alt + ctrl + {h,j,k,l}
-#   bspc node -p {west,south,north,east}
+alt + ctrl + {Left,Down,Up,Right}
+  bspc node -p {west,south,north,east}
 
 # # preselect the ratio
-# alt + ctrl + {1-9}
-#   bspc node -o 0.{1-9}
+alt + ctrl + {1-9}
+  bspc node -o 0.{1-9}
 
 # # cancel the preselection for the focused node
-# alt + ctrl + space
-#   bspc node -p cancel
+alt + ctrl + space
+  bspc node -p cancel
 
 # # cancel the preselection for the focused desktop
 # alt + ctrl + shift + space
