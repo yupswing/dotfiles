@@ -139,7 +139,7 @@ gaps inner 5
 ### Startup programs
 ###############################################################################
 
-exec --no-startup-id $HOME/.config/session-startup.sh
+exec --no-startup-id $HOME/.config/autostart.sh
 
 
 
@@ -275,7 +275,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 ###############################################################################
 
 # Menu (.desktop files)
-bindsym $mod+space exec --no-startup-id rofi -show drun -show-icons
+bindsym $mod+space exec --no-startup-id rofi -modi drun -show drun -show-icons
 
 # Menu (executables within $PATH)
 bindsym $mod+Shift+space exec --no-startup-id rofi -show run

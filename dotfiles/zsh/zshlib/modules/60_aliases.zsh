@@ -4,18 +4,25 @@
 # tail / head shortcuts
 alias -g GI='| grep -i'
 
+# utils
+alias zap='rm -rf'
+
 # list
 alias ls='ls -F --color'
-alias l='ls -lAFh --color'
+# alias l='ls -lAh'
 # alias la='ls -A'
 # alias ll='ls -l'
+alias l="exa --icons --sort=name --group-directories-first"
+alias la="l -a"
+alias ll="l -lga --git"
+alias lt="ll --tree --level=2"
 
 # enable alias in sudo
 alias sudo='sudo '
 # sudo
 alias fu='sudo $(fc -ln -1)'
-alias _='sudo '
-alias __='sudo -s'
+# alias _='sudo '
+# alias __='sudo -s'
 
 # defaults
 alias mkdir='mkdir -p'
@@ -31,13 +38,9 @@ alias ptr='host -t ptr'
 
 # shortcuts
 alias v=nvim
-alias les=less
 alias pk=pkill
 alias cls=clear
 
-# utils
-alias wh=which
-alias zap='rm -rf'
 
 # mistakes
 alias dc=cd

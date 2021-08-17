@@ -1,4 +1,10 @@
 {
+  "alpha": "100",
+  "special": {
+    "foreground": "#e0d9d2",
+    "background": "#272822",
+    "cursor": "#ff6c5f"
+  },
   "colors": {
     "color0": "#272822",
     "color1": "#bf3f34",
@@ -18,10 +24,5 @@
     "color15": "#b2a191",
     "color16": "#404040",
     "color17": "#ff6c5f"
-  },
-  "special": {
-    "foreground": "#e0d9d2",
-    "background": "#272822",
-    "cursor": "#ff6c5f"
   }
 }

@@ -3,6 +3,13 @@
 # wm independent hotkeys
 #
 
+# interactive events:
+#   xev
+# list keycode:
+#   xmodmap -pke
+# determine window class (last string in output):
+#   xprop | grep CLASS
+
 
 # make sxhkd reload its configuration files:
 alt + Escape
@@ -18,7 +25,7 @@ alt + {_,shift + }q
 
 # Program launcher (.desktop files)
 alt + @space
-  rofi -show drun -show-icons
+  rofi -modi drun -show drun -show-icons
 
 # Command launcher (executables within $PATH)
 alt + shift + @space
@@ -127,8 +134,8 @@ super + alt + {q,r}
 #   bspc wm -h on
 
 # focus or send to the given desktop
-alt + {_,shift + }{1-9,0}
-  bspc {desktop -f,node -d} '^{1-9,10}'
+alt + {_,shift + }{1-9,0,minus,equal,bracketright,grave}
+  bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}'
 
 # #
 # # preselect
@@ -165,3 +172,7 @@ alt + {_,shift + }{1-9,0}
 # # move a floating window
 # alt + {Left,Down,Up,Right}
 #   bspc node -v {-20 0,0 20,0 -20,20 0}
+
+
+alt + x ; {c,s}
+    {google-chrome-stable,spotify}

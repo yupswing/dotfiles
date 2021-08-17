@@ -1,39 +1,54 @@
-#! /bin/sh
+#!/bin/sh
 
-pgrep -x sxhkd >/dev/null || sxhkd -c $HOME/.config/bspwm/sxhkdrc &
 
-$HOME/.config/session-startup.sh
-
-bspc monitor -d code terminal browser 4 5 6 7 8 9 10 im mail music
+bspc monitor -d web code term 4 5 6 7 8 9 10 im mail music float
 
 bspc config border_width 0
-bspc config window_gap 3
-# based on polybar
+bspc config window_gap 2
 # bspc config top_padding 34
 
-bspc config split_ratio 0.52
-bspc config borderless_monocle true
-bspc config gapless_monocle true
-bspc config focus_follows_pointer true
 bspc config pointer_modifier mod1
 
-bspc rule -a Rambox desktop='^11'
-bspc rule -a discord desktop='^11'
+bspc config split_ratio 0.5
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config single_monocle true
+bspc config focus_follows_pointer true
+bspc config pointer_motion_interval 2
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
 
-bspc rule -a Thunderbird desktop='^12'
+bspc config automatic_scheme alternate
 
-bspc rule -a Spotify desktop='^13'
+bspc config external_rules_command "$HOME/.config/bspwm/external-rules"
 
-bspc rule -a Code desktop='^1'
-bspc rule -a code-oss desktop='^1'
+# Rules =======================================================================
 
-bspc rule -a Firefox desktop='^3'
+# bspc rule -a 'Class:instance:*'
+
+bspc rule -a Rambox               desktop=im follow=on
+bspc rule -a discord              desktop=im follow=on
+
+bspc rule -a Thunderbird          desktop=mail follow=on
+
+bspc rule -a Code                 desktop=code follow=on
+bspc rule -a code-oss             desktop=code follow=on
+
+bspc rule -a Firefox              desktop=web follow=on
 # Remember to right click on chrome titlebar and select `Use system titlebar and borders`
-bspc rule -a Chromium desktop='^3'
-bspc rule -a Google-chrome desktop='^3'
+bspc rule -a Chromium             desktop=web follow=on
+bspc rule -a Google-chrome        desktop=web follow=on
+bspc rule -a firefox		          desktop=web follow=on
 
-# bspc rule -a Gimp desktop='^8' state=floating follow=on
-# bspc rule -a Chromium desktop='^2'
-# bspc rule -a mplayer2 state=floating
-# bspc rule -a Kupfer.py focus=on
-# bspc rule -a Screenkey manage=off
+bspc rule -a linphone             desktop=float state=floating focus=on follow=on
+bspc rule -a Enpass               desktop=float state=floating focus=on follow=on
+bspc rule -a Simplenote           desktop=float state=floating focus=on follow=on
+
+bspc rule -a Pavucontrol    	    state=floating focus=on
+bspc rule -a Nemo    	            state=floating focus=on
+
+
+# Autostart ===================================================================
+
+pgrep -x sxhkd >/dev/null || sxhkd -c "$HOME/.config/bspwm/sxhkdrc" &
+$HOME/.config/autostart.sh

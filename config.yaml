@@ -142,9 +142,9 @@ dotfiles:
     dst: ~/.config/kitty
 
   # Environments =============================================================
-  session-startup:
-    src: config/session-startup.sh
-    dst: ~/.config/session-startup.sh
+  autostart:
+    src: config/autostart.sh
+    dst: ~/.config/autostart.sh
 
   # i3 Environment ===========================================================
   i3:
@@ -240,7 +240,7 @@ profiles:
       - alacritty
       - backgrounds
       - redshift
-      - session-startup
+      - autostart
 
   # Groups ===================================================================
 

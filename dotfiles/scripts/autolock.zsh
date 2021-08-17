@@ -8,4 +8,4 @@ xset s $(( ${MINS} * 60 + 30 ))
 xset dpms 0 0 $(( ${MINS} * 60 + 30 ))
 
 # Run the real locking command every 15 minutes via xautolock:
-xautolock -time ${MINS} -locker ~/.config/i3/scripts/lock.sh
+pgrep -u "$USER" xautolock >/dev/null || xautolock -time ${MINS} -locker $HOME/.scripts/lock.sh &

@@ -8,7 +8,7 @@ OPTIONS=" Power-off system
  Lock screen
  Suspend system
  Hibernate system"
-LOCKER=$HOME/.config/i3/scripts/lock.sh
+LOCKER=$HOME/.scripts/lock.sh
 
 LAUNCHER="rofi -dmenu -i -p  -width -30"
 option=$(echo -e "$OPTIONS" | ${(s: :)LAUNCHER} | awk '{print $2}' | tr -d '\r\n')

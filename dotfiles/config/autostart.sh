@@ -1,36 +1,40 @@
 #! /usr/bin/env zsh
 # {{@@ header() @@}}
 
+launch() {
+  pgrep -u "$USER" $1 >/dev/null || $@ &
+}
+
 sleep 1
 
 ### Applets
 ###############################################################################
-redshift-gtk &
-pasystray &
-# blueman-applet &
-nm-applet &
+launch redshift-gtk
+launch pasystray
+launch blueman-applet
+launch nm-applet
 
 ### Daemons
 ###############################################################################
-dropbox start &
-# nextcloud &
+launch dropbox start
+launch nextcloud
 
 ### DE Dependent
 ###############################################################################
 case ${GDMSESSION:l} in
-i3|bspwm)
+i3 | bspwm)
   {%@@ if COMPOSITOR @@%}
   # Composite manager (highest priority)
-  picom -bG &
+  launch picom -bG
   {%@@ endif @@%}
   # Background
   $HOME/.fehbg &
   # Notifications
-  dunst -config $HOME/.config/dunst/dunst.conf &
+  launch dunst -config $HOME/.config/dunst/dunst.conf
   # Clipboard
-  greenclip daemon &
+  launch greenclip daemon
   # Autolock
-  $HOME/.config/i3/scripts/autolock.zsh &
+  $HOME/.scripts/autolock.zsh
   # Polybar
   wal -R && $HOME/.config/polybar/launch.zsh &
   ;;
@@ -50,10 +54,10 @@ sleep 1
 
 ### Applications
 ###############################################################################
-# spotify &
-# google-chrome-stable &
-rambox &
-discord &
-linphone &
-thunderbird &
-code &
+# launch spotify
+# launch google-chrome-stable
+launch rambox
+launch discord
+launch linphone
+launch thunderbird
+launch code
