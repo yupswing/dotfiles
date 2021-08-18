@@ -64,8 +64,10 @@ bspc rule -a Google-chrome          desktop=web follow=on
 
 # Special floating windows
 bspc rule -a linphone               desktop=float state=floating focus=on follow=on
-bspc rule -a Enpass                 desktop=float state=floating focus=on follow=on
 bspc rule -a Simplenote             desktop=float state=floating focus=on follow=on
+
+# Special sticky
+bspc rule -a Enpass                 state=floating focus=on sticky=on
 
 # Floating windows
 bspc rule -a Pavucontrol    	      state=floating focus=on
@@ -76,7 +78,5 @@ bspc rule -a Lxappearance           state=floating focus=on
 
 
 # Autostart ===================================================================
-
-pgrep -x sxhkd >/dev/null || sxhkd -c "$HOME/.config/bspwm/sxhkdrc" &
 
 $HOME/.config/autostart.sh

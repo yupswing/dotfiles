@@ -5,6 +5,11 @@ launch() {
   pgrep -u "$USER" $1 >/dev/null || $@ &
 }
 
+
+### Hotkeys
+###############################################################################
+launch sxhkd
+
 sleep 1
 
 ### Applets

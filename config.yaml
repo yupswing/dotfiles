@@ -26,7 +26,7 @@ variables:
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
   DEFAULT_FILE_MANAGER: nemo
   # --- Config (changeable by host)
-  GAPS: true
+  WM: bspwm
   ROUNDED: 10
   COMPOSITOR: true
   COMPOSITOR_FANCY: true # blur and opacity
@@ -53,7 +53,6 @@ dotfiles:
   scripts:
     src: scripts
     dst: ~/.scripts
-    link: link_children
 
   # SSH Keys =================================================================
   ssh_config:
@@ -145,6 +144,9 @@ dotfiles:
   autostart:
     src: config/autostart.sh
     dst: ~/.config/autostart.sh
+  sxhkd:
+    src: config/sxhkd
+    dst: ~/.config/sxhkd
 
   # i3 Environment ===========================================================
   i3:
@@ -240,6 +242,7 @@ profiles:
       - alacritty
       - backgrounds
       - redshift
+      - sxhkd
       - autostart
 
   # Groups ===================================================================
@@ -295,8 +298,7 @@ profiles:
       - i3
       - bspwm
     variables:
-      DEFAULT_BROWSER: google-chrome #chromium-browser
-      GAPS: false
+      DEFAULT_BROWSER: google-chrome
       COMPOSITOR: false
 
   simodotpc: # Work (Office)
@@ -305,4 +307,4 @@ profiles:
       - base_gui
       - i3
     variables:
-      DEFAULT_BROWSER: google-chrome #chromium-browser
+      DEFAULT_BROWSER: google-chrome

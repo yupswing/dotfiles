@@ -1,7 +1,4 @@
 # vim: set ft=ini
-#
-# wm independent hotkeys
-#
 
 # interactive events:
 #   xev
@@ -10,18 +7,22 @@
 # determine window class (last string in output):
 #   xprop | grep CLASS
 
+# =============================================================================
+# ----------------------------- GENERIC HOTKEYS -------------------------------
 
-# make sxhkd reload its configuration files:
-alt + Escape
+# == ESSENTIALS ===============================================================
+
+# reload sxhkd
+alt + shift + s
   pkill -USR1 -x sxhkd
 
 # terminal emulator
 alt + Return
   kitty
 
-# close and kill
-alt + {_,shift + }q
-  bspc node -{c,k}
+
+
+# == LAUNCHERS ================================================================
 
 # Program launcher (.desktop files)
 alt + @space
@@ -31,9 +32,39 @@ alt + @space
 alt + shift + @space
   rofi -show run
 
+# Direct launchers (chords)
+alt + x ; {c,s,e}
+    {google-chrome-stable,spotify,enpass}
+
+
+
+# == TOOLS ====================================================================
+
+# Session menu
+alt + p
+  $HOME/.scripts/rofi-power.zsh
+
+# Lock session
+alt + l
+  $HOME/.scripts/lock.zsh
+
 # Windows switcher
 alt + Tab
   rofi -show window -show-icons
+
+# Change keyboard layout (with xkb-switch)
+alt + k
+  xkb-switch -n
+
+# Clipboard (with greenclip)
+alt + c
+  $HOME/.scripts/rofi-greenclip.zsh
+#alt + shift + c
+#  $HOME/.scripts/clear-greenclip.zsh
+
+# Calculator (with qalc)
+alt + shift + c
+  $HOME/.scripts/rofi-calc.zsh
 
 # Locate files (with locate)
 alt + s
@@ -49,66 +80,73 @@ shift + Print
 ctrl + Print
   xdg-open "$HOME/Pictures/screenshots"
 
-# Clipboard (with greenclip)
-alt + c
-  $HOME/.scripts/rofi-greenclip.zsh
-shift + alt + c
-  $HOME/.scripts/clear-greenclip.zsh
 
-# Calculator (with qalc)
-alt + shift + c
-  $HOME/.scripts/rofi-calc.zsh
 
-# Change keyboard layout (with xkb-switch)
-alt + k
-  xkb-switch -n
+# == MEDIA KEYS ===============================================================
 
-# Session menu:
-alt + p
-  $HOME/.scripts/rofi-power.zsh
+# Volume
+{XF86AudioRaiseVolume,XF86AudioLowerVolume}
+  pactl set-sink-volume 0 {+,-}5%
 
-# Lock session:
-alt + l
-  $HOME/.scripts/lock.zsh
+# Mute
+XF86AudioMute
+  pactl set-sink-mute 0 toggle
 
-#
-# bspwm hotkeys
-#
+# Brightness
+{XF86MonBrightnessUp,XF86MonBrightnessDown}
+  xbacklight -{inc,dec} 20
+
+# Media player
+{XF86AudioPlay,XF86AudioPause,XF86AudioNext,XF86AudioPrev}
+  playerctl {play,pause,next,previous}
+
+
+
+# =============================================================================
+# ------------------------------ BSPWM HOTKEYS --------------------------------
+
+# == RELOAD ===================================================================
 
 # quit/restart bspwm
-super + alt + {q,r}
+alt + shift + {q,r}
   bspc {quit,wm -r}
+
+
+# close and kill
+alt + {_,shift + }q
+  bspc node -{c,k}
+
 
 # alternate between the tiled and monocle layout
 alt + m
   bspc desktop -l next
 
-; # send the newest marked node to the newest preselected node
-; alt + y
-;   bspc node newest.marked.local -n newest.!automatic.local
+# # send the newest marked node to the newest preselected node
+# alt + y
+#   bspc node newest.marked.local -n newest.!automatic.local
 
-; # swap the current node and the biggest window
-; alt + g
-;   bspc node -s biggest.window
+# # swap the current node and the biggest window
+# alt + g
+#   bspc node -s biggest.window
 
-#
-# state/flags
-#
+
+
+# == STATE/FLAGS ==============================================================
 
 # set the window state
-alt + {t,shift + t,f,shift + f}
+alt + z ; {t,p,f,s}
   bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
-# # set the node flags
-# alt + ctrl + {m,x,y,z}
-#   bspc node -g {marked,locked,sticky,private}
+# set the node flags
+alt + f ; {m,l,s,p}
+  bspc node -g {marked,locked,sticky,private}
 
-# #
-# # focus/swap
-# #
+
+
+# == FOCUS/SWAP ===============================================================
 
 # # focus the node in the given direction
-; alt + {_,shift + }{h,j,k,l}
+# alt + {_,shift + }{h,j,k,l}
 alt + {_,shift + }{Left,Down,Up,Right}
    bspc node -{f,s} {west,south,north,east}
 
@@ -138,20 +176,20 @@ alt + {_,shift + }{Left,Down,Up,Right}
 alt + {_,shift + }{1-9,0,minus,equal,bracketright,grave}
   bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}'
 
-# #
-# # preselect
-# #
 
-# # preselect the direction
+
+# == PRESELECT ================================================================
+
+# preselect the direction
 # alt + ctrl + {h,j,k,l}
 alt + ctrl + {Left,Down,Up,Right}
   bspc node -p {west,south,north,east}
 
-# # preselect the ratio
+# preselect the ratio
 alt + ctrl + {1-9}
   bspc node -o 0.{1-9}
 
-# # cancel the preselection for the focused node
+# cancel the preselection for the focused node
 alt + ctrl + space
   bspc node -p cancel
 
@@ -159,9 +197,9 @@ alt + ctrl + space
 # alt + ctrl + shift + space
 #   bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
-# #
-# # move/resize
-# #
+
+
+# == MOVE/RESIZE ================================================================
 
 # # expand a window by moving one of its side outward
 # super + alt + {h,j,k,l}
@@ -174,7 +212,3 @@ alt + ctrl + space
 # # move a floating window
 # alt + {Left,Down,Up,Right}
 #   bspc node -v {-20 0,0 20,0 -20,20 0}
-
-
-alt + x ; {c,s}
-    {google-chrome-stable,spotify}

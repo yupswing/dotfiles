@@ -1,24 +1,68 @@
 #!/bin/sh
 
 # BSPWM External rules =======================================================
+# This script will execute at each new window instance
+# External rules are applied AFTER interval ones and here we receive the
+# the current applied properties in the variable $consequences
+# =============================================================================
 
-# It is called for each new window instance
-# and it receives the following arguments
+# =============================================================================
+# DEBUG
+# Set DEBUG=1 to see info about new windows
+
+log() {
+  # Uncomment one of the following lines to see what BSPWM sees for each new window instance
+  notify-send "New window" \ "$(echo -e "CLASS: $class\nINSTANCE: $instance\nTYPE: $type\nNAME: $name")"
+  # notify-send "New window" \ "$(echo -e "CLASS: $class\nINSTANCE: $instance\nTYPE: $type\nNAME: $name\nCONSEQUENCES: $consequences")"
+}
+DEBUG=0
+
+# =============================================================================
+# WINDOW INFORMATIONS
+
+# It receives the following arguments
 wid=$1
 class=$2
 instance=$3
 consequences=$4
 
-# This script will execute at each new window instance
+# Identify the name
+# name=$(xprop -id $wid WM_NAME | sed -r -e "s/^.*\"([^\"]*)\"$/\1/")
+
+# Identify the type
+# If no type is identified these are the messages, converted to NORMAL
+# XXX:  no such atom on any window.  # _NET_WM_WINDOW_TYPE:  not found.
+type=$(xprop -id $wid _NET_WM_WINDOW_TYPE | sed -r -e "s/^.*:  no.*$/NORMAL/" -e "s/^.*TYPE_//")
+# Possible types
+# 'NORMAL', 'DIALOG', 'UTILITY', 'TOOLBAR', 'SPLASH', 'MENU',
+# 'DROPDOWN_MENU', 'POPUP_MENU', 'TOOLTIP', 'NOTIFICATION'
+
+# Log window information
+[ $DEBUG -eq 1 ] && log
+
+# =============================================================================
+# AVOID DIALOGS BEING BOUNDED TO A DESKTOP
+# With a desktop rule in the internal ones also all the dialogs would be bounded
+# to a desktop. With this rule we let the dialog to be open in the current desktop
+# (Sometimes an app is opened with a rule for a desktop but then is moved around)
+
+case "$type" in
+DIALOG)
+  # echo "sticky=on"
+  echo "desktop=off fullscreen=off"
+  ;;
+esac
+
+# =============================================================================
+# RULES FOR "SLOW" PROCESSES
+
 # ONLY if there is no CLASS name it will loop until it finds one.
 # This is needed for some electron applications which set
 # their CLASS a while after launch (like Spotify)
 
-main() {
-  # DEBUG NOTIFICATIONS:
-  # Uncomment one of the following lines to see what BSPWM sees for each new window instance
-  # notify-send "New window" "class: $class | instance: $instance"
-  # notify-send "New window" \ "$(echo -e "wid: $wid\nclass: $class\ninstance: $instance\nconsequences: $consequences")"
+sloths() {
+  # Log window information
+  [ $DEBUG -eq 1 ] && log
 
   case "$class" in
   Spotify)
@@ -26,16 +70,11 @@ main() {
     ;;
   "")
     sleep 0.5
-
     wm_class=($(xprop -id $wid | grep "WM_CLASS" | grep -Po '"\K[^,"]+'))
-
     class=${wm_class[-1]}
-
     [[ ${#wm_class[@]} == "2" ]] && instance=${wm_class[0]}
-
-    [[ -n "$class" ]] && main
+    [[ -n "$class" ]] && sloths
     ;;
   esac
 }
-
-main
+[ -z $class ] && sloths

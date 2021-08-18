@@ -22,8 +22,15 @@ if [ ${#option} -gt 0 ]; then
     systemctl reboot
     ;;
   End)
-    i3-msg exit
-    bspc quit
+    case ${GDMSESSION:l} in
+      i3)
+        i3-msg exit
+        ;;
+      bspwm)
+        # $HOME/.config/bspwm/scripts/quit.sh
+        bspc quit
+        ;;
+    esac
     ;;
   Lock)
     eval $LOCKER
