@@ -1,21 +1,26 @@
 #!/bin/sh
 
+# BSPWM External rules =======================================================
+
+# It is called for each new window instance
+# and it receives the following arguments
 wid=$1
 class=$2
 instance=$3
 consequences=$4
 
+# This script will execute at each new window instance
+# ONLY if there is no CLASS name it will loop until it finds one.
+# This is needed for some electron applications which set
+# their CLASS a while after launch (like Spotify)
+
 main() {
-  # DEBUG NOTIFICATIONS
+  # DEBUG NOTIFICATIONS:
+  # Uncomment one of the following lines to see what BSPWM sees for each new window instance
+  # notify-send "New window" "class: $class | instance: $instance"
   # notify-send "New window" \ "$(echo -e "wid: $wid\nclass: $class\ninstance: $instance\nconsequences: $consequences")"
-  notify-send "New window" "class: $class | instance: $instance"
 
   case "$class" in
-  firefox)
-    if [ "$instance" = "Toolkit" ]; then
-      echo "state=floating sticky=on"
-    fi
-    ;;
   Spotify)
     echo "desktop=music follow=on"
     ;;
