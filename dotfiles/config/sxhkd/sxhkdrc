@@ -33,8 +33,8 @@ alt + shift + @space
   rofi -show run
 
 # Direct launchers (chords)
-alt + x ; {c,s,e}
-    {google-chrome-stable,spotify,enpass}
+alt + x ; {c,s,e,n}
+    {google-chrome-stable,spotify,enpass,nemo}
 
 
 
@@ -142,7 +142,6 @@ alt + f ; {m,l,s,p}
   bspc node -g {marked,locked,sticky,private}
 
 
-
 # == FOCUS/SWAP ===============================================================
 
 # # focus the node in the given direction
@@ -175,6 +174,22 @@ alt + {_,shift + }{Left,Down,Up,Right}
 # focus or send to the given desktop
 alt + {_,shift + }{1-9,0,minus,equal,bracketright,grave}
   bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}'
+
+# Rotate parent (like invert H/V orientation)
+# Using PageUp, PageDown
+alt + {Prior, Next}
+  bspc node @parent -R {-,_}90
+
+
+
+# == SHOW/HIDE ================================================================
+
+alt + h
+  bspc node --flag hidden=on
+
+alt + shift + h
+  $HOME/.config/bspwm/scripts/rofi-show.zsh
+#  bspc node $(bspc query -N -n .hidden.window | head -n 1) --flag hidden=off
 
 
 
