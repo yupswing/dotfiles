@@ -11,11 +11,16 @@
 # Set DEBUG=1 to see info about new windows
 
 log() {
-  # Uncomment one of the following lines to see what BSPWM sees for each new window instance
-  notify-send "New window" \ "$(echo -e "CLASS: $class\nINSTANCE: $instance\nTYPE: $type\nNAME: $name")"
-  # notify-send "New window" \ "$(echo -e "CLASS: $class\nINSTANCE: $instance\nTYPE: $type\nNAME: $name\nCONSEQUENCES: $consequences")"
+  echo "============================================================================="
+  xprop -id $wid >>$DEBUG_FILE
+  echo -e "-----------------------------------------------------------------------------" >>$DEBUG_FILE
+  echo -e "CLASS: $class\nINSTANCE: $instance\nTYPE: $type\nROLE: $role\nNAME: $name\nCONSEQUENCES: $consequences" >>$DEBUG_FILE
+  echo -e "=============================================================================\n\n\n" >>$DEBUG_FILE
 }
-DEBUG=0
+
+# tail -f /tmp/bspwm_external_rules_debug
+DEBUG_FILE=/tmp/bspwm_external_rules_debug
+DEBUG=no
 
 # =============================================================================
 # WINDOW INFORMATIONS
@@ -27,18 +32,29 @@ instance=$3
 consequences=$4
 
 # Identify the name
-# name=$(xprop -id $wid WM_NAME | sed -r -e "s/^.*\"([^\"]*)\"$/\1/")
+name=$(xprop -id $wid WM_NAME | sed -r -e "s/^.*\"([^\"]*)\"$/\1/")
 
 # Identify the type
 # If no type is identified these are the messages, converted to NORMAL
 # XXX:  no such atom on any window.  # _NET_WM_WINDOW_TYPE:  not found.
-type=$(xprop -id $wid _NET_WM_WINDOW_TYPE | sed -r -e "s/^.*:  no.*$/NORMAL/" -e "s/^.*TYPE_//")
-# Possible types
+type=$(xprop -id $wid _NET_WM_WINDOW_TYPE | sed "s/^.*TYPE_//")
+[[ "$type" == *"not found"* ]] && type="NORMAL"
+# Possible tytpes (removed WM_WINDOW_TYPE_ to make it easier)
 # 'NORMAL', 'DIALOG', 'UTILITY', 'TOOLBAR', 'SPLASH', 'MENU',
 # 'DROPDOWN_MENU', 'POPUP_MENU', 'TOOLTIP', 'NOTIFICATION'
 
+# Identify the role
+role=$(xprop -id $wid WM_WINDOW_ROLE | sed -r -e "s/^.*:  no.*$//" -e "s/^.*\"([^\"]*)\"$/\1/")
+
+# Firefox pop-up (give the same role as chrome pop-ups)
+# (Firefox pop-up always have HINTS location at 0,0)
+if [[ "$class" = "firefox" ]] &&
+  [[ "$(xprop -id $wid WM_NORMAL_HINTS)" == *"program specified location: 0, 0"* ]]; then
+  role="pop-up"
+fi
+
 # Log window information
-[ $DEBUG -eq 1 ] && log
+[ $DEBUG = yes ] && log
 
 # =============================================================================
 # AVOID DIALOGS BEING BOUNDED TO A DESKTOP
@@ -46,12 +62,10 @@ type=$(xprop -id $wid _NET_WM_WINDOW_TYPE | sed -r -e "s/^.*:  no.*$/NORMAL/" -e
 # to a desktop. With this rule we let the dialog to be open in the current desktop
 # (Sometimes an app is opened with a rule for a desktop but then is moved around)
 
-case "$type" in
-DIALOG)
-  # echo "sticky=on"
-  echo "desktop=off fullscreen=off"
-  ;;
-esac
+# role=pop-up # chrome
+if [ "$type" = "DIALOG" ] || [ "$role" = "pop-up" ]; then
+  echo "state=floating desktop=off fullscreen=off"
+fi
 
 # =============================================================================
 # RULES FOR "SLOW" PROCESSES
@@ -62,7 +76,7 @@ esac
 
 sloths() {
   # Log window information
-  [ $DEBUG -eq 1 ] && log
+  [ $DEBUG = yes ] && log
 
   case "$class" in
   Spotify)
