@@ -34,7 +34,7 @@ alt + shift + @space
 
 # Direct launchers (chords)
 alt + x ; {c,s,e,n}
-    {google-chrome-stable,spotify,enpass,nemo}
+  {google-chrome-stable,spotify,enpass,nemo}
 
 
 
@@ -177,7 +177,7 @@ alt + {_,shift + }{1-9,0,minus,equal,bracketright,backslash}
 
 # Rotate parent (like invert H/V orientation)
 # Using PageUp, PageDown
-alt + {Prior, Next}
+alt + shift + {Prior, Next}
   bspc node @parent -R {-,_}90
 
 # Focus urgent window

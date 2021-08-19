@@ -1,27 +1,25 @@
 #!/usr/bin/env zsh
 
 # Retrive all WINDOW_IDs for hidden windows globally
-nodes=$(bspc query -N -n .hidden.window)
+nodes=($(bspc query -N -n .hidden.window))
 [[ -z $nodes ]] && exit
 
 # list=$(echo $nodes | xargs -n1 xdotool getwindowname)
 # Create a list for ROFI (CLASSNAME : WINDOWNAME)
-while IFS= read -r line; do
-  list="$list\n$(xdotool getwindowclassname $line) : $(xdotool getwindowname $line)"
-done <<< "$nodes"
+list=()
+for wid in $nodes; do
+  list+="$(xdotool getwindowclassname $wid) : $(xdotool getwindowname $wid)"
+done
 
 # Give the option to ROFI (expect an index in return)
 # sed to remove first line
-selected_index=$(echo $list | sed -n '1!p' | rofi -dmenu -format i -p )
+selected_index=$(echo ${(j:\n:)list} | rofi -dmenu -format i -p )
 
 [[ -z $selected_index ]] && exit
 
-# index was zerobased, but we use sed -n so we want it onebased
-selected_index=$((selected_index + 1))
-# echo $selected_index
-
 # Retrive the WINDOW_ID of the user choice
-wid="$(echo $nodes | sed -n ${selected_index}p)"
+# index was zerobased, but we use sed -n so we want it onebased
+wid=${nodes[$((selected_index + 1))]}
 # echo $wid
 
 # Show the hidden window
