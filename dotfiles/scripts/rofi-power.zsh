@@ -27,8 +27,8 @@ if [ ${#option} -gt 0 ]; then
         i3-msg exit
         ;;
       bspwm)
-        # $HOME/.config/bspwm/scripts/quit.sh
-        bspc quit
+        $HOME/.config/bspwm/scripts/quit.sh
+        # bspc quit
         ;;
     esac
     ;;

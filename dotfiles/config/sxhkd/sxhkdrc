@@ -172,13 +172,17 @@ alt + {_,shift + }{Left,Down,Up,Right}
 #   bspc wm -h on
 
 # focus or send to the given desktop
-alt + {_,shift + }{1-9,0,minus,equal,bracketright,grave}
+alt + {_,shift + }{1-9,0,minus,equal,bracketright,backslash}
   bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}'
 
 # Rotate parent (like invert H/V orientation)
 # Using PageUp, PageDown
 alt + {Prior, Next}
   bspc node @parent -R {-,_}90
+
+# Focus urgent window
+alt + grave
+  bspc node -f $(bspc query -N -n .urgent.window | head -n 1)
 
 
 

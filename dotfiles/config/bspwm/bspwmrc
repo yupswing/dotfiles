@@ -63,8 +63,9 @@ bspc rule -a Chromium               desktop=web follow=on
 bspc rule -a Google-chrome          desktop=web follow=on
 
 # Special floating windows
-bspc rule -a linphone               desktop=float state=floating focus=on follow=on
-bspc rule -a Simplenote             desktop=float state=floating focus=on follow=on
+bspc rule -a linphone               state=floating follow=on
+bspc rule -a linphone               --one-shot hidden=on follow=off
+bspc rule -a Simplenote             state=floating focus=on follow=on
 
 # Special sticky
 bspc rule -a Enpass                 state=floating focus=on sticky=on
