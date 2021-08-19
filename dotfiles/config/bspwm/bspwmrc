@@ -72,6 +72,7 @@ bspc rule -a Enpass                 state=floating focus=on sticky=on
 
 # Floating windows
 bspc rule -a Pavucontrol    	      state=floating focus=on
+bspc rule -a Seahorse       	      state=floating focus=on
 bspc rule -a Nemo    	              state=floating focus=on
 bspc rule -a Gpick                  state=floating focus=on
 bspc rule -a File-roller            state=floating focus=on
