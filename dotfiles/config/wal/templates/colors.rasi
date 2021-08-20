@@ -30,7 +30,7 @@
     selected-urgent-foreground: #222222;
 
     /* background-color: @background; */
-    border-color: #00B19F;
+    border-color: #01787D;
 }}
 
 #window {{
