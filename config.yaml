@@ -306,5 +306,6 @@ profiles:
       - base_line
       - base_gui
       - i3
+      - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome

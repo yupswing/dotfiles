@@ -29,7 +29,7 @@ case ${GDMSESSION:l} in
 i3 | bspwm)
   {%@@ if COMPOSITOR @@%}
   # Composite manager (highest priority)
-  launch picom -bG
+  launch picom -b
   {%@@ endif @@%}
   # Background
   $HOME/.fehbg &

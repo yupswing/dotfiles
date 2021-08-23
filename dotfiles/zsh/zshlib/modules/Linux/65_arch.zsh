@@ -20,7 +20,7 @@ if [ -f "/etc/arch-release" ]; then
                                       --save /etc/pacman.d/mirrorlist"
 
   function maintenance() {
-    if [[ -z "${LOCAL_MAINTENANCE_DIR}" ]]; then;
+    if [[ -z "${LOCAL_MAINTENANCE_DIR}" ]]; then
       LOCAL_MAINTENANCE_DIR=$HOME/maintenance
     fi
     echo "* Maintenance dir: $LOCAL_MAINTENANCE_DIR"
@@ -38,6 +38,16 @@ if [ -f "/etc/arch-release" ]; then
     echo "---------------------------------------"
     echo "* Remove orphaned packages"
     pacman -Qtdq | sudo pacman -Rns - # if no orphans were found the output is a error. all good
+
+    command -v paru >/dev/null
+    if [ $? -eq 0 ]; then
+      echo "---------------------------------------"
+      echo "* AUR: Clean unused dependencies"
+      paru -c
+      echo "---------------------------------------"
+      echo "* AUR: Clean cache"
+      paru -Sc # clean cache
+    fi
 
     echo "---------------------------------------"
     echo ""

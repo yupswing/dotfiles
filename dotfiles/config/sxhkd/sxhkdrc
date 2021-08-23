@@ -67,7 +67,7 @@ alt + shift + c
   $HOME/.scripts/rofi-calc.zsh
 
 # Locate files (with locate)
-alt + s
+alt + f
   $HOME/.scripts/rofi-locate.zsh
 
 # Screenshot (with scrot+xclip)
@@ -134,7 +134,7 @@ alt + m
 # == STATE/FLAGS ==============================================================
 
 # set the window state
-alt + z ; {t,p,f,s}
+alt + s ; {t,p,f,s}
   bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 # set the node flags
@@ -172,8 +172,11 @@ alt + {_,shift + }{Left,Down,Up,Right}
 #   bspc wm -h on
 
 # focus or send to the given desktop
+# alt + {_,shift + }{1-9,0,minus,equal,bracketright,backslash}
+#   bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}'
+
 alt + {_,shift + }{1-9,0,minus,equal,bracketright,backslash}
-  bspc {desktop -f,node -d} '^{1-9,10,11,12,13,14}'
+  bspc {desktop -f,node -d} "{web,code,term,4-9,10,im,mail,music,float}"
 
 # Rotate parent (like invert H/V orientation)
 # Using PageUp, PageDown
