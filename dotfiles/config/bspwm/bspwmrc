@@ -14,11 +14,11 @@ bspc config focus_follows_pointer true
 
 MONITORS=$(xrandr -q | grep -w connected | wc -l)
 if [[ MONITORS -eq 1 ]]; then
-  bspc monitor -d web code term 4 5 6 7 8 9 10 im mail music float
+  bspc monitor -d float im mail music web code term 4 5 6 7 8 9 10
 else
   # front
   bspc monitor HDMI-3 -d float code term 5 7 9
-  #left
+  # left
   bspc monitor DP-1 -d im mail music web 4 6 8 10
 fi
 

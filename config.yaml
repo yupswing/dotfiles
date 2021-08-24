@@ -111,6 +111,9 @@ dotfiles:
   bashtop:
     src: config/bashtop
     dst: ~/.config/bashtop
+  bat:
+    src: config/bat
+    dst: ~/.config/bat
 
   # GUI Basics ===============================================================
   xprofile:
@@ -229,6 +232,7 @@ profiles:
       - scripts
       - dir_colors
       - gitconfig
+      - bat
 
   base_gui:
     dotfiles:
