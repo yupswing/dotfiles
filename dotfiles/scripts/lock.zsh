@@ -82,6 +82,9 @@ W=$(color 1 99) # wrong
 V=$(color 5 99) # verifying
 TRANSPARENT="00000000"
 
+# Pause notifications
+pkill -xu $EUID -USR1 dunst
+
 echo "Launching i3lock-color..."
 i3lock \
   --nofork \
@@ -130,6 +133,9 @@ i3lock \
   --date-size=$((FONT_SIZE * 0.4)) \
   --date-pos="tx:ty+$((FONT_SIZE * 0.5))" \
   --date-align=1
+
+# Unpause notifications
+pkill -xu $EUID -USR2 dunst
 
 if [ -z $STATIC ]; then
   # Delete old image (if present)
