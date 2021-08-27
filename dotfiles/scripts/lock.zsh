@@ -33,19 +33,20 @@ WIDTH_INDICATOR=$HEIGHT
 RESOLUTION=($(xrandr --query | grep ' primary' | grep -o '[0-9][0-9]*x[0-9][0-9]*[^ ]*' | sed 's/[x+]/ /g'))
 # $RESOLUTION is WIDTH,HEIGHT,X,Y (array based 1)
 SCREEN_HEIGHT=$((${RESOLUTION[2]}))
+SCREEN_X_SHIFT=$((${RESOLUTION[3]}))
+SCREEN_Y_SHIFT=$((${RESOLUTION[4]}))
 
-TOP=$((SCREEN_HEIGHT - BOTTOM - HEIGHT))
+TOP=$((SCREEN_Y_SHIFT + SCREEN_HEIGHT - BOTTOM - HEIGHT))
 WIDTH=$((MARGIN + WIDTH_TEXT + WIDTH_INDICATOR))
 
 HEIGHT_HALF=$((HEIGHT / 2))
 
 # for some reason instead of MARGIN + WIDTH_TEXT i need to add also its WIDTH.
-X_INDICATOR=$((MARGIN + WIDTH_TEXT + WIDTH_INDICATOR))
-X_TEXT=$MARGIN
+X_TEXT=$((SCREEN_X_SHIFT + MARGIN))
+X_INDICATOR=$((X_TEXT + WIDTH_TEXT + WIDTH_INDICATOR))
 
-RECTANGLES+="roundrectangle -$HEIGHT_HALF,$TOP $((WIDTH + HEIGHT_HALF)),$((TOP + HEIGHT)) $HEIGHT_HALF,$HEIGHT_HALF "
-
-DRAW="fill black fill-opacity 0.6 $RECTANGLES"
+DRAW_RECT="fill black fill-opacity 0.6 rectangle $((SCREEN_X_SHIFT)),$TOP $((X_TEXT + WIDTH_TEXT + WIDTH_INDICATOR - 1)),$((TOP + HEIGHT))"
+DRAW_ARC="fill black fill-opacity 0.6 arc $((X_TEXT + WIDTH_TEXT + WIDTH_INDICATOR / 2)),$TOP $((SCREEN_X_SHIFT + WIDTH + HEIGHT_HALF)),$((TOP + HEIGHT)) 270,90"
 
 # -----------------------------------------------------------------------------
 
@@ -59,12 +60,12 @@ if [ -z $STATIC ]; then
 
   echo "Decorating screenshot..."
   # Pixelate it and add shape
-  convert $IMAGE -scale 10% -scale 1000% -draw "$DRAW" $IMAGE
+  convert $IMAGE -scale 10% -scale 1000% -draw "$DRAW_ARC" -draw "$DRAW_RECT" $IMAGE
 else
   if [ ! -f "$IMAGE" ]; then
     # Add shape
     echo "Decorating picture '$STATIC'..."
-    convert $STATIC -draw "$DRAW" $IMAGE
+    convert $STATIC -draw "$DRAW_ARC" $IMAGE
   fi
 fi
 
@@ -83,8 +84,6 @@ TRANSPARENT="00000000"
 
 echo "Launching i3lock-color..."
 i3lock \
-  --fill \
-  --screen=0 \
   --nofork \
   --ignore-empty-password \
   --no-modkey-text \
