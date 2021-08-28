@@ -212,7 +212,7 @@ dotfiles:
 profiles:
   # Base =====================================================================
 
-  base_ssh:
+  ssh:
     dotfiles:
       - ssh_config
       - ssh_simonecingano
@@ -226,7 +226,6 @@ profiles:
     include:
       - zsh
       - bash
-      - base_ssh
     dotfiles:
       - locale
       - irbrc

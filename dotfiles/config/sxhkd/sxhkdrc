@@ -42,7 +42,7 @@ alt + x ; {c,s,e,n}
 
 # Session menu
 alt + p
-  $HOME/.scripts/rofi-power.zsh
+  $HOME/.scripts/power.zsh
 
 # Lock session
 alt + l
@@ -58,17 +58,19 @@ alt + k
 
 # Clipboard (with greenclip)
 alt + c
-  $HOME/.scripts/rofi-greenclip.zsh
-#alt + shift + c
-#  $HOME/.scripts/clear-greenclip.zsh
+  $HOME/.scripts/clipboard.zsh
+alt + ctrl + c
+  $HOME/.scripts/clipboard.zsh -c
 
 # Calculator (with qalc)
 alt + shift + c
-  $HOME/.scripts/rofi-calc.zsh
+  $HOME/.scripts/calculator.zsh
+alt + shift + ctrl + c
+  $HOME/.scripts/calculator.zsh -c
 
 # Locate files (with locate)
-alt + f
-  $HOME/.scripts/rofi-locate.zsh
+alt + s
+  $HOME/.scripts/locate.zsh
 
 # Screenshot (with scrot+xclip)
 Print
@@ -108,9 +110,11 @@ XF86AudioMute
 # == RELOAD ===================================================================
 
 # quit/restart bspwm
-alt + shift + {q,r}
-  bspc {quit,wm -r}
+alt + shift + r
+  bspc wm -r
 
+alt + ctrl + shift + r
+  bspc quit
 
 # close and kill
 alt + {_,shift + }q
@@ -195,7 +199,7 @@ alt + h
   bspc node --flag hidden=on
 
 alt + shift + h
-  $HOME/.config/bspwm/scripts/rofi-show.zsh
+  $HOME/.config/bspwm/scripts/hiddens.zsh
 #  bspc node $(bspc query -N -n .hidden.window | head -n 1) --flag hidden=off
 
 

@@ -13,7 +13,8 @@
 # determine window class (last string in output):
 #   xprop | grep CLASS
 # see what combination are free:
-#   cat $HOME/.config/i3/config | grep 'bindsym' | awk '{$1=$1};1' | uniq | LC_ALL=C sort
+#   cat ~/.config/i3/config | grep '^bindsym $mod+' | sed 's/bindsym //'| sort`
+#   cat ~/.config/i3/config | grep '^bindsym \$mod+[a-z] ' | sed 's/bindsym //'| sort`
 
 
 

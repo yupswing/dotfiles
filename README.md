@@ -33,6 +33,7 @@ pip3 install -r ~/dotfiles/dotdrop/requirements.txt
 
 ```sh
 dotinstall # Install files from repo to local
+dotinstall -p ssh # install ssh files (or any other profile for the matter)
 dotupdate # Update repo with local files
 dotcompare # Compare differences between repo and local files
 ```
@@ -96,7 +97,7 @@ for i in $(seq 1 10); do /usr/bin/time -f %E $SHELL -i -c exit; done
 
 Using
 
-- **i3** windows manager
+- **bspwm** windows manager (also an old configuration with **i3**)
 - **wal** colors (pywal)
 - **feh** background
 - **picom** compositor
@@ -107,7 +108,7 @@ Using
 - **xclip** clipboard tool
 - **greenclip** clipboard
 - **kitty** terminal
-- **i3lock** screenlock (with `scrot`)
+- **i3lock-color** screenlock (with `scrot`)
 
 ## Theme
 
@@ -119,18 +120,19 @@ Using
 ## Shortcuts
 
 to see them all
-
-- `cat ~/.config/i3/config | grep '^bindsym $mod+' | sed 's/bindsym //'| sort`
-
-to see only one letter
-
-- `cat ~/.config/i3/config | grep '^bindsym \$mod+[a-z] ' | sed 's/bindsym //'| sort`
+`less ~/.config/sxhkd/sxhkdrc`
 
 ```
 mod ............................... using ALT as super
 
 alt + enter ....................... run terminal (kitty)
-alt + q ........................... close app
+
+alt + q ........................... close window
+alt + shift + q ................... kill window
+
+alt + shift + r ................... reload bspwm
+alt + ctrl + shift + r ............ quit bspwm
+alt + shift + s ................... reload sxhkd
 
 alt + space ....................... run application menu
 alt + shift + space ............... run command menu
@@ -138,53 +140,41 @@ alt + tab ......................... window menu
 alt + p ........................... power menu
 alt + s ........................... search menu (mlocate)
 alt + c ........................... clipboard menu (greenclip)
-alt + j ........................... clear clipboard (greenclip)
+alt + ctrl + c .................... clear clipboard (greenclip)
 alt + shift + c ................... calculator (qalc)
 
-alt + l ........................... lock screen (i3lock)
+alt + l ........................... lock screen (i3lock-color)
 alt + k ........................... change keyboard layout (xkb-switch)
 
 print ............................. screenshot screen (file+clipboard)
-shift + print / alt + y ........... screenshot area (file+clipboard)
+shift + print ..................... screenshot area (file+clipboard)
 ctrl + print ...................... open screenshot folder (~/Pictures/screenshots)
 
-alt + [1-9] ....................... move to workspace
-alt + shift + [1-9] ............... move window to workspace
-alt + t ........................... focus urgent
-alt + [arrows] .................... focus in that direction
-alt + shift + [arrows] ............ move window in that direction
-alt + a ........................... focus parent
-alt + shift + a ................... focus child
-alt + g ........................... toggle focus between floating and tiling
+alt + {1-9,0,-,=,],\} ............. move to workspace
+alt + shift + {1-9,0,-,=,],\} ..... move window to workspace
+alt + ` ........................... focus urgent
+alt + {arrows} .................... focus in that direction
+alt + shift + {arrows} ............ move window in that direction
 
-alt + f ........................... toggle fullscreen
-alt + shift + f ................... toggle floating
+alt + ctrl + {arrows} ............. preselect direction
+alt + ctrl + space ................ reset preselection
 
-alt + backspace ................... move container to scratchpad
-alt + ` ........................... show scratchpad
+alt + h ........................... hide window
+alt + shift + h ................... show hidden windows and choose what to show (rofi)
 
-alt + / ........................... goto workspace IM (rambox)
-alt + * ........................... goto workspace MAIL (thunderbird)
-alt + shift + * ................... goto workspace SPOTIFY
+alt + m ........................... toggle between tiled and monocle
 
-alt + - ........................... show simplenote (in scratchpad)
-alt + + ........................... show enpass (in scratchpad)
+alt + s ; t ....................... tiled
+alt + s ; p ....................... pseudo-tiled
+alt + s ; f ....................... floating
+alt + s ; s ....................... fullscreen
 
-alt + v ........................... vertical split
-alt + h ........................... horizontal split
-alt + d ........................... toggle split layout
-alt + x ........................... tabbed layout
-alt + z ........................... stacked layout
-```
+alt + {PageUp, PageDown} .......... rotate windows
 
-## Dunst
-
-Shortcuts
-
-```
-alt + n ........................... show previous notitication
-alt + m / click ................... hide current notification
-alt + shift + m / left click ...... hide all notifications
+alt + x ; c ....................... launch chrome
+alt + x ; s ....................... launch spotify
+alt + x ; e ....................... launch enpass
+alt + x ; n ....................... launch nemo
 ```
 
 ## Kitty
@@ -270,7 +260,7 @@ Very basic config taken from https://github.com/amix/vimrc
 
 # VSCode sync
 
-I keep settings in a `gist` (details in Enpass) using the extension `Settings Sync`
+I keep settings in a private `gist` using the extension `Settings Sync`
 
 # Sensitive files
 
