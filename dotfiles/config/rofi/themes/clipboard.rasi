@@ -1,0 +1,8 @@
+@import "base"
+
+* {
+}
+
+window {
+  padding: 30px;
+}

@@ -240,22 +240,42 @@ Very basic config taken from https://github.com/amix/vimrc
 `wal --theme default`
 
 ```
-- color0    black   #000000
+- color0    black   #000000 // 0 -> DARK
 - color8    black   #767676
-- color1    red     #cc0403
+- color1    red     #cc0403 // 1 -> DANGER
 - color9    red     #f2201f
-- color2    green   #19cb00
+- color2    green   #19cb00 // 2 -> SUCCESS
 - color10   green   #23fd00
-- color3    yellow  #cecb00
+- color3    yellow  #cecb00 // 3 -> WARNING, SECONDARY, ACCENT
 - color11   yellow  #fffd00
-- color4    blue    #0d73cc
+- color4    blue    #0d73cc // 4 -> PRIMARY
 - color12   blue    #1a8fff
 - color5    magenta #cb1ed1
 - color13   magenta #fd28ff
-- color6    cyan    #0dcdcd
+- color6    cyan    #0dcdcd // 6 -> INFO
 - color14   cyan    #14ffff
-- color7    white   #dddddd
+- color7    white   #dddddd // 7 -> WHITE
 - color15   white   #ffffff
+```
+
+```
+    primary = #01787D
+    red = #EC407A
+    red-dark = #A12C53
+    pink = #EC7875
+    purple = #BA68C8
+    blue = #42A5F5
+    cyan = #4DD0E1
+    teal = #00B19F
+    green = #61C766
+    lime = #B9C244
+    yellow = #FDD835
+    amber = #FBC02D
+    # orange = #F19D3A
+    brown = #AC8476
+    indigo = #6C77BB
+    gray = #9E9E9E
+    blue-gray = #6D8895
 ```
 
 # VSCode sync

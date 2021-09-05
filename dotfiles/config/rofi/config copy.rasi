@@ -1,0 +1,185 @@
+/**
+ * rofi
+ * yupswing theme
+ * {{@@ header() @@}}
+ * see: https://github.com/davatorium/rofi/blob/next/doc/rofi-theme.5.markdown
+ **/
+
+configuration {
+  theme: "~/.cache/wal/colors.rasi"; /* <= just colors (compile with `wal -R`) */
+  display-ssh: "";
+  display-run: ""; /* command */
+  display-drun: ""; /* application.desktop */
+  display-window: "";
+  display-combi: "";
+  /* show-icons: false; # SET BY SINGLE RUN # */
+  /* width: 60; */
+  /* lines: 10; */
+  /* columns: 1; */
+  /* bw: 0; */
+  eh: 1;
+  /* color-enabled: true; */
+  /* separator-style: "none"; */
+  location: 2;
+  yoffset: 80;
+  xoffset: 0;
+  fixed-num-lines: false;
+
+  /* #THEME_FONT */
+  /*font: "IBM Plex Sans 14";*/
+  font: "FiraCode Nerd Font 16";
+
+  timeout {
+    delay:  15;
+    action: "kb-cancel";
+  }
+}
+
+/* * {
+  background: #333333dd;
+  background-color: transparent;
+  foreground: #eeeeee;
+  accent: #550080;
+  scrollbar: #55008033;
+  spacing: 2;
+  border: 0;
+  text-color: @foreground;
+}
+
+window {
+  padding: 0;
+  %@@ if not COMPOSITOR_FANCY @@%
+  background-color: @background;
+  transparency: "screenshot";
+  %@@ endif @@%
+  border: 3px;
+  border-radius: 1em;
+} */
+
+* {
+  {%@@ if COMPOSITOR @@%}
+  background: #33333300;
+  {%@@ else @@%}
+  background: #333333dd;
+  {%@@ endif @@%}
+  background-color: transparent;
+  foreground: #eeeeee;
+  accent: #550080;
+  scrollbar: #55008033;
+  spacing: 2;
+  text-color: @foreground;
+}
+
+window {
+  padding: 0;
+  {%@@ if COMPOSITOR @@%}
+  {%@@ else @@%}
+  transparency: "screenshot";
+  {%@@ endif @@%}
+  background-color: @background;
+  border: 3px;
+  border-radius: {{@@ ROUNDED @@}}px;
+}
+
+mainbox {
+  padding: 0;
+  margin: 0;
+}
+
+message {
+  padding: 2em;
+}
+
+error-message {
+  padding: 2em;
+}
+
+/* textbox {
+} */
+
+listview {
+  padding: 0;
+  scrollbar: false;
+  spacing: 0;
+  fixed-height: 0;
+  border: 0;
+}
+
+element {
+  padding: 0.5em 2em;
+}
+
+element-icon {
+  size: 32px;
+}
+
+element selected {
+  background-color: @accent;
+}
+
+/*
+element normal.normal
+element normal.urgent
+element normal.active
+element selected.normal
+element selected.urgent
+element selected.active
+element alternate.normal
+element alternate.urgent
+element alternate.active
+*/
+
+scrollbar {
+  width: 4px;
+  padding: 0;
+  handle-width: 8px;
+  border: 0;
+  handle-color: @scrollbar;
+}
+
+mode-switcher {
+  border-color: @accent;
+  border: 2px;
+}
+
+/*
+button {
+    spacing: 0;
+}
+button selected {
+    background-color: @accent;
+}
+*/
+
+inputbar {
+  padding: 1em;
+  spacing: 0;
+  children: [ prompt, textbox-prompt-colon, entry, overlay, case-indicator ];
+}
+
+prompt {
+  spacing: 0;
+  font: "Font Awesome 5 Free 24";
+}
+
+textbox-prompt-colon {
+  margin: 0 0.5em;
+  expand: false;
+  text-color: inherit;
+  str: "";
+}
+
+entry {
+  padding: 3px 0 0 0;
+  spacing: 0;
+}
+
+case-indicator {
+  spacing: 0;
+}
+
+error-message {
+  background-color: rgba (0, 0, 0, 0%);
+}
+
+/* vim:ft=css */

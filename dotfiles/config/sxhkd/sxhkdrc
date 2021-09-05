@@ -42,7 +42,7 @@ alt + x ; {c,s,e,n}
 
 # Session menu
 alt + p
-  $HOME/.scripts/power.zsh
+  $HOME/.scripts/rofi-power.zsh
 
 # Lock session
 alt + l
@@ -58,30 +58,32 @@ alt + k
 
 # Clipboard (with greenclip)
 alt + c
-  $HOME/.scripts/clipboard.zsh
+  $HOME/.scripts/clipboard.zsh --rofi
 alt + ctrl + c
-  $HOME/.scripts/clipboard.zsh -c
+  $HOME/.scripts/clipboard.zsh --clear
 
 # Calculator (with qalc)
 alt + shift + c
-  $HOME/.scripts/calculator.zsh
+  $HOME/.scripts/calculator.zsh --rofi
 alt + shift + ctrl + c
-  $HOME/.scripts/calculator.zsh -c
+  $HOME/.scripts/calculator.zsh --clear
 
 # Locate files (with locate)
 alt + s
-  $HOME/.scripts/locate.zsh
+  $HOME/.scripts/rofi-locate.zsh
 
 # Screenshot (with scrot+xclip)
 Print
   $HOME/.scripts/screenshot.zsh
 # Screenshot of an area (with scrot+xclip)
 shift + Print
-  $HOME/.scripts/screenshot.zsh -s
+  $HOME/.scripts/screenshot.zsh --select
 # Open screenshot folder
 ctrl + Print
-  xdg-open "$HOME/Pictures/screenshots"
+  $HOME/.scripts/screenshot.zsh --open
 
+alt + n
+  dunstctl history-pop
 
 
 # == MEDIA KEYS ===============================================================

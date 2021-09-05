@@ -7,12 +7,15 @@ fi
 
 cd $scrot_dir
 case "$1" in
---desk | -d | $NULL)
+--desktop | -d | $NULL)
   scrot $scrot_file -e 'xclip -selection clipboard -t image/png -i $f && notify-send "screenshot taken $f"'
   ;;
 --select | -s)
   # notify-send 'select an area for the screenshot' &
   scrot -s $scrot_file -e 'xclip -selection clipboard -t image/png -i $f && notify-send "screenshot taken $f"'
+  ;;
+--open | -o)
+  xdg-open $scrot_dir
   ;;
 esac
 exit 0

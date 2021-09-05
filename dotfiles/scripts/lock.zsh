@@ -83,7 +83,7 @@ V=$(color 5 99) # verifying
 TRANSPARENT="00000000"
 
 # Pause notifications
-pkill -xu $EUID -USR1 dunst
+dunstctl set-paused true
 
 echo "Launching i3lock-color..."
 i3lock \
@@ -135,7 +135,7 @@ i3lock \
   --date-align=1
 
 # Unpause notifications
-pkill -xu $EUID -USR2 dunst
+dunstctl set-paused false
 
 if [ -z $STATIC ]; then
   # Delete old image (if present)
