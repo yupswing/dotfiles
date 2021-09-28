@@ -9,7 +9,7 @@ PIPE_SERVICES=(
 )
 
 if [[ $1 == "pulse" ]]; then
-  doas pacman -S pulseaudio pulseaudio-equalizer pulseaudio-bluetooth
+  sudo pacman -S pulseaudio pulseaudio-equalizer pulseaudio-bluetooth
   for s in ${PIPE_SERVICES}; do
     systemctl stop --user ${s}
     systemctl disable --user ${s}
@@ -18,8 +18,8 @@ if [[ $1 == "pulse" ]]; then
   systemctl enable --user --now pulseaudio.service
 
 elif [[ $1 == "pipe" ]]; then
-  doas pacman -Rcns pulseaudio-equalizer
-  doas pacman -S pipewire pipewire-pulse
+  sudo pacman -Rcns pulseaudio-equalizer
+  sudo pacman -S pipewire pipewire-pulse
   for s in ${PIPE_SERVICES}; do
     systemctl enable --now --user ${s}
   done
