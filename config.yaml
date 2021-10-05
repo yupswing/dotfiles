@@ -20,8 +20,8 @@ config:
 variables:
   # --- Hosts
   HOME_HOST: FoxPC
-  WORK_HOST: simodotpc # archfox_work
-  VM_HOST: archsimo # archfox_vbox"
+  WORK_HOST: FoxPc2
+  VM_HOST: FoxVmArch
   # --- Defaults (adds .desktop to defaults)
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
   DEFAULT_FILE_MANAGER: nemo
@@ -294,11 +294,11 @@ profiles:
 
   # Hosts ====================================================================
 
-  FoxPC: # Home (windows)
+  FoxPc: # Home (windows)
     include:
       - base_line
 
-  archsimo: # Work (Virtualbox)
+  FoxVmArch: # Work (Virtualbox)
     include:
       - base_line
       - base_gui
@@ -308,7 +308,7 @@ profiles:
       DEFAULT_BROWSER: google-chrome
       COMPOSITOR: false
 
-  simodotpc: # Work (Office)
+  FoxPc2: # Work (Laptop)
     include:
       - base_line
       - base_gui
