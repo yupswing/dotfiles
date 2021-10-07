@@ -54,7 +54,7 @@ alt + Tab
 
 # Change keyboard layout (with xkb-switch)
 alt + k
-  xkb-switch -n
+  xkb-switch -n && notify-send "$(xkb-switch) keyboard layout "
 
 # Clipboard (with greenclip)
 alt + c
