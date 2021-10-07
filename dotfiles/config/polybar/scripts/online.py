@@ -30,6 +30,7 @@ import sys
 
 INTERVAL = 60
 # ICON = "󰀃" # font-awesome
+# ICON = "" # feather
 ICON = "" # feather
 COLOR_UPDATE = "#f19d3a"
 COLOR_OFFLINE = "#f92672"
