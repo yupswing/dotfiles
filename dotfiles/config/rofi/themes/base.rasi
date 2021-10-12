@@ -27,64 +27,70 @@ configuration {
   }
 }
 
-@import "~/.cache/wal/colors.rasi"
 
-* {
-  {%@@ if COMPOSITOR @@%}
-  background: #33333300;
-  {%@@ else @@%}
-  background: #333333dd;
-  {%@@ endif @@%}
-  background-color: transparent;
-  accent: @secondary;
-  scrollbar: @primary;
-  spacing: 2;
-  text-color: @foreground;
-
-  active-background: @background;
-  active-foreground: @foreground;
-  normal-background: @background;
-  normal-foreground: @foreground;
-  urgent-background: @danger;
-  urgent-foreground: @foreground;
-
-  alternate-active-background: @background;
-  alternate-active-foreground: @foreground;
-  alternate-normal-background: @background;
-  alternate-normal-foreground: @foreground;
-  alternate-urgent-background: @danger;
-  alternate-urgent-foreground: @foreground;
-
-  /* #THEME_FOREGROUND_COLOR */
-  selected-active-background: @accent;
-  selected-active-foreground: @background;
-  selected-normal-background: @accent;
-  selected-normal-foreground: @background;
-  selected-urgent-background: @danger;
-  selected-urgent-foreground: @background;
-
-  /* background-color: @background; */
-  border-color: @primary;
-
-}
+// @import "~/.cache/wal/colors.rasi"
 
 window {
-  padding: 0;
-  {%@@ if COMPOSITOR @@%}
-  {%@@ else @@%}
-  transparency: "screenshot";
-  {%@@ endif @@%}
-  background-color: @background;
-  border: 3px;
-  border-radius: {{@@ ROUNDED @@}}px;
+  padding: 30px;
 }
 
-scrollbar {
-  border: 0;
-  padding: 2px;
 
-  // background-color: color
-  handle-width: 2px;
-  handle-color: @scrollbar;
-  // border-color: color
-}
+// * {
+//   {%@@ if COMPOSITOR @@%}
+//   background: #33333300;
+//   {%@@ else @@%}
+//   background: #333333dd;
+//   {%@@ endif @@%}
+//   background-color: transparent;
+//   accent: @secondary;
+//   scrollbar: @primary;
+//   spacing: 2;
+//   text-color: @foreground;
+
+//   active-background: @background;
+//   active-foreground: @foreground;
+//   normal-background: @background;
+//   normal-foreground: @foreground;
+//   urgent-background: @danger;
+//   urgent-foreground: @foreground;
+
+//   alternate-active-background: @background;
+//   alternate-active-foreground: @foreground;
+//   alternate-normal-background: @background;
+//   alternate-normal-foreground: @foreground;
+//   alternate-urgent-background: @danger;
+//   alternate-urgent-foreground: @foreground;
+
+//   /* #THEME_FOREGROUND_COLOR */
+//   selected-active-background: @accent;
+//   selected-active-foreground: @background;
+//   selected-normal-background: @accent;
+//   selected-normal-foreground: @background;
+//   selected-urgent-background: @danger;
+//   selected-urgent-foreground: @background;
+
+//   /* background-color: @background; */
+//   border-color: @primary;
+
+// }
+
+// window {
+//   padding: 0;
+//   {%@@ if COMPOSITOR @@%}
+//   {%@@ else @@%}
+//   transparency: "screenshot";
+//   {%@@ endif @@%}
+//   background-color: @background;
+//   border: 3px;
+//   border-radius: {{@@ ROUNDED @@}}px;
+// }
+
+// scrollbar {
+//   border: 0;
+//   padding: 2px;
+
+//   // background-color: color
+//   handle-width: 2px;
+//   handle-color: @scrollbar;
+//   // border-color: color
+// }

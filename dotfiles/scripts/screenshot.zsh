@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 scrot_dir=$HOME/Pictures/screenshots/
 scrot_file='%Y-%m-%dT%H:%M:%S_$wx$h.png'
 

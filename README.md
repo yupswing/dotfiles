@@ -130,9 +130,9 @@ alt + enter ....................... run terminal (kitty)
 alt + q ........................... close window
 alt + shift + q ................... kill window
 
-alt + shift + r ................... reload bspwm
+alt + shift + r ; s ............... reload sxhkd
+alt + shift + r ; b ............... reload bspwm
 alt + ctrl + shift + r ............ quit bspwm
-alt + shift + s ................... reload sxhkd
 
 alt + space ....................... run application menu
 alt + shift + space ............... run command menu

@@ -13,7 +13,7 @@
 # == ESSENTIALS ===============================================================
 
 # reload sxhkd
-alt + shift + s
+alt + shift + r ; s
   pkill -USR1 -x sxhkd
 
 # terminal emulator
@@ -70,7 +70,7 @@ alt + shift + ctrl + c
 
 # Locate files (with locate)
 alt + s
-  $HOME/.scripts/rofi-locate.zsh
+  $HOME/.scripts/locate.zsh
 
 # Screenshot (with scrot+xclip)
 Print
@@ -112,7 +112,7 @@ XF86AudioMute
 # == RELOAD ===================================================================
 
 # quit/restart bspwm
-alt + shift + r
+alt + shift + r ; b
   bspc wm -r
 
 alt + ctrl + shift + r
@@ -140,11 +140,11 @@ alt + m
 # == STATE/FLAGS ==============================================================
 
 # set the window state
-alt + s ; {t,p,f,s}
+alt + shift + s ; {t,p,f,s}
   bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 # set the node flags
-alt + f ; {m,l,s,p}
+alt + shift + f ; {m,l,s,p}
   bspc node -g {marked,locked,sticky,private}
 
 
