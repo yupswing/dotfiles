@@ -20,7 +20,6 @@ selected_index=$(echo ${(j:\n:)list} | rofi -dmenu -format i -p )
 # Retrive the WINDOW_ID of the user choice
 # index was zerobased, but we use sed -n so we want it onebased
 wid=${nodes[$((selected_index + 1))]}
-# echo $wid
 
 # Show the hidden window
 bspc node $wid -n focused -g hidden=off -f
