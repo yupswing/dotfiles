@@ -111,9 +111,9 @@ dotfiles:
   pryrc:
     src: pryrc
     dst: ~/.pryrc
-  bashtop:
-    src: config/bashtop
-    dst: ~/.config/bashtop
+  btop:
+    src: config/btop
+    dst: ~/.config/btop
   bat:
     src: config/bat
     dst: ~/.config/bat
@@ -233,6 +233,7 @@ profiles:
       - locale
       - irbrc
       - pryrc
+      - btop
       - nvim
       - bin
       - scripts
