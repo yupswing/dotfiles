@@ -5,6 +5,7 @@
 
 alias ra='rails'
 alias rc='rails console'
+alias rt='rails spec'
 alias rcc='./bin/spring stop && rails console'
 alias rs='rails server'
 alias rss='./bin/spring stop && rails server'
