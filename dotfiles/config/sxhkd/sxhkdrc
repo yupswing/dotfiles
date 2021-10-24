@@ -107,12 +107,11 @@ XF86AudioMute
 
 # == DUNST ====================================================================
 
-alt + {,shift} + m
-  dunstctl {close,close-all}
+# alt + {,shift} +
+#   dunstctl {close,close-all}
 
 alt + n
   dunstctl history-pop
-
 
 
 # =============================================================================
