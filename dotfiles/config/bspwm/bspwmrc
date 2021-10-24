@@ -16,7 +16,7 @@ if [[ MONITORS -eq 1 ]]; then
   bspc monitor -d float im mail music web code term 4 5 6 7 8 9 10
 else
   # front
-  bspc monitor HDMI-1-0 -d float im code web 5 7 9
+  bspc monitor HDMI-1-0 -d float im web code 5 7 9
   # left
   bspc monitor eDP-1 -d mail music term 4 6 8 10
 fi
