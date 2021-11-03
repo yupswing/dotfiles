@@ -7,7 +7,7 @@ export ZINIT_HOME=$YUPZSHRC_HOME/.zinit/bin
 # Install zinit if no zinit
 if [[ ! -e $ZINIT_HOME ]]; then
   echo "*** Installing zinit"
-  git clone https://github.com/zdharma/zinit $ZINIT_HOME
+  git clone https://github.com/zdharma-continuum/zinit $ZINIT_HOME
 fi
 
 # -------------------------------------------------------------------------- #
@@ -21,7 +21,7 @@ autoload -Uz _zinit
 
 # zsh-users
 zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # oh-my-zsh
 zinit snippet OMZ::plugins/globalias

@@ -1,0 +1,28 @@
+#! /usr/bin/env zsh
+
+if [[ "$(whoami)" != "root" ]]; then
+  print "You need root privileges to run this!"
+  exit 1
+fi
+
+if [[ $# != 1 ]]; then
+  print "Need to specify the name!"
+  exit 1
+fi
+
+# Dump the cd:
+dd if=/dev/sr0 of=${1} status=progress
+
+# If everything went right:
+if [[ 0 == $? ]]; then
+  # Attempt to mount it, list the files and umount:
+  DMP=/mnt/iso
+  mkdir -p "${DMP}"
+
+  print ""
+  mount -t auto -o ro "${1}" "${DMP}" && ls --color -F -b "${DMP}" && umount "${DMP}"
+  print ""
+
+  # Open the tray:
+  eject
+fi
