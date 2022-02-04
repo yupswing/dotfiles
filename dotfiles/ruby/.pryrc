@@ -1,3 +1,8 @@
+# vim: set ft=ruby
+
+# {{@@ header() @@}}
+# FILE: ~/.pryrc
+
 # ------------------------------------------------------------------------------
 #          FILE:  .pryrc
 #   DESCRIPTION:  IRB configuration file
@@ -24,8 +29,8 @@ def rails_prompt
   app_env =
     if Rails.env.production?
       puts "\n\e[1m\e[41mWARNING: YOU ARE USING RAILS CONSOLE IN PRODUCTION!\n" \
-            "Changing data can cause serious data loss.\n" \
-            "Make sure you know what you're doing.\e[0m\e[22m\n\n"
+           "Changing data can cause serious data loss.\n" \
+           "Make sure you know what you're doing.\e[0m\e[22m\n\n"
       "\e[31mproduction\e[0m" # red
     elsif Rails.env.development?
       "\e[32mdev\e[0m" # green
@@ -243,6 +248,6 @@ end
 
 class Hash
   def self.toy(n = 10)
-    Hash[Array.toy(n).zip(Array.toy(n) { |c| (96 + (c + 1)).chr })]
+    Array.toy(n).zip(Array.toy(n) { |c| (96 + (c + 1)).chr }).to_h
   end
 end

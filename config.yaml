@@ -105,9 +105,12 @@ dotfiles:
   nvim:
     src: config/nvim
     dst: ~/.config/nvim
-  irbrc:
-    src: irbrc
-    dst: ~/.irbrc
+  ruby:
+    src: ruby
+    dst: ~/
+  rubocop:
+    src: rubocop.yml
+    dst: ~/.rubocop.yml
   pryrc:
     src: pryrc
     dst: ~/.pryrc
@@ -231,8 +234,7 @@ profiles:
       - bash
     dotfiles:
       - locale
-      - irbrc
-      - pryrc
+      - ruby
       - btop
       - nvim
       - bin

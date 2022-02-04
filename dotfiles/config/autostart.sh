@@ -62,6 +62,6 @@ sleep 1
 # launch google-chrome-stable
 launch rambox
 launch discord
-launch linphone
+# launch linphone
 launch thunderbird
 launch code

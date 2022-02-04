@@ -1,0 +1,15 @@
+# {{@@ header() @@}}
+# FILE: ~/.rubocop.yml
+
+AllCops:
+  Exclude:
+    - "docs"
+  UseCache: false
+  DefaultFormatter: progress
+  DisplayStyleGuide: true
+  DisplayCopNames: false
+  TargetRubyVersion: 3.1
+  NewCops: enable
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
