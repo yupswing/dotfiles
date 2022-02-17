@@ -48,7 +48,7 @@ zinit light romkatv/powerlevel10k
 
 # # -------------------------------------------------------------------------- #
 
-function zinit_update() {
+function update-zinit() {
   echo "\n*** Update zinit"
   zinit self-update
 

@@ -3,7 +3,7 @@ if [ -f "/etc/arch-release" ]; then
   alias y=paru
   alias pac=pacman
 
-  function pulseagain() {
+  function pulse-again() {
     pulseaudio -k && pulseaudio --start && /home/simo/.config/polybar/launch.zsh
     \killall -v Discord
     \killall -v spotify

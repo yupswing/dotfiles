@@ -1,0 +1,94 @@
+#! /usr/bin/env zsh
+
+# Root check:
+if [[ ! ${UID} == 0 ]]; then
+  print "You need root privileges to run this."
+  exit -1
+fi
+
+# Dependencies check:
+for D in curl efibootmgr sed grep umount mount; do
+  if [[ ! $(command -v ${D}) ]]; then
+    print "Command not found: ${D}"
+    exit -1
+  fi
+done
+
+# Utility cleanup function.
+function cleanup() {
+  umount "${EFI}" &>/dev/null
+  rmdir "${EFI}"
+  rm "/tmp/zfsbootmenu.EFI" &>/dev/null
+  unset DEPS d EFI EBM EFI_DEVICE ZBM_PATH DATA LATEST URL INSTALLED
+}
+
+# Temporary EFI mountpoint:
+EFI="/root/efi_$(date "+%Y%m%d%H%M%S")"
+mkdir "${EFI}"
+
+# Get zfsbootmenu's entry:
+EBM=$(efibootmgr --verbose | grep -i zfsbootmenu.EFI | sed -E 's,\\,\\\\,g')
+
+# Get EFI's partuuid:
+EFI_DEVICE="/dev/disk/by-partuuid/$(print ${EBM} | sed -E 's/(.*GPT,|,.*)//g')"
+
+# Get ZBM's path inside the EFI partition:
+ZBM_PATH="${EFI}$(print ${EBM} | sed -E 's,(\\zfsbootmenu\.EFI\).*|.*\(),,g' | sed -E 's,\\,/,g')"
+
+# Mount EFI:
+umount "${EFI_DEVICE}" &>/dev/null
+mount "${EFI_DEVICE}" "${EFI}" &>/dev/null
+if [[ ! 0 == $? ]]; then
+  print "Failed to mount ${EFI_DEVICE}."
+  cleanup
+  exit -2
+fi
+
+# Obtain version data from git:
+DATA=$(curl --silent "https://api.github.com/repos/zbm-dev/zfsbootmenu/releases/latest")
+
+# If curl fails there's no point in moving forward:
+if [[ ! 0 == $? ]]; then
+  print "Failed to fetch data from git."
+  cleanup
+  exit -3
+fi
+
+# Parse git data:
+LATEST=$(print ${DATA} | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+URL=$(print ${DATA} | grep browser_download_url | grep -e ".*release-.*EFI.*" | sed -E 's/(^.* "|".*$)//g')
+
+# Find out the installed version if available:
+if [[ -f "${EFI}/EFI/zbm/version" ]]; then
+  INSTALLED=$(cat "${ZBM_PATH}/version")
+fi
+
+# Print some info:
+print "Latest version: ${LATEST}"
+print "Installed version: ${INSTALLED}"
+
+# Only update if necessary:
+if [[ ! ${INSTALLED} == ${LATEST} ]]; then
+  # Download ZBM in a temporary folder:
+  rm "/tmp/zfsbootmenu.EFI" &>/dev/null
+  curl -L "${URL}" -o "/tmp/zfsbootmenu.EFI"
+
+  # If the download fails just stop:
+  if [[ ! 0 == $? ]]; then
+    print "Failed to download latest ZBM."
+    cleanup
+    exit -4
+  fi
+
+  # Backup the previous version:
+  rm "${ZBM_PATH}/zfsbootmenu.EFI.old" &>/dev/null
+  mv "${ZBM_PATH}/zfsbootmenu.EFI" "${ZBM_PATH}/zfsbootmenu.EFI.old"
+  print "${INSTALLED}" >|"${ZBM_PATH}/version.old"
+
+  # Move in the new version:
+  mv "/tmp/zfsbootmenu.EFI" "${ZBM_PATH}/zfsbootmenu.EFI"
+  print "${LATEST}" >|"${ZBM_PATH}/version"
+fi
+
+# Final touches:
+cleanup

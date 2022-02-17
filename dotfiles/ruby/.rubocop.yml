@@ -8,7 +8,7 @@ AllCops:
   DefaultFormatter: progress
   DisplayStyleGuide: true
   DisplayCopNames: false
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.0
   NewCops: enable
 
 Style/FrozenStringLiteralComment:

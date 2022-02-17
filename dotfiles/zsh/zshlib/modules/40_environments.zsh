@@ -55,7 +55,7 @@ fi
 
 # ----------------------------------------------------------------------------
 
-function updatenv() {
+function update-env() {
   (( $+commands[nodenv] )) && echo "\n=== NODENV Update ===" && nodenv update
   (( $+commands[rbenv] )) && echo "\n=== RBENV Update ===" && rbenv update
   (( $+commands[pyenv] )) && echo "\n=== PYENV Update ===" && pyenv update

@@ -9,18 +9,18 @@ require 'rubygems'
 require 'date'
 require 'time'
 
-ANSI = Hash[RESET: "\e[0m",
-            BOLD: "\e[1m",
-            UNDERLINE: "\e[4m",
-            LGRAY: "\e[0;37m",
-            GRAY: "\e[0;90m",
-            RED: "\e[31m",
-            GREEN: "\e[32m",
-            YELLOW: "\e[33m",
-            BLUE: "\e[34m",
-            MAGENTA: "\e[35m",
-            CYAN: "\e[36m",
-            WHITE: "\e[37m"]
+ANSI = { RESET: "\e[0m",
+         BOLD: "\e[1m",
+         UNDERLINE: "\e[4m",
+         LGRAY: "\e[0;37m",
+         GRAY: "\e[0;90m",
+         RED: "\e[31m",
+         GREEN: "\e[32m",
+         YELLOW: "\e[33m",
+         BLUE: "\e[34m",
+         MAGENTA: "\e[35m",
+         CYAN: "\e[36m",
+         WHITE: "\e[37m" }
 
 # Build a simple colorful IRB prompt
 IRB.conf[:PROMPT][:SIMPLE_COLOR] = {
@@ -37,9 +37,11 @@ IRB.conf[:PROMPT][:SIMPLE_COLOR] = {
 # IRB_START_TIME = Time.now
 
 # Load the readline module.
-IRB.conf[:USE_READLINE] = true
+# disable autocomple if enabled
+# IRB.conf[:USE_READLINE] = true
+
 # Replace the irb(main):001:0 with a simple >>
-IRB.conf[:PROMPT_MODE]  = :SIMPLE_COLOR
+IRB.conf[:PROMPT_MODE] = :SIMPLE_COLOR
 # Tab completion
 require 'irb/completion'
 # Automatic indentation
@@ -78,7 +80,8 @@ if ENV['RAILS_ENV']
   rails_root = File.basename(Dir.pwd)
 
   # #{ANSI[:GREEN]}#{rails_root}
-  prompt = "#{ANSI[:BOLD]}rails#{ANSI[:GREEN]}[#{rails_env.sub('production', 'prod').sub('development', 'dev')}]#{ANSI[:RESET]}"
+  prompt = "#{ANSI[:BOLD]}rails#{ANSI[:GREEN]}[#{rails_env.sub('production', 'prod').sub('development',
+                                                                                         'dev')}]#{ANSI[:RESET]}"
   IRB.conf[:PROMPT][:RAILS] = {
     PROMPT_I: "#{prompt} #{ANSI[:BLUE]}»#{ANSI[:RESET]} ",
     PROMPT_N: "#{prompt} #{ANSI[:BLUE]}»#{ANSI[:RESET]} ",
@@ -92,24 +95,24 @@ if ENV['RAILS_ENV']
 
   # if IRB.conf[:VERBOSE]
 
-    # Redirect log to STDOUT, which means the console itself
-    IRB.conf[:IRB_RC] = proc do
-      ActiveRecord::Base.logger = Logger.new(STDOUT)
-      ActiveRecord::Base.instance_eval { alias :[] :find }
-    end
+  # Redirect log to STDOUT, which means the console itself
+  IRB.conf[:IRB_RC] = proc do
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActiveRecord::Base.instance_eval { alias :[] :find }
+  end
 
-    extend_console 'rails3', defined?(ActiveSupport::Notifications), false do
-      $odd_or_even_queries = false
-      ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
-        $odd_or_even_queries = !$odd_or_even_queries
-        color = $odd_or_even_queries ? ANSI[:CYAN] : ANSI[:MAGENTA]
-        event = ActiveSupport::Notifications::Event.new(*args)
-        time  = '%.1fms' % event.duration
-        name  = event.payload[:name]
-        sql   = event.payload[:sql].gsub("\n", ' ').squeeze(' ')
-        puts "  #{ANSI[:UNDERLINE]}#{color}#{name} (#{time})#{ANSI[:RESET]}  #{sql}"
-      end
+  extend_console 'rails3', defined?(ActiveSupport::Notifications), false do
+    $odd_or_even_queries = false
+    ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
+      $odd_or_even_queries = !$odd_or_even_queries
+      color = $odd_or_even_queries ? ANSI[:CYAN] : ANSI[:MAGENTA]
+      event = ActiveSupport::Notifications::Event.new(*args)
+      time  = '%.1fms' % event.duration
+      name  = event.payload[:name]
+      sql   = event.payload[:sql].gsub("\n", ' ').squeeze(' ')
+      puts "  #{ANSI[:UNDERLINE]}#{color}#{name} (#{time})#{ANSI[:RESET]}  #{sql}"
     end
+  end
 
   # else
 
