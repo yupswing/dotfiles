@@ -161,7 +161,7 @@ end
 # History
 # ------------------------------------------------------------------------------
 
-HISTORY_FILE = '~/.irb-save-history'
+HISTORY_FILE = '~/.irb-save-history'.freeze
 Pry.config.history_file = HISTORY_FILE
 
 # ------------------------------------------------------------------------------
@@ -197,13 +197,14 @@ Pry.config.ls.private_method_color = :bright_black
 # ------------------------------------------------------------------------------
 # https://gist.github.com/1297510
 default_command_set = Pry::CommandSet.new do
-  command 'copy', 'Copy argument to the clip-board' do |str|
+  command 'copy', 'Copy argument to the clipboard' do |str|
     IO.popen('pbcopy', 'w') { |f| f << str.to_s }
   end
 
   command 'fzf', 'Reverse search with fzf' do
     cmd = `cat #{HISTORY_FILE} | fzf --tac |  tr '\n' ' '`
     unless cmd.blank?
+      # open(File.expand_path(HISTORY_FILE), 'a') { |f| f.puts cmd }
       output.puts cmd
       eval(cmd)
     end
