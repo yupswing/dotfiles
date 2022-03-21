@@ -36,7 +36,8 @@ alias ptr='host -t ptr'
 # shortcuts
 alias v=nvim
 alias vim=nvim
-alias pk=pkill
+alias k='kill -9'
+alias pk='pkill -f'
 alias cls=clear
 alias pp=prettyping
 
