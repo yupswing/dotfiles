@@ -9,3 +9,9 @@ xset dpms 0 0 $(( ${MINS} * 60 + 30 ))
 
 # Run the real locking command every 15 minutes via xautolock:
 pgrep -u "$USER" xautolock >/dev/null || xautolock -time ${MINS} -locker $HOME/.scripts/lock.sh &
+
+
+# DISABLE
+# xautolock -exit
+# xset s off -dpms
+# xset dpms 0 0 0
