@@ -1,0 +1,50 @@
+#!/bin/bash
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+  echo "cpuwatch [THRESHOLD:40] [SLEEP:0] [AVERAGE_FOR_SECONDS:30] >> /path/to/log"
+  echo "  the script check if the 'instant' CPU percantage usage exceed a threshold"
+  echo "  and log the 5 most used processes"
+  echo "cpuwatch -s (kill any instance)"
+  exit 0
+fi
+
+# kill other instances
+me=$$
+ps -ef | grep $0 | awk -v me=$me '$2 != me {print $2}' | xargs kill -9 >/dev/null 2>&1
+if [ "$1" == "-s" ]; then
+  exit 0
+fi
+
+# config
+THRESHOLD=${1:-66}
+WAIT_INTERVAL=${2:-0}
+CPU_INTERVAL=${3:-30}
+
+log() {
+  echo -e "$@"
+}
+
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+log "# Started at $TIMESTAMP"
+log "# Checking CPU usage every $CPU_INTERVAL+$WAIT_INTERVAL seconds and log when average over $THRESHOLD%"
+
+while true; do
+  LOADAVG=$(cat /proc/loadavg)
+  CPU_USAGE=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1); }' \
+    <(grep 'cpu ' /proc/stat) <(
+      sleep $CPU_INTERVAL
+      grep 'cpu ' /proc/stat
+    ))
+
+  if (($(echo "${CPU_USAGE} > $THRESHOLD" | bc -l))); then
+    TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+    PROC_LIST=$(ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 6)
+    log "----------------------------------------"
+    log "$TIMESTAMP | loadavg $LOADAVG | cpu $CPU_USAGE%"
+    log "$PROC_LIST"
+  fi
+
+  if (($(echo "$WAIT_INTERVAL > 0" | bc -l))); then
+    sleep $WAIT_INTERVAL
+  fi
+done
