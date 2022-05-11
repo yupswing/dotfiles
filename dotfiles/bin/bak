@@ -194,7 +194,7 @@ if [ ${FILES} -ge 1 ]; then
     echo
   fi
 
-  echo -e "$FILES bak matches found in ${esc_green}$directory${esc_reset}$andits"
+  echo -e "${esc_cyan}$FILES${esc_reset} bak (${esc_cyan}$(cat /tmp/$TMP | xargs du -ch | tail -1 | cut -f 1)${esc_reset}) matches found in ${esc_green}$directory${esc_reset}$andits"
 
   if [ $dryrun_flag = no ]; then
 
