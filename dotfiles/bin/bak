@@ -14,6 +14,7 @@ garbage_flag=no # garbage files
 python_flag=no  # pyc - consider .pyc file
 node_flag=no    # node_modules
 ruby_flag=no    # gems
+dev_flag=no     # development folder
 
 directory=""       # operating directory
 startdir=$(pwd)    # starting directory
@@ -33,7 +34,7 @@ esc_node='\033[32m'   # green
 ####################################################################################
 # GETOPT
 
-set -- $(getopt hynrkgpoblasd: "$@")
+set -- $(getopt hynrkgpoblased: "$@")
 while [ $# -gt 0 ]; do
   case "$1" in
   -h) help_flag=yes ;;
@@ -43,6 +44,7 @@ while [ $# -gt 0 ]; do
   -k) backup_flag=yes ;;
   -g) garbage_flag=yes ;;
   -p) python_flag=yes ;;
+  -e) dev_flag=yes ;;
   -o) node_flag=yes ;;
   -b) ruby_flag=yes ;;
   -l) listfiles_flag=yes ;;
@@ -92,6 +94,7 @@ if [ $help_flag = yes ]; then
   echo -e "${esc_cyan}Matches options:${esc_reset}"
   echo -e "   ${esc_yellow}-k${esc_reset}     Matches backup files ${esc_red}*~${esc_reset} and ${esc_red}more${esc_reset}"
   echo -e "   ${esc_yellow}-g${esc_reset}     Matches garbage files ${esc_red}.DS_Store${esc_reset} and ${esc_red}more${esc_reset}"
+  echo -e "   ${esc_yellow}-e${esc_reset}     Matches Development files (like ${esc_red}log/*.log${esc_reset})"
   echo -e "   ${esc_yellow}-p${esc_reset}     Matches ${esc_python}Python${esc_reset} compiled ${esc_red}*pyc${esc_reset}"
   echo -e "   ${esc_yellow}-b${esc_reset}     Matches ${esc_ruby}Ruby${esc_reset} bundle folders ${esc_red}vendor/bundle${esc_reset}"
   echo -e "   ${esc_yellow}-o${esc_reset}     Matches ${esc_node}Node${esc_reset} libraries folders ${esc_red}node_modules${esc_reset}"
@@ -150,6 +153,13 @@ if [ $garbage_flag = yes ]; then
   # Apple and Windows garbage
   echo -e "Looking for garbage ${esc_yellow}.DS_Store${esc_reset}, ${esc_yellow}desktop.ini${esc_reset}, ${esc_yellow}thumbs.db${esc_reset}"
   find . $depth -regex ".*\(\.DS_Store\|thumbs\.db\|desktop\.ini\)" -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
+fi
+
+# DEV Matches
+if [ $dev_flag = yes ]; then
+  echo -e "Looking for development files (like ${esc_yellow}log/*.log${esc_reset})"
+  # find all `log/xxx.log`
+  find . -type f -regextype posix-extended -regex ".*/log/(development|test|production)\.log" -exec echo "\"{}\"" \; >>/tmp/$TMP 2>/dev/null
 fi
 
 # PYTHON Matches
