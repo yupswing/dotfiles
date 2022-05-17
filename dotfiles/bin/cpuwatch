@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# LAUNCH EXAMPLES
+#   - launch watcher, log on file and kill old istances
+#   ./cpuwatch 40 >> cpuwatch.log &
+
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
   echo "cpuwatch [THRESHOLD:40] [SLEEP:0] [AVERAGE_FOR_SECONDS:30] >> /path/to/log"
   echo "  the script check if the 'instant' CPU percantage usage exceed a threshold"
@@ -38,7 +42,8 @@ while true; do
 
   if (($(echo "${CPU_USAGE} > $THRESHOLD" | bc -l))); then
     TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
-    PROC_LIST=$(ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 6)
+    # cmd is last otherwise it truncate
+    PROC_LIST=$(ps -eo pid,ppid,%mem,%cpu,cmd --sort=-%cpu | head -n 6)
     log "----------------------------------------"
     log "$TIMESTAMP | loadavg $LOADAVG | cpu $CPU_USAGE%"
     log "$PROC_LIST"
@@ -48,3 +53,5 @@ while true; do
     sleep $WAIT_INTERVAL
   fi
 done
+
+certbot certonly -d portale.happily-welfare.it -d api.portale.happily-welfare.it -d new.portale.happily-welfare.it
