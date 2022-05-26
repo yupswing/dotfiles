@@ -4,22 +4,25 @@
 # FILE: ~/.gitconfig
 
 [user]
-email = yupswing@protonmail.com
-name = Simone Cingano
+  email = yupswing@protonmail.com
+  name = Simone Cingano
 
 [pager]
-    diff = delta
-    log = delta
-    reflog = delta
-    show = delta
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
 
 [delta]
-    plus-style = "syntax #012800"
-    minus-style = "syntax #340001"
-    syntax-theme = Monokai Extended
-    navigate = true
-    line-numbers = true
-    # side-by-side = true
+  plus-style = "syntax #012800"
+  minus-style = "syntax #340001"
+  syntax-theme = Monokai Extended
+  navigate = true
+  line-numbers = true
+  # side-by-side = true
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
+
+[alias]
+  nanolog = log --date-order --date=format:'%Y-%m-%d %H:%M:%S' --format='%C(yellow)%cd%Creset  %h  \"%d %s\"  %Cred%cn %Cgreen(%cr)'
