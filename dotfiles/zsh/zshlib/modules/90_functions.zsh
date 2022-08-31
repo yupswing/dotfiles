@@ -42,3 +42,8 @@ function replace() {
   newstring=$2
   grep -rl $oldstring * | xargs sed -i '.bak' s/$oldstring/$newstring/g
 }
+
+function randpw() {
+  local length="${1:-16}"
+  cat /dev/urandom | tr -dc 'A-Za-z0-9.!?\\\-+*/=^&${}\[\]\(\)' | head -c $length ; echo ' '
+}
