@@ -1,0 +1,36 @@
+#!/usr/bin/env zsh
+
+# MIGRATE REPO FROM X TO Y BASED ON A FILE YML WRITTEN AS FOLLOW (ONE LINE PER REPO)
+# dotvocal-projects/00-archive/alceo: git@bitbucket.org:dotzuzu/alceo_logic_in_deployer.git
+
+# IT DOES CHANGE ALL REPO IN A FOLDER ONLY IF FOUND REMOTE AND NEW REMOTE IS NOT ALREADY SET
+
+yml=$1
+if [[ -z $yml ]]; then
+	echo "yml config file was not provided"
+	exit
+fi
+if [[ ! -f $yml ]]; then
+	echo "yml file was not found"
+	exit
+fi
+find . -maxdepth 1 -type d | while read line; do
+	if [[ -d $line/.git ]]; then
+		name=$(echo $line | tr a-z A-Z | sed 's/\.\///')
+		old_repo_full=$(git -C $line remote get-url origin)
+		old_repo=$(echo $old_repo_full | sed 's/^.*://' | sed 's/\.git//')
+		new_repo_full=$(grep $line $yml | sed 's/^[^:]*: //g')
+
+		if [[ "$old_repo_full" == "$new_repo_full" ]]; then
+			echo "🆗 $name\n   origin was already migrated"
+			continue
+		fi
+		if [[ -z $new_repo_full ]]; then
+			echo "❌ $name\n   origin was not found in yml"
+			continue
+		fi
+
+		echo "✅ $name\n   origin has been migrated\n   to $new_repo_full"
+		git -C $line remote set-url origin $new_repo_full
+	fi
+done

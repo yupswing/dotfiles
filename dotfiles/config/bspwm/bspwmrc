@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Config =====================================================================
+# Config =======================================================================
 
 bspc config pointer_modifier mod1
 
@@ -8,7 +8,15 @@ bspc config automatic_scheme alternate
 bspc config split_ratio 0.5
 bspc config focus_follows_pointer true
 
-# Desktops ===================================================================
+# Monitors =====================================================================
+
+bspc config remove_disabled_monitors true
+bspc config remove_unplugged_monitors true
+bspc config merge_overlapping_monitors true
+
+bspc config pointer_motion_interval 2
+
+# Desktops =====================================================================
 
 # order: web code term 4 5 6 7 8 9 0 im mail music float
 MONITORS=$(xrandr -q | grep -w connected | wc -l)
@@ -21,15 +29,7 @@ else
   bspc monitor eDP-1 -d mail music term 4 6 8 10
 fi
 
-bspc config pointer_motion_interval 2
-
-# Monitors ====================================================================
-
-bspc config remove_disabled_monitors true
-bspc config remove_unplugged_monitors true
-bspc config merge_overlapping_monitors true
-
-# Windows =====================================================================
+# Windows ======================================================================
 
 bspc config border_width 2
 bspc config window_gap 4
@@ -44,46 +44,45 @@ bspc config borderless_monocle true
 bspc config gapless_monocle true
 # bspc config single_monocle true
 
-# Rules =======================================================================
+# Rules ========================================================================
 
 bspc config external_rules_command "$HOME/.config/bspwm/external-rules"
 
 # bspc rule -a 'class:instance:name'
 
 # Apps with desktop assigned
-bspc rule -a Rambox                 desktop=im follow=on
-bspc rule -a discord                desktop=im follow=on
-bspc rule -a Thunderbird            desktop=mail follow=on
+bspc rule -a Rambox desktop=im follow=on
+bspc rule -a discord desktop=im follow=on
+bspc rule -a thunderbird desktop=mail follow=on
 
 # VSCode
-bspc rule -a Code                   desktop=code follow=on
-bspc rule -a code-oss               desktop=code follow=on
+bspc rule -a Code desktop=code follow=on
+bspc rule -a code-oss desktop=code follow=on
 
 # Firefox (main window and picture-in-picture)
-bspc rule -a 'firefox:Navigator:*'  desktop=web follow=on
-bspc rule -a 'firefox:Toolkit:*'    state=floating border=off sticky=on
+bspc rule -a 'firefox:Navigator:*' desktop=web follow=on
+bspc rule -a 'firefox:Toolkit:*' state=floating border=off sticky=on
 
 # Chrome (remember to right click on chrome titlebar and select `Use system titlebar and borders`)
-bspc rule -a Chromium               desktop=web follow=on
-bspc rule -a Google-chrome          desktop=web follow=on
+bspc rule -a Chromium desktop=web follow=on
+bspc rule -a Google-chrome desktop=web follow=on
 
 # Special floating windows
-bspc rule -a linphone               state=floating follow=on
-bspc rule -a linphone               --one-shot hidden=on follow=off
-bspc rule -a Simplenote             state=floating focus=on follow=on
+bspc rule -a linphone state=floating follow=on
+bspc rule -a linphone --one-shot hidden=on follow=off
+bspc rule -a Simplenote state=floating focus=on follow=on
 
 # Special sticky
-bspc rule -a Enpass                 state=floating focus=on sticky=on
+bspc rule -a Enpass state=floating focus=on sticky=on
 
 # Floating windows
-bspc rule -a Pavucontrol    	      state=floating focus=on
-bspc rule -a Seahorse       	      state=floating focus=on
-bspc rule -a Nemo    	              state=floating focus=on
-bspc rule -a Gpick                  state=floating focus=on
-bspc rule -a File-roller            state=floating focus=on
-bspc rule -a Lxappearance           state=floating focus=on
+bspc rule -a Pavucontrol state=floating focus=on
+bspc rule -a Seahorse state=floating focus=on
+bspc rule -a Nemo state=floating focus=on
+bspc rule -a Gpick state=floating focus=on
+bspc rule -a File-roller state=floating focus=on
+bspc rule -a Lxappearance state=floating focus=on
 
-
-# Autostart ===================================================================
+# Autostart ====================================================================
 
 $HOME/.config/autostart.sh

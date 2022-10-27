@@ -4,7 +4,7 @@
 # FILE: ~/.gitconfig
 
 [user]
-  email = yupswing@protonmail.com
+  email = me@simonecingano.it
   name = Simone Cingano
 
 [pager]
