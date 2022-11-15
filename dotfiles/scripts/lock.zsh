@@ -141,3 +141,5 @@ if [ -z $STATIC ]; then
   # Delete old image (if present)
   rm $IMAGE 2>/dev/null
 fi
+
+sleep 1

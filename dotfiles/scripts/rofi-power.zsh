@@ -8,8 +8,8 @@ MENU=(
   ' Reboot system'       'systemctl reboot'
   ' End session'         '$HOME/.config/bspwm/scripts/quit.sh'
   ' Lock screen'         '$LOCKER'
-  ' Suspend system'      'systemctl suspend; $LOCKER'
-  # ' Hibernate system'    'systemctl hibernate; $LOCKER'
+  ' Suspend system'      '$LOCKER && systemctl suspend'
+  # ' Hibernate system'    '$LOCKER && systemctl hibernate' #WARNING DO NOT USE WITH ZFS!
 )
 
 # Extract menu labels and menu commands
