@@ -53,5 +53,3 @@ while true; do
     sleep $WAIT_INTERVAL
   fi
 done
-
-certbot certonly -d portale.happily-welfare.it -d api.portale.happily-welfare.it -d new.portale.happily-welfare.it
