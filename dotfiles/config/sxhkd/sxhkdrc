@@ -33,8 +33,8 @@ alt + shift + @space
   rofi -show run
 
 # Direct launchers (chords)
-alt + x ; {c,s,e,n}
-  {google-chrome-stable,spotify,enpass,nemo}
+alt + x ; {c,s,e,n,f}
+  {google-chrome-stable,spotify,enpass,nemo,firefox}
 
 
 
