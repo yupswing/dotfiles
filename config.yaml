@@ -20,7 +20,7 @@ config:
 variables:
   # --- Hosts
   HOME_HOST: FoxPC
-  WORK_HOST: FoxPc2
+  WORK_HOST: FoxPc3
   VM_HOST: FoxVmArch
   # --- Defaults (adds .desktop to defaults)
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
@@ -315,7 +315,7 @@ profiles:
       DEFAULT_BROWSER: google-chrome
       COMPOSITOR: false
 
-  FoxPc2: # Work (Laptop)
+  FoxPc3: # Work (Laptop)
     include:
       - base_line
       - base_gui
