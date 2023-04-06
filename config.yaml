@@ -7,6 +7,7 @@ config:
   backup: true
   create: true
   dotpath: dotfiles
+  force_chmod: true
   cmpignore:
     - "*/README.md"
   upignore:
@@ -20,7 +21,7 @@ config:
 variables:
   # --- Hosts
   HOME_HOST: FoxPC
-  WORK_HOST: FoxPc3
+  WORK_HOST: FoxDotPc
   VM_HOST: FoxVmArch
   # --- Defaults (adds .desktop to defaults)
   DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
@@ -303,23 +304,24 @@ profiles:
 
   FoxPc: # Home (windows)
     include:
+      - ssh
       - base_line
 
   FoxVmArch: # Work (Virtualbox)
     include:
+      - ssh
       - base_line
       - base_gui
-      - i3
       - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome
       COMPOSITOR: false
 
-  FoxPc3: # Work (Laptop)
+  FoxDotPc: # Work (Laptop)
     include:
+      - ssh
       - base_line
       - base_gui
-      - i3
       - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome
