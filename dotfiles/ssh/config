@@ -1,4 +1,8 @@
 AddKeysToAgent yes
 
-IdentityFile ~/.ssh/simonecingano
-IdentityFile ~/.ssh/dotvocal
+Host bitbucket.org
+    IdentityFile ~/.ssh/dotvocal
+
+Host *
+    IdentityFile ~/.ssh/simonecingano
+    IdentityFile ~/.ssh/dotvocal
