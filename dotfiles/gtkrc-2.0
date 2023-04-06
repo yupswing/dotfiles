@@ -4,7 +4,7 @@
 # FILE: ~/.gtkrc-2.0
 
 include "/home/simo/.gtkrc-2.0.mine"
-gtk-theme-name="Mojave-dark"
+gtk-theme-name="Mojave-Dark"
 gtk-icon-theme-name="Tela-blue-dark"
 gtk-font-name="IBM Plex Sans 10"
 gtk-cursor-theme-name="Vimix-white-cursors"
