@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 # #TODO this script needs some serious housekeeping
+# (only align stuff at 96DPI)
 
 # -----------------------------------------------------------------------------
 

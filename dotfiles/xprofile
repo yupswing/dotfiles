@@ -12,6 +12,9 @@ xrandr --output VGA-1 --primary
 $HOME/.scripts/monitors.zsh
 {%@@ endif @@%}
 
+# dpi
+xrandr --dpi 96
+
 # Numlock ON
 numlockx
 

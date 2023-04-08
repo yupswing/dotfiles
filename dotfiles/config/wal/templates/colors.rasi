@@ -1,10 +1,8 @@
 * {{
-
     /* #THEME_MAIN_COLORS */
-    background: {background};
-    foreground: {foreground};
-    primary: {color4};
-    secondary: {color3};
-    danger: {color1};
-
+    background-colour: {background};
+    foreground-colour: {foreground};
+    primary-colour: {color5};
+    secondary-colour: {color2};
+    danger-colour: {color1};
 }}

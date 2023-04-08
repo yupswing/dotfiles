@@ -3,6 +3,194 @@
  * yupswing theme
  * {{@@ header() @@}}
  * see: https://github.com/davatorium/rofi/blob/next/doc/rofi-theme.5.markdown
+ * inspired by https://github.com/adi1090x/rofi/blob/master/files/launchers/type-1/style-2.rasi
  **/
 
-@import "base"
+configuration {
+  display-ssh: "";
+  display-run: ""; /* command */
+  display-drun: ""; /* application.desktop */
+  display-window: "";
+  display-combi: "";
+  /* show-icons: false; # SET BY SINGLE RUN # */
+  /* width: 60; */
+  /* lines: 10; */
+  /* columns: 1; */
+  /* bw: 0; */
+  eh: 1;
+  /* color-enabled: true; */
+  /* separator-style: "none"; */
+  location: 2;
+  yoffset: 80;
+  xoffset: 0;
+  fixed-num-lines: false;
+
+  /* #THEME_FONT */
+  /*font: "IBM Plex Sans 14";*/
+  font: "FiraCode Nerd Font 16";
+
+  timeout {
+    delay: 15;
+    action: "kb-cancel";
+  }
+}
+
+
+@import "~/.cache/wal/colors.rasi"
+
+* {
+  // {%@@ if COMPOSITOR @@%}
+  // background:                    #33333300;
+  // {%@@ else @@%}
+  // background:                    #33333333;
+  // {%@@ endif @@%}
+  // background-color:              transparent;
+  background:                    #333333;
+  accent:                        @secondary-colour;
+  scrollbar:                     @primary-colour;
+  spacing:                       2;
+  text-color:                    @foreground-colour;
+
+  active-background:             @background-colour;
+  active-foreground:             @foreground-colour;
+  normal-background:             @background-colour;
+  normal-foreground:             @foreground-colour;
+  urgent-background:             @danger-colour;
+  urgent-foreground:             @foreground-colour;
+
+  alternate-active-background:   @background-colour;
+  alternate-active-foreground:   @foreground-colour;
+  alternate-normal-background:   @background-colour;
+  alternate-normal-foreground:   @foreground-colour;
+  alternate-urgent-background:   @danger-colour;
+  alternate-urgent-foreground:   @foreground-colour;
+
+  /* #THEME_FOREGROUND_COLOR */
+  selected-active-background:    @primary-colour;
+  selected-active-foreground:    @background-colour;
+  selected-normal-background:    @primary-colour;
+  selected-normal-foreground:    @background-colour;
+  selected-urgent-background:    @danger-colour;
+  selected-urgent-foreground:    @background-colour;
+
+  /* background-color: @background; */
+  border-color:                  @primary-colour;
+
+}
+
+
+/*****----- Main Window -----*****/
+window {
+    /* properties for window widget */
+    // {%@@ if COMPOSITOR @@%}
+    // transparency:                "real";
+    // {%@@ else @@%}
+    // transparency:                "screenshot";
+    // {%@@ endif @@%}
+    background-color:            #333333;
+    location:                    center;
+    anchor:                      north;
+    fullscreen:                  false;
+    width:                       1024px;
+    x-offset:                    0px;
+    y-offset:                    -400px;
+
+    /* properties for all widgets */
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      3px solid;
+    border-radius:               {{@@ ROUNDED @@}}px;
+    border-color:                @primary-colour;
+    cursor:                      "default";
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     20px;
+    margin:                      0px;
+    padding:                     20px;
+    border:                      0px solid;
+    border-radius:               12px;
+    border-color:                @primary-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    children:                    [ "prompt", "entry" ];
+}
+textbox-prompt-colon {
+    enabled:                     false;
+}
+
+// /*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       12;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   true;
+    layout:                      vertical;
+    reverse:                     false;
+
+    spacing:                     0px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @primary-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      "default";
+}
+scrollbar {
+    handle-width:                10px ;
+    handle-color:                @primary-colour;
+    border-radius:               0px;
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     20px;
+    border:                      0px solid;
+    border-radius:               0px;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      pointer;
+}
+element normal.normal {
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+element selected.normal {
+    background-color:            @primary-colour;
+    text-color:                  @foreground-colour;
+}
+element alternate.normal {
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+
+// /*****----- Message -----*****/
+message {
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     20px;
+    border:                      0px solid;
+    border-radius:               0px;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+textbox {
+    color:                       @foreground-colour;
+}
+error-message {
+    padding:                     20px;
+    border:                      0px solid;
+    border-radius:               0px;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
