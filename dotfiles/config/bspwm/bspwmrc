@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# interactive events:
+#   xev
+# list keycode:
+#   xmodmap -pke
+# determine window class (last string in output):
+#   xprop | grep CLASS
+
 # Config =======================================================================
 
 bspc config pointer_modifier mod1
@@ -54,6 +61,7 @@ bspc config external_rules_command "$HOME/.config/bspwm/external-rules"
 bspc rule -a Rambox desktop=im follow=on
 bspc rule -a discord desktop=im follow=on
 bspc rule -a thunderbird desktop=mail follow=on
+bspc rule -a spotify desktop=music follow=on
 
 # VSCode
 bspc rule -a Code desktop=code follow=on
@@ -73,6 +81,7 @@ bspc rule -a linphone --one-shot hidden=on follow=off
 bspc rule -a Simplenote state=floating focus=on follow=on
 
 # Special sticky
+bspc rule -a Buttercup state=floating focus=on sticky=on
 bspc rule -a Enpass state=floating focus=on sticky=on
 
 # Floating windows

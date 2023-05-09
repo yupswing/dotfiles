@@ -1,0 +1,27 @@
+#! /usr/bin/env zsh
+
+if [[ ! $(whoami) == "root" ]]; then
+  print "You need root privileges to run this."
+  return -1
+fi
+
+if [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; then
+  print "clean-mem : tries to free as much memory as possible.
+Command line arguments will be ignored."
+  return 0
+fi
+
+print "Before:"
+free -h
+print ""
+
+sync
+sysctl -w vm.drop_caches=3 > /dev/null
+sync
+
+echo 3 | tee /proc/sys/vm/drop_caches > /dev/null
+
+print "After:"
+free -h
+
+#watch -n 1 cat /proc/meminfo
