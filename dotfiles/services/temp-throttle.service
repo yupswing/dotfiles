@@ -1,0 +1,19 @@
+# temp-throttle.service
+
+# install `paru -S temp-throttle`
+# copy this service `sudo cp ~/dotfiles/dotfiles/services/temp-throttle.service /etc/systemd/system/`
+# activate `systemctl enable --now temp-throttle`
+# check `systemctl status temp-throttle`
+
+# it is set in ExecStart at 90 CELSIUS, which is a good compromise (this computer shut down at 100)
+
+[Unit]
+Description=Temp Throttle
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/sbin/temp-throttle 90
+
+[Install]
+WantedBy=multi-user.target
