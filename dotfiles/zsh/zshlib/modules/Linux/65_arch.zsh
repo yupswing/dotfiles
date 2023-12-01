@@ -12,12 +12,12 @@ if [ -f "/etc/arch-release" ]; then
     spotify &
   }
 
-  alias pacman_mirrors="sudo reflector --verbose \
-                                      --latest 20 \
-                                      --sort rate \
-                                      --country Italy --country France --country Germany --country Switzerland \
-                                      --protocol https --protocol rsync \
-                                      --save /etc/pacman.d/mirrorlist"
+  alias update-pacman-mirrors="sudo reflector --verbose \
+                                              --latest 20 \
+                                              --sort rate \
+                                              --country Italy --country France --country Germany --country Switzerland \
+                                              --protocol https --protocol rsync \
+                                              --save /etc/pacman.d/mirrorlist"
 
   function maintenance() {
     if [[ -z "${LOCAL_MAINTENANCE_DIR}" ]]; then

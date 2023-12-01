@@ -1,51 +1,32 @@
-# ========================================================================== #
-# # DOTDROP Configuration
-# see https://github.com/deadc0de6/dotdrop/wiki/
-# ========================================================================== #
-
 config:
   backup: true
   create: true
   dotpath: dotfiles
   force_chmod: true
   cmpignore:
-    - "*/README.md"
+  - '*/README.md'
   upignore:
-    - "*/README.md"
+  - '*/README.md'
   instignore:
-    - "*/README.md"
+  - '*/README.md'
 
 # ========================================================================== #
 # ========================================================================== #
 
+  minversion: 1.14.0
 variables:
-  # --- Hosts
   HOME_HOST: FoxPC
   WORK_HOST: FoxDotPc
   VM_HOST: FoxVmArch
-  # --- Defaults (adds .desktop to defaults)
-  DEFAULT_BROWSER: firefox # firefox, chromium-browser, google-chrome
+  DEFAULT_BROWSER: firefox
   DEFAULT_FILE_MANAGER: nemo
-  # --- Config (changeable by host)
   WM: bspwm
   ROUNDED: 10
   COMPOSITOR: true
-  COMPOSITOR_FANCY: true # blur and opacity
-
-# ========================================================================== #
-# ========================================================================== #
-
+  COMPOSITOR_FANCY: true
 actions:
   wal: wal -R
-  # need double {{}} to have {} (otherwise arguments substitution)
   ssh_permissions: find ~/.ssh -type f -name '*' -exec chmod 600 {{}} \;
-
-trans_read:
-  gpg: gpg2 -q --for-your-eyes-only --no-tty -d {0} > {1}
-
-# ========================================================================== #
-# ========================================================================== #
-
 dotfiles:
   bin:
     src: bin
@@ -54,55 +35,42 @@ dotfiles:
   scripts:
     src: scripts
     dst: ~/.scripts
-
   locale:
     src: config/locale.conf
     dst: ~/.config/locale.conf
-
-  # SSH Keys =================================================================
   ssh_config:
     src: ssh/config
     dst: ~/.ssh/config
-
   ssh_simonecingano:
     src: ssh/simonecingano.gpg
     dst: ~/.ssh/simonecingano
-    trans_read: gpg
-
+    trans_install: gpg
   ssh_simonecingano_pub:
     src: ssh/simonecingano.pub
     dst: ~/.ssh/simonecingano.pub
-
   ssh_dotvocal:
     src: ssh/dotvocal.gpg
     dst: ~/.ssh/dotvocal
-    trans_read: gpg
-
+    trans_install: gpg
   ssh_dotvocal_pub:
     src: ssh/dotvocal.pub
     dst: ~/.ssh/dotvocal.pub
-
-  # BASH =====================================================================
   bash_profile:
     src: bash_profile.sh
     dst: ~/.bash_profile
-
-  # ZSH ======================================================================
   zshlib:
     src: zsh/zshlib
     dst: ~/.zshlib
     upignore:
-      - "zplug"
+    - zplug
     cmpignore:
-      - "zplug"
+    - zplug
   zshenv:
     src: zsh/zshenv.zsh
     dst: ~/.zshenv
   zshrc:
     src: zsh/zshrc.zsh
     dst: ~/.zshrc
-
-  # Programs =================================================================
   nvim:
     src: config/nvim
     dst: ~/.config/nvim
@@ -121,8 +89,6 @@ dotfiles:
   bat:
     src: config/bat
     dst: ~/.config/bat
-
-  # GUI Basics ===============================================================
   xprofile:
     src: xprofile
     dst: ~/.xprofile
@@ -144,34 +110,24 @@ dotfiles:
   redshift:
     src: config/redshift
     dst: ~/.config/redshift
-
-  # Terminals ================================================================
   alacritty:
     src: config/alacritty
     dst: ~/.config/alacritty
   kitty:
     src: config/kitty
     dst: ~/.config/kitty
-
-  # Environments =============================================================
   autostart:
     src: config/autostart.sh
     dst: ~/.config/autostart.sh
   sxhkd:
     src: config/sxhkd
     dst: ~/.config/sxhkd
-
-  # i3 Environment ===========================================================
   i3:
     src: config/i3
     dst: ~/.config/i3
-
-  # bspwm Environment ========================================================
   bspwm:
     src: config/bspwm
     dst: ~/.config/bspwm
-
-  # i3 / bspwm Environment ===================================================
   picom:
     src: config/picom
     dst: ~/.config/picom
@@ -185,7 +141,7 @@ dotfiles:
     src: config/wal
     dst: ~/.config/wal
     actions:
-      - wal
+    - wal
   dunst:
     src: config/dunst
     dst: ~/.config/dunst
@@ -198,9 +154,7 @@ dotfiles:
   greenclip:
     src: config/greenclip.toml
     dst: ~/.config/greenclip.toml
-
-  # Others ===================================================================
-  fontconfig: # fix for fira code ligatures
+  fontconfig:
     src: config/fontconfig
     dst: ~/.config/fontconfig
   dir_colors:
@@ -212,116 +166,111 @@ dotfiles:
   backgrounds:
     src: data/backgrounds
     dst: ~/Pictures/backgrounds
-
-# ========================================================================== #
-# ========================================================================== #
-
 profiles:
-  # Base =====================================================================
-
   ssh:
     dotfiles:
-      - ssh_config
-      - ssh_simonecingano
-      - ssh_simonecingano_pub
-      - ssh_dotvocal
-      - ssh_dotvocal_pub
+    - ssh_config
+    - ssh_simonecingano
+    - ssh_simonecingano_pub
+    - ssh_dotvocal
+    - ssh_dotvocal_pub
     actions:
-      - ssh_permissions
+    - ssh_permissions
 
   base_line:
     include:
-      - zsh
-      - bash
+    - zsh
+    - bash
     dotfiles:
-      - locale
-      - ruby
-      - btop
-      - nvim
-      - bin
-      - scripts
-      - dir_colors
-      - gitconfig
-      - bat
+    - locale
+    - ruby
+    - btop
+    - nvim
+    - bin
+    - scripts
+    - dir_colors
+    - gitconfig
+    - bat
 
   base_gui:
     dotfiles:
-      - xprofile
-      - xresources
-      - gtkrc-2.0
-      - gtk-3.0
-      - dconf
-      - mimeapps.list
-      - fontconfig
-      - kitty
-      - alacritty
-      - backgrounds
-      - redshift
-      - sxhkd
-      - autostart
+    - xprofile
+    - xresources
+    - gtkrc-2.0
+    - gtk-3.0
+    - dconf
+    - mimeapps.list
+    - fontconfig
+    - kitty
+    - alacritty
+    - backgrounds
+    - redshift
+    - sxhkd
+    - autostart
 
   # Groups ===================================================================
 
   bash:
     dotfiles:
-      - bash_profile
+    - bash_profile
 
   zsh:
     dotfiles:
-      - zshlib
-      - zshenv
-      - zshrc
+    - zshlib
+    - zshenv
+    - zshrc
 
   i3:
     dotfiles:
-      - i3
-      - dunst
-      - rofi
-      - picom
-      - polybar
-      - wal
-      - gsimplecal
-      - fehbg
-      - greenclip
+    - i3
+    - dunst
+    - rofi
+    - picom
+    - polybar
+    - wal
+    - gsimplecal
+    - fehbg
+    - greenclip
 
   bspwm:
     dotfiles:
-      - bspwm
-      - dunst
-      - rofi
-      - picom
-      - polybar
-      - wal
-      - gsimplecal
-      - fehbg
-      - greenclip
+    - bspwm
+    - dunst
+    - rofi
+    - picom
+    - polybar
+    - wal
+    - gsimplecal
+    - fehbg
+    - greenclip
 
   wsl:
     include:
-      - base_line
+    - base_line
 
   # Hosts ====================================================================
 
-  FoxPc: # Home (windows)
+  FoxPc:
     include:
-      - ssh
-      - base_line
+    - ssh
+    - base_line
 
-  FoxVmArch: # Work (Virtualbox)
+  FoxVmArch:
     include:
-      - ssh
-      - base_line
-      - base_gui
-      - bspwm
+    - ssh
+    - base_line
+    - base_gui
+    - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome
       COMPOSITOR: false
-
-  FoxDotPc: # Work (Laptop)
+  FoxDotPc:
     include:
-      - ssh
-      - base_line
-      - base_gui
-      - bspwm
+    - ssh
+    - base_line
+    - base_gui
+    - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome
+trans_install:
+  gpg: gpg2 -q --for-your-eyes-only --no-tty -d {0} > {1}
