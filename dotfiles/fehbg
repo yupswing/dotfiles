@@ -4,4 +4,7 @@
 # {{@@ header() @@}}
 # FILE: ~/.fehbg
 
-feh --no-fehbg --bg-fill '/home/simo/Pictures/backgrounds/webb_carina.jpg'
+# feh --no-fehbg --bg-fill '/home/simo/Pictures/backgrounds/webb_carina.jpg'
+# feh --no-fehbg --bg-fill '/home/simo/Pictures/backgrounds/hubble_andromeda.jpg'
+# feh --no-fehbg --bg-fill '/home/simo/Pictures/backgrounds/flame.jpg'
+feh --no-fehbg --bg-fill '/home/simo/Pictures/backgrounds/topos.jpg'
