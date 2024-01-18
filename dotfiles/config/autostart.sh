@@ -21,7 +21,7 @@ launch nm-applet
 ### Daemons
 ###############################################################################
 launch dropbox start
-launch nextcloud
+# launch nextcloud
 
 ### DE Dependent
 ###############################################################################
