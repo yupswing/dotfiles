@@ -20,6 +20,8 @@ pip3 install -r ~/dotfiles/dotdrop/requirements.txt
 ~/dotfiles/dotdrop.sh install
 ```
 
+- install `exa` and `zoxide`
+
 ### Fonts
 
 - `Fira Code`

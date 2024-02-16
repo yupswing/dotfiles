@@ -8,10 +8,10 @@ alias -g GI='| grep -i'
 alias zap='rm -rf'
 
 # list
-alias ls='ls -F --color'
-alias l="exa --icons --sort=name --group-directories-first"
-alias la="l -a"
-alias ll="l -lga --git"
+# alias ls='ls -F --color'
+alias ls="exa --icons --sort=name --group-directories-first"
+alias la="ls -a"
+alias ll="ls -lga --git"
 alias lt="ll --tree --level=2"
 
 # enable alias in sudo
