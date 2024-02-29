@@ -20,6 +20,11 @@ pip3 install -r ~/dotfiles/dotdrop/requirements.txt
 ~/dotfiles/dotdrop.sh install
 ```
 
+# If unable to install via pip3
+```sh
+pacman -S python-jinja-time python-docopt python-distro python-ruamel-yaml python-tomli-w python-requests
+```
+
 - install `exa` and `zoxide`
 
 ### Fonts
