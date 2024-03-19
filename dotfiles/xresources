@@ -1,3 +1,14 @@
-! Needed to uniform cursor size in different monitors
+! # Xresources file: comments use exclamation marks
+
+! # Needed to uniform cursor size in different monitors
 Xcursor.size: 32
 Xcursor.theme: Vimix-white-cursors
+
+! #TAG_HIGH_DPI see also Xresources, xdpi.zsh, xprofile
+! Xft.dpi: 96
+! Xft.antialias: 1
+! Xft.hinting: 1
+! Xft.autohint: 0
+! Xft.rgba: rgb
+! Xft.hintstyle: hintslight
+! Xft.lcdfilter: lcddefaulti

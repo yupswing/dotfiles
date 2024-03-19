@@ -12,7 +12,7 @@ xrandr --output VGA-1 --primary
 $HOME/.scripts/monitors.zsh
 {%@@ endif @@%}
 
-# dpi
+# #TAG_HIGH_DPI see also Xresources, xdpi.zsh, xprofile
 xrandr --dpi 96
 
 
