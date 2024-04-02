@@ -25,9 +25,10 @@ MONITOR2=HDMI-1-0
 if [[ MONITORS -eq 1 ]]; then
   xrandr --output $MONITOR2 --off && xrandr --output $MONITOR1 --primary && ~/.fehbg
 else
-RESOLUTION=$(xrandr | grep -A1 "HDMI-1-0" | tail -n1 | awk '{ print $1 }')
+# RESOLUTION=$(xrandr | grep -A1 "HDMI-1-0" | tail -n1 | awk '{ print $1 }')
   # aggiunto il rate perche a casa si settava su 144 e non visualizzava nulla
-  xrandr --output $MONITOR2 --auto &&
-    xrandr --output $MONITOR2 --mode $RESOLUTION --rate 60 &&
-    xrandr --output $MONITOR1 --primary --below $MONITOR2 && ~/.fehbg
+  # xrandr --output $MONITOR2 --auto &&
+  #   xrandr --output $MONITOR2 --mode $RESOLUTION --rate 60 &&
+  #   xrandr --output $MONITOR1 --primary --below $MONITOR2 && ~/.fehbg
+  xrandr --output $MONITOR2 --auto && xrandr --output $MONITOR1 --primary --below $MONITOR2 && ~/.fehbg
 fi

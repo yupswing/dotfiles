@@ -13,8 +13,6 @@ alias ga='git add'
 alias gaa='git add --all'
 
 alias gk='git checkout'
-alias gkm='git master'
-alias gkd='git develop'
 alias gm='git merge'
 
 alias gba='git branch -a'
@@ -28,9 +26,8 @@ alias gdl='git diff HEAD^1..HEAD'
 alias gst='git show --stat --oneline'
 alias gsu='git submodule foreach git pull origin master'
 
-alias gll='git log'
-alias glo='git log --oneline'
-alias glb='git log --graph --decorate --oneline'
+# alias glb='git log --graph --decorate --oneline'
+alias glb="git log --graph --decorate --date-order --date=format:'%Y-%m-%d' --format='%C(auto)%h %C(cyan)%cd%Creset %s%C(auto)%d %C(green)%cn %C(cyan)(%cr)'"
 
 # function ginit() {
 #   git init

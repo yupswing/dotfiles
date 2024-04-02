@@ -33,8 +33,8 @@ zinit snippet OMZ::plugins/fzf
 
 # zinit snippet OMZ::plugins/gitfast
 
-zinit snippet OMZ::plugins/pip
-zinit snippet OMZ::plugins/ruby
+# zinit snippet OMZ::plugins/pip
+# zinit snippet OMZ::plugins/ruby
 # zinit snippet OMZ::plugins/rails
 
 # Personal

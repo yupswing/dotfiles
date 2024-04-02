@@ -25,4 +25,4 @@
   diffFilter = delta --color-only
 
 [alias]
-  nanolog = log --date-order --date=format:'%Y-%m-%d %H:%M:%S' --format='%C(yellow)%cd%Creset  %h  \"%d %s\"  %Cred%cn %Cgreen(%cr)'
+  nanolog = log --graph --date-order --date=format:'%Y-%m-%d %H:%M:%S' --format='%C(yellow)%cd%Creset %h %d %s %Cred%cn %Cgreen(%cr)'
