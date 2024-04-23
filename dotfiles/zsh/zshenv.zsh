@@ -22,7 +22,8 @@ export YUPZSHRC_HOME="$HOME/.zshlib"
 export YUPZSHRC_MODULES="$YUPZSHRC_HOME/modules"
 
 # Pulseaudio config for polybar module
-export YUP_PULSEAUDIO_SINKS_BLACKLIST="*.monitor,alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.3.HiFi__hw_sofhdadsp__source"
+export YUP_PULSEAUDIO_SINKS_BLACKLIST="*.monitor,alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp__source,alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp__source"
+export YUP_PULSEAUDIO_SOURCES_BLACKLIST="*hdmi*"
 
 # Default:
 # export XDG_CONFIG_HOME="$HOME/.config"
