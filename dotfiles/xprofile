@@ -53,5 +53,7 @@ if [ ! -z $LOCAL_TOUCHPAD ]; then
   xinput set-prop $LOCAL_TOUCHPAD $LOCAL_TOUCHPAD_NATURAL 1
 fi
 
+# Gtk4 has no config, so we set it here manually
+# because lxappearance does not work with gtk4
 export GTK_THEME=Mojave-Dark
 export GTK_ICON_THEME=Tela-blue-dark
