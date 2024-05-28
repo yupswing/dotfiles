@@ -52,3 +52,6 @@ if [ ! -z $LOCAL_TOUCHPAD ]; then
   LOCAL_TOUCHPAD_NATURAL=$(xinput list-props $LOCAL_TOUCHPAD | \grep -i 'natural scrolling enabled' | head -1 | \grep -P -o '\([0-9]+' | tr -d '(')
   xinput set-prop $LOCAL_TOUCHPAD $LOCAL_TOUCHPAD_NATURAL 1
 fi
+
+export GTK_THEME=Mojave-Dark
+export GTK_ICON_THEME=Tela-blue-dark
