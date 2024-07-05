@@ -22,8 +22,8 @@ variables:
   DEFAULT_FILE_MANAGER: nemo
   WM: bspwm
   ROUNDED: 10
-  COMPOSITOR: true
-  COMPOSITOR_FANCY: true
+  COMPOSITOR: false
+  COMPOSITOR_FANCY: false
 actions:
   wal: wal -R
   ssh_permissions: find ~/.ssh -type f -name '*' -exec chmod 600 {{}} \;
