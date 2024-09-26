@@ -16,7 +16,7 @@
 # [Action]
 # Description = Creating a backup BE...
 # When = PreTransaction
-# Exec = /usr/bin/sh -c '/path/to/zfs-snapshotter zroot/e/ROOT/arch 3 "$(uname -r)"'
+# Exec = /usr/bin/sh -c '/path/to/zfs-snapshotter zroot/e/ROOT/arch 3 "$(uname -r)_$(zfs --version | head -n1)"'
 
 # Parameters check:
 if [[ ${#} < 2 ]] || [[ ${1} == -h ]]; then

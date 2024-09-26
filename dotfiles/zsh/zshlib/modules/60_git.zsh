@@ -13,6 +13,8 @@ alias ga='git add'
 alias gaa='git add --all'
 
 alias gk='git checkout'
+alias gkd='git checkout develop'
+alias gkm='git checkout master'
 alias gm='git merge'
 
 alias gba='git branch -a'

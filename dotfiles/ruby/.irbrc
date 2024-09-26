@@ -47,9 +47,8 @@ require 'irb/completion'
 # Automatic indentation
 IRB.conf[:AUTO_INDENT] = true
 # Save History between irb sessions
-require 'irb/ext/save-history'
-IRB.conf[:SAVE_HISTORY] = 100
-IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
+IRB.conf[:SAVE_HISTORY] = 1000
+IRB.conf[:HISTORY_FILE] = "#{ENV.fetch('HOME', nil)}/.irb-save-history"
 
 # Loading extensions of the console. This is wrapped
 # because some might not be included in your Gemfile

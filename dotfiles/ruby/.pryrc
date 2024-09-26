@@ -242,8 +242,8 @@ Pry.config.commands.import default_command_set
 # Generate populated arrays and hashes.
 # https://gist.github.com/807492
 class Array
-  def self.toy(n = 10, &block)
-    block_given? ? Array.new(n, &block) : Array.new(n) { |i| i + 1 }
+  def self.toy(n = 10, &)
+    block_given? ? Array.new(n, &) : Array.new(n) { |i| i + 1 }
   end
 end
 
