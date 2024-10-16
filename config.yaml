@@ -166,6 +166,9 @@ dotfiles:
   backgrounds:
     src: data/backgrounds
     dst: ~/Pictures/backgrounds
+  assets:
+    src: data/assets
+    dst: ~/.assets
 profiles:
   ssh:
     dotfiles:
@@ -191,6 +194,7 @@ profiles:
     - dir_colors
     - gitconfig
     - bat
+    - assets
 
   base_gui:
     dotfiles:
