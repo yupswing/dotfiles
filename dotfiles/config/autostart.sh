@@ -60,8 +60,8 @@ sleep 1
 ###############################################################################
 # launch spotify
 # launch google-chrome-stable
-launch rambox
-launch discord
+launch ferdium
+# launch discord
 # launch linphone
 launch thunderbird
 launch code

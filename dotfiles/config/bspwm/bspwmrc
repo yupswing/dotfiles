@@ -68,7 +68,7 @@ bspc config external_rules_command "$HOME/.config/bspwm/external-rules"
 # bspc rule -a 'class:instance:name'
 
 # Apps with desktop assigned
-bspc rule -a Rambox desktop=im follow=on
+bspc rule -a Ferdium desktop=im follow=on
 bspc rule -a discord desktop=im follow=on
 bspc rule -a thunderbird desktop=mail follow=on
 bspc rule -a Spotify desktop=music follow=on
