@@ -18,6 +18,7 @@ alias gkm='git checkout master'
 alias gm='git merge'
 
 alias gba='git branch -a'
+alias gbam='git branch -a --merged'
 
 alias grs='git reset --soft HEAD~1'
 
