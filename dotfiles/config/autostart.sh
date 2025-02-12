@@ -52,6 +52,8 @@ i3 | bspwm)
   #   ;;
   # xfce)
   #   ;;
+hyprland)
+  wayland &
 esac
 
 sleep 1

@@ -128,12 +128,18 @@ dotfiles:
   bspwm:
     src: config/bspwm
     dst: ~/.config/bspwm
+  hypr:
+    src: config/hypr
+    dst: ~/.config/hypr
   picom:
     src: config/picom
     dst: ~/.config/picom
   polybar:
     src: config/polybar
     dst: ~/.config/polybar
+  waybar:
+    src: config/waybar
+    dst: ~/.config/waybar
   rofi:
     src: config/rofi
     dst: ~/.config/rofi
@@ -243,6 +249,17 @@ profiles:
     - rofi
     - picom
     - polybar
+    - wal
+    - gsimplecal
+    - fehbg
+    - greenclip
+    - hypr
+    - waybar
+
+  hypr:
+    dotfiles:
+    - hypr
+    - waybar
     - wal
     - gsimplecal
     - fehbg
