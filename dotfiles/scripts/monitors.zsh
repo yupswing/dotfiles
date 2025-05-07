@@ -30,6 +30,6 @@ else
   # xrandr --output $MONITOR2 --auto &&
   #   xrandr --output $MONITOR2 --mode $RESOLUTION --rate 60 &&
   #   xrandr --output $MONITOR1 --primary --below $MONITOR2 && ~/.fehbg
-  # xrandr --output $MONITOR2 --auto && xrandr --output $MONITOR1 --primary --right-of $MONITOR2 && ~/.fehbg
-  xrandr --output $MONITOR2 --auto && xrandr --output $MONITOR1 --primary --below $MONITOR2 && ~/.fehbg
+  xrandr --output $MONITOR2 --auto && xrandr --output $MONITOR1 --primary --right-of $MONITOR2 && ~/.fehbg
+  # xrandr --output $MONITOR2 --auto && xrandr --output $MONITOR1 --primary --below $MONITOR2 && ~/.fehbg
 fi

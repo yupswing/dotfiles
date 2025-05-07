@@ -1,0 +1,470 @@
+#!/usr/bin/env ruby
+
+# FancyFont v1.2
+# (c) 2025 Simone Cingano
+# This program is free software: you can redistribute it and/or modify
+
+# ------------------------------------------------------------------------------
+# This script converts a string into different fancy fonts using Unicode characters.
+
+# ORIGINAL INFO
+# https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+
+# TEST
+# ./fancy.rb --help
+# ./fancy.rb 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+# ------------------------------------------------------------------------------
+
+class FancyFont
+  # ============================================================================
+  # Utility Methods
+
+  # Converts an integer to a UTF-8 character.
+  #
+  # @param int [Integer]
+  # @return [String]
+  def self.c(int)
+    int.chr('UTF-8')
+  end
+
+  def c(int)
+    self.class.c(int)
+  end
+
+  # ============================================================================
+  # Configuration Constants
+
+  # Base codepoints for each character category.
+  BASE_CODEPOINTS = [
+    0x00041, # 'A' uppercase
+    0x00061, # 'a' lowercase
+    0x00030  # '0' digits
+  ].freeze
+
+  # Font database.
+  # pass: true means no conversion is needed
+  # table: the standard table to be used, 62 characters A-Z, a-z, 0-9
+  # generator: instead of the table, a generator is used to create the font
+  #   map: [start_uppercase, start_lowercase, start_digits] (optional, nil for no mapping)
+  #   exceptions: a hash with exceptions for specific characters
+  #   decorators: an array with two elements for zero-width joiners (optional)
+  DB = {
+    'serif-normal' => {
+      pass: true
+      # table: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.chars,
+      # generator: {
+      #   map: [nil, nil, nil], # default, no need to convert
+      #   exceptions: nil
+      # }
+    },
+    'serif-bold' => {
+      # table: '𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗'.chars
+      generator: {
+        map: [0x1D400, 0x1D41A, 0x1D7CE],
+        exceptions: nil
+      }
+    },
+    'serif-italic' => {
+      # table: '𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧0123456789'.chars
+      generator: {
+        map: [0x1D434, 0x1D44E, nil],
+        exceptions: {
+          'h' => c(0x0210E)
+        }
+      }
+    },
+    'serif-bold-italic' => {
+      # table: '𝑨𝑩𝑪𝑫𝑬𝑭𝑮𝑯𝑰𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁𝒂𝒃𝒄𝒅𝒆𝒇𝒈𝒉𝒊𝒋𝒌𝒍𝒎𝒏𝒐𝒑𝒒𝒓𝒔𝒕𝒖𝒗𝒘𝒙𝒚𝒛0123456789'.chars
+      generator: {
+        map: [0x1D468, 0x1D482, nil],
+        exceptions: nil
+      }
+    },
+    'sans-serif-normal' => {
+      # table: '𝖠𝖡𝖢𝖣𝖤𝖥𝖦𝖧𝖨𝖩𝖪𝖫𝖬𝖭𝖮𝖯𝖰𝖱𝖲𝖳𝖴𝖵𝖶𝖷𝖸𝖹𝖺𝖻𝖼𝖽𝖾𝖿𝗀𝗁𝗂𝗃𝗄𝗅𝗆𝗇𝗈𝗉𝗊𝗋𝗌𝗍𝗎𝗏𝗐𝗑𝗒𝗓𝟢𝟣𝟤𝟥𝟦𝟧𝟨𝟩𝟪𝟫'.chars
+      generator: {
+        map: [0x1D5A0, 0x1D5BA, 0x1D7E2],
+        exceptions: nil
+      }
+    },
+    'sans-serif-bold' => {
+      # table: '𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵'.chars
+      generator: {
+        map: [0x1D5D4, 0x1D5EE, 0x1D7EC],
+        exceptions: nil
+      }
+    },
+    'sans-serif-italic' => {
+      # table: '𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻𝟢𝟣𝟤𝟥𝟦𝟧𝟨𝟩𝟪𝟫'.chars
+      generator: {
+        map: [0x1D608, 0x1D622, 0x1D7E2],
+        exceptions: nil
+      }
+    },
+    'sans-serif-bold-italic' => {
+      # table: '𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯𝟢𝟣𝟤𝟥𝟦𝟧𝟨𝟩𝟪𝟫'.chars
+      generator: {
+        map: [0x1D63C, 0x1D656, 0x1D7E2],
+        exceptions: nil
+      }
+    },
+    'calligraphy-normal' => {
+      # table: '𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩𝒪𝒫𝒬ℛ𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵𝒶𝒷𝒸𝒹ℯ𝒻ℊ𝒽𝒾𝒿𝓀𝓁𝓂𝓃ℴ𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏0123456789'.chars
+      generator: {
+        map: [0x1D49C, 0x1D4B6, nil],
+        exceptions: {
+          'B' => c(0x0212C), 'E' => c(0x02130), 'F' => c(0x02131),
+          'H' => c(0x0210B), 'I' => c(0x02110), 'L' => c(0x02112),
+          'M' => c(0x02133), 'R' => c(0x0211B),
+          'e' => c(0x0212F), 'g' => c(0x0210A), 'o' => c(0x02134)
+        }
+      }
+    },
+    'calligraphy-bold' => {
+      # table: '𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃0123456789'.chars
+      generator: {
+        map: [0x1D4D0, 0x1D4EA, nil],
+        exceptions: nil
+      }
+    },
+
+    'franktur-normal' => {
+      # table: '𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷0123456789'.chars
+      generator: {
+        map: [0x1D504, 0x1D51E, nil],
+        exceptions: {
+          'C' => c(0x0212D), 'H' => c(0x0210C), 'I' => c(0x02111),
+          'R' => c(0x0211C), 'Z' => c(0x02128)
+        }
+      }
+    },
+    'fraktur-bold' => {
+      # table: '𝕬𝕭𝕮𝕯𝕰𝕱𝕲𝕳𝕴𝕵𝕶𝕷𝕸𝕹𝕺𝕻𝕼𝕽𝕾𝕿𝖀𝖁𝖂𝖃𝖄𝖅𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟0123456789'.chars
+      generator: {
+        map: [0x1D56C, 0x1D586, nil],
+        exceptions: nil
+      }
+    },
+    'monospace-normal' => {
+      # table: '𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿'.chars
+      generator: {
+        map: [0x1D670, 0x1D68A, 0x1D7F6],
+        exceptions: nil
+      }
+    },
+    'double-struck-normal' => {
+      # table: '𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡'.chars
+      generator: {
+        map: [0x1D538, 0x1D552, 0x1D7D8],
+        exceptions: {
+          'C' => c(0x02102), 'H' => c(0x0210D), 'N' => c(0x02115),
+          'P' => c(0x02119), 'Q' => c(0x0211A), 'R' => c(0x0211D),
+          'Z' => c(0x02124)
+        }
+      }
+    },
+    'circled' => {
+      # table: 'ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ🄋①②③④⑤⑥⑦⑧⑨'.chars
+      generator: {
+        map: [0x024B6, 0x024D0, 0x0245f],
+        exceptions: {
+          '0' => c(0x1f10b)
+        }
+      }
+    },
+    'circled-dark' => {
+      # table: '🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩⓿❶❷❸❹❺❻❼❽❾'.chars
+      generator: {
+        map: [0x1f150, 0x1f150, 0x02775],
+        exceptions: {
+          '0' => c(0x024ff)
+        }
+      }
+    },
+    'boxed' => {
+      # table: '🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉0123456789'.chars
+      generator: {
+        map: [0x1F130, 0x1F130, nil],
+        exceptions: nil
+      }
+    },
+    'boxed-dark' => {
+      # SOME LETTERS CAN APPEAR AS EMOJI IN SOME CONTEXT (A, O, P...)
+      # table: '🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉0123456789'.chars
+      generator: {
+        map: [0x1F170, 0x1F170, nil],
+        exceptions: nil
+      }
+    },
+    'squared' => {
+      # table: '🄐🄑🄒🄓🄔🄕🄖🄗🄘🄙🄚🄛🄜🄝🄞🄟🄠🄡🄢🄣🄤🄥🄦🄧🄨🄩🄐🄑🄒🄓🄔🄕🄖🄗🄘🄙🄚🄛🄜🄝🄞🄟🄠🄡🄢🄣🄤🄥🄦🄧🄨🄩0123456789'.chars
+      generator: {
+        map: [0x1f110, 0x1f110, nil]
+      }
+    },
+    'fullwidth' => {
+      # table: 'ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ０１２３４５６７８９'.chars
+      generator: {
+        map: [0x0ff21, 0x0ff41, 0x0ff10],
+        exceptions: nil
+      }
+    },
+    'emoji' => {
+      table: ['🔺', '🎱', '🌜', '🌓', '📧', '🎏', '🌀', '♓', '📍', '🎷', '🎋', '📐', '♍', '🎵', '⚽', '🚩', '🍳', '🏃', '💲', '🌴', '⛎', '✅', '🔱', '❎', '🍸', '💤',
+              '🔺', '🎱', '🌜', '🌓', '📧', '🎏', '🌀', '♓', '📍', '🎷', '🎋', '📐', '♍', '🎵', '⚽', '🚩', '🍳', '🏃', '💲', '🌴', '⛎', '✅', '🔱', '❎', '🍸', '💤',
+              '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    },
+    'emoji-regional' => {
+      # USE REGIONAL INDICATOR EMOJI TO WRITE LETTERS, SOMETIMES THEY ARE NOT SUPPORTED
+      generator: {
+        map: [0x1F1E6, 0x1F1E6, nil],
+        decorators: ['', c(0x0200C)], # Zero Width Non-Joiner (U+200C)
+        exceptions: nil
+      }
+    },
+    'smallcaps' => {
+      # alternatives for Q: ꞯǫ
+      table: 'ABCDEFGHIJKLMNOPQRSTUVWXYZᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀꜱᴛᴜᴠᴡxʏᴢ0123456789'
+    },
+    'subscript' => {
+      table: 'ₐᵦ𝒸𝒹ₑ𝒻𝓰ₕᵢⱼₖₗₘₙₒₚ𝓺ᵣₛₜᵤᵥ𝓌ₓᵧ𝓏ₐᵦ𝒸𝒹ₑ𝒻𝓰ₕᵢⱼₖₗₘₙₒₚ𝓺ᵣₛₜᵤᵥ𝓌ₓᵧ𝓏₀₁₂₃₄₅₆₇₈₉'
+    },
+    'superscript' => {
+      table: 'ᴬᴮꟲᴰᴱꟳᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾꟴᴿˢᵀᵁⱽᵂᵡ𐞲ᙆᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ𐞥ʳˢᵗᵘᵛʷˣʸᶻ⁰¹²³⁴⁵⁶⁷⁸⁹'
+    },
+    'crazy1' => {
+      table: 'ÄßÇÐÈ£GHÌJKLMñÖþQR§†ÚVW×¥Zåß¢Ðê£ghïjklmñðþqr§†µvwx¥z0123456789'
+    },
+    'crazy2' => {
+      table: 'ᗩᗷᑕᗪEᖴGᕼIᒍKᒪᗰᑎOᑭᑫᖇᔕTᑌᐯᗯ᙭YᘔᗩᗷᑕᗪEᖴGᕼIᒍKᒪᗰᑎOᑭᑫᖇᔕTᑌᐯᗯ᙭Yᘔ0123456789'
+    },
+    'crazy3' => {
+      table: 'ǟɮƈɖɛʄɢɦɨʝӄʟʍռօքզʀֆȶʊʋաӼʏʐǟɮƈɖɛʄɢɦɨʝӄʟʍռօքզʀֆȶʊʋաӼʏʐ0123456789'
+    }
+  }.freeze
+
+  FONTS_SHORTCUTS = {
+    'sb' => 'serif-bold',
+    'si' => 'serif-italic',
+    'sbi' => 'serif-bold-italic',
+    'ss' => 'sans-serif-normal',
+    'ssb' => 'sans-serif-bold',
+    'ssi' => 'sans-serif-italic',
+    'ssbi' => 'sans-serif-bold-italic',
+    'c' => 'calligraphy-normal',
+    'cb' => 'calligraphy-bold',
+    'f' => 'franktur-normal',
+    'fb' => 'fraktur-bold',
+    'm' => 'monospace-normal',
+    'ds' => 'double-struck-normal',
+    'o' => 'circled',
+    'od' => 'circled-dark',
+    'b' => 'boxed',
+    'bd' => 'boxed-dark',
+    's' => 'squared',
+    'fw' => 'fullwidth',
+    'e' => 'emoji',
+    'er' => 'emoji-regional',
+    'sc' => 'smallcaps',
+    'sub' => 'subscript',
+    'sup' => 'superscript'
+  }
+
+  # List of available fonts
+  FONTS = DB.keys.freeze
+
+  # Standard character table
+  STANDARD_TABLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.freeze
+
+  # ============================================================================
+  # Instance Variables
+
+  attr_reader :font, :table
+
+  # ============================================================================
+
+  # Initializes a new FancyFont instance.
+  #
+  # @param font [String] one of the keys from FONTS
+  # @raise [ArgumentError] if the font is not available
+  def initialize(font)
+    @font = find_font(font)
+    @table = DB[@font][:table] || generate_table(STANDARD_TABLE)
+
+    raise 'Table is not defined as 62 chars as expected' if @table && @table.size != 62
+  end
+
+  # Translate the given string into the target font.
+  #
+  # @param text [String] the text to be translated
+  # @return [String] the translated text
+  def translate(text)
+    return text if @table.nil?
+
+    text.chars.map { |char| translate_char(char) }.join
+  end
+
+  def font_label
+    return @font_label if @font_label
+
+    shortcut = FONTS_SHORTCUTS.find { |_, v| v == font }&.first
+    @font_label = if shortcut
+                    "#{@font} (#{shortcut})"
+                  else
+                    @font
+                  end
+  end
+
+  # ============================================================================
+
+  # Returns an array of arrays with each character and its Unicode code (in hex).
+  #
+  # @param string [String] the input text
+  # @return [Array<Array(String, String)>]
+  def self.debug_unicode(text)
+    text.chars.map { |char| [char, "0x#{char.ord.to_s(16)}"] }
+  end
+
+  # Returns an array of available fonts.
+  #
+  # @return [Array<String>]
+  def self.available_fonts
+    FONTS
+  end
+
+  # ============================================================================
+  # Internal Methods
+
+  private
+
+  def find_font(font)
+    font = FONTS_SHORTCUTS[font] if FONTS_SHORTCUTS.key?(font)
+    raise ArgumentError, "Font not found: #{font}" unless FONTS.include?(font)
+
+    font
+  end
+
+  # Generates a transformation table by applying the generator to a standard table.
+  #
+  # @param source [String] the source characters to map
+  # @return [Array<String>] an array with the transformed characters
+  # @raise [RuntimeError] if no generator is defined for the font
+  def generate_table(source)
+    return nil if DB[@font][:pass]
+    raise "No generator defined for font #{@font}" unless DB[@font].key?(:generator)
+
+    source.chars.map { |char| translate_char_live(char) }
+  end
+
+  # Determines the category of the character: uppercase, lowercase, or digit.
+  #
+  # @param char [String] the character to check
+  # @return Integer returns an index (0 for uppercase, 1 for lowercase, 2 for digit, or nil if no match)
+  def char_to_category(char)
+    ord = char.ord
+    case ord
+    when BASE_CODEPOINTS[0]...BASE_CODEPOINTS[0] + 26 # uppercase
+      0
+    when BASE_CODEPOINTS[1]...BASE_CODEPOINTS[1] + 26 # lowercase
+      1
+    when BASE_CODEPOINTS[2]...BASE_CODEPOINTS[2] + 10 # digit
+      2
+    end
+  end
+
+  # Translates a single character using a pre-generated lookup table.
+  #
+  # @param char [String] the character to translate
+  # @return [String] the translated character or the original if out of range
+  def translate_char(char)
+    category = char_to_category(char)
+    return char unless category
+
+    # Calculate the index in the pre-generated table.
+    table_index =
+      case category
+      when 0 then char.ord - BASE_CODEPOINTS[category]
+      when 1 then 26 + (char.ord - BASE_CODEPOINTS[category])
+      when 2 then 52 + (char.ord - BASE_CODEPOINTS[category])
+      end
+
+    @table[table_index] || char
+  end
+
+  # Translates a single character on the fly using the font's generator.
+  #
+  # @param char [String] the character to translate
+  # @return [String] the decorated, translated character or the original if no mapping exists
+  def translate_char_live(char)
+    category = char_to_category(char)
+    return char unless category
+
+    generator = DB[@font][:generator]
+
+    # Handle any exceptions.
+    return decorate(generator[:exceptions][char]) if generator[:exceptions]&.key?(char)
+
+    mapping_start = generator[:map][category]
+    return char if mapping_start.nil?
+
+    new_codepoint = mapping_start + (char.ord - BASE_CODEPOINTS[category])
+    decorate(c(new_codepoint))
+  end
+
+  # Decorates the character if decorators are defined for the current font.
+  # (decorators are other characters that are added before and after the character)
+  #
+  # @param str [String] the character to decorate
+  # @return [String] the decorated character
+  def decorate(str)
+    decorators = DB[@font][:generator][:decorators]
+    return str unless decorators
+
+    "#{decorators[0]}#{str}#{decorators[1]}"
+  end
+end
+
+# ==============================================================================
+
+# Print help message if no arguments or if -h/--help is present
+if ARGV.empty? || ARGV.include?('-h') || ARGV.include?('--help')
+
+  fonts = FancyFont.available_fonts.map do |font|
+    f = FancyFont.new(font)
+    "#{f.font_label.ljust(30)}#{f.translate(FancyFont::STANDARD_TABLE)}"
+  end
+
+  puts <<~HELP
+    Usage:
+     ./fancy.rb --help                       Print this help message and exit.
+     ./fancy.rb <font-name> <string>         Translate a string using a specific font.
+     ./fancy.rb <string>                     Demo mode: translate a string in all fonts.
+     cat file.txt | ./fancy.rb <font-name>   Translate an input from STDIN.
+
+    Available fonts:
+     - #{fonts.join("\n - ")}
+  HELP
+  exit 0
+end
+
+if ARGV[0] == '-d'
+  # Debug mode: print the Unicode codepoints of the input string.
+  pp FancyFont.debug_unicode(ARGV[1..].join(' '))
+elsif !STDIN.tty?
+  # Piped input, the first argument is assumed to be the font.
+  font = ARGV[0]
+  text = STDIN.read.chomp
+  puts FancyFont.new(font).translate(text)
+elsif ARGV.size == 1
+  # No piped input, one argument is treated as text to be translated in all fonts.
+  text = ARGV[0]
+  FancyFont.available_fonts.each do |font|
+    f = FancyFont.new(font)
+    puts " - #{f.font_label.ljust(30)} #{f.translate(text)}"
+  end
+else
+  # Direct translation mode: first argument is the font and the rest is the string.
+  font = ARGV.shift
+  text = ARGV.join(' ')
+  puts FancyFont.new(font).translate(text)
+end

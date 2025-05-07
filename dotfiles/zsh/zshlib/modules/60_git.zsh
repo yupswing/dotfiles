@@ -17,14 +17,13 @@ alias gkd='git checkout develop'
 alias gkm='git checkout master'
 alias gm='git merge'
 
+alias gfp='git fetch --all --prune'
+
 alias gba='git branch -a'
 alias gbam='git branch -a --merged'
 
-alias grs='git reset --soft HEAD~1'
-
 alias gd='git diff'
 alias gds='git diff --staged'
-alias gdl='git diff HEAD^1..HEAD'
 # alias gdc='git diff-tree --no-commit-id --name-only -r'
 alias gst='git show --stat --oneline'
 alias gsu='git submodule foreach git pull origin master'

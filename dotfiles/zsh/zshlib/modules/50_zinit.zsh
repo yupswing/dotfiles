@@ -37,6 +37,10 @@ zinit snippet OMZ::plugins/fzf
 # zinit snippet OMZ::plugins/ruby
 # zinit snippet OMZ::plugins/rails
 
+# FZF + completamento
+zinit ice wait lucid
+zinit load Aloxaf/fzf-tab
+
 # Personal
 zinit light yupswing/zsh-rationalise-dot
 

@@ -36,3 +36,6 @@ Style/GuardClause:
   Enabled: false
 Style/GlobalStdStream:
   Enabled: false
+
+Lint/UselessAssignment:
+  Enabled: false
