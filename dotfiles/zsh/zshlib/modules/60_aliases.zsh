@@ -9,7 +9,7 @@ alias zap='rm -rf'
 
 # list
 # alias ls='ls -F --color'
-alias ls="exa --icons --sort=name --group-directories-first"
+alias ls="eza --icons --sort=name --group-directories-first"
 alias la="ls -a"
 alias ll="ls -lga --git"
 alias lt="ll --tree --level=2"
