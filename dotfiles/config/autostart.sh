@@ -65,5 +65,5 @@ sleep 1
 launch ferdium
 # launch discord
 # launch linphone
-launch thunderbird
+# launch thunderbird
 launch code
