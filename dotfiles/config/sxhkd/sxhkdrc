@@ -46,7 +46,7 @@ alt + p
 
 # Lock session
 alt + l
-  $HOME/.scripts/lock.zsh
+  $HOME/.scripts/x11-lock.zsh
 
 # Windows switcher
 alt + Tab

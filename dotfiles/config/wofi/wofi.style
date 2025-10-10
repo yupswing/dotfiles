@@ -1,0 +1,9 @@
+window {
+  opacity: 0.95;
+  background-color: rgba(25,25,28,0.40); /* semitrasp. per il blur di Hypr */
+  border-radius: 12px;
+  padding: 8px;
+}
+#input { margin-bottom: 6px; padding: 6px 10px; border-radius: 10px; }
+#entry { padding: 6px 8px; border-radius: 8px; }
+#entry:selected { background-color: rgba(255,255,255,0.08); }

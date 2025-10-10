@@ -1,0 +1,6 @@
+Config(
+  // Whether to allow the user to input any arbitrary text besides the options provided
+  allow_invalid: false,
+  // How many entries should be displayed at max
+  max_entries: 10,
+)

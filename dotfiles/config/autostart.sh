@@ -38,7 +38,7 @@ i3 | bspwm)
   # Clipboard
   launch greenclip daemon
   # Autolock
-  $HOME/.scripts/autolock.zsh
+  $HOME/.scripts/x11-autolock.zsh
   # Polybar
   wal -R && $HOME/.config/polybar/launch.zsh &
   ;;

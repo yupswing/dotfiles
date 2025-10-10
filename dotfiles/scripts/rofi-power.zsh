@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-LOCKER=$HOME/.scripts/lock.zsh
+LOCKER=$HOME/.scripts/x11-lock.zsh
 
 # Commands to execute in an ordered array which will be used as a sort of hash:
 MENU=(

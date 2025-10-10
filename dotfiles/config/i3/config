@@ -318,7 +318,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+p exec --no-startup-id $HOME/.scripts/rofi-power.zsh
 
 # Lock session:
-bindsym $mod+l exec --no-startup-id $HOME/.scripts/lock.zsh
+bindsym $mod+l exec --no-startup-id $HOME/.scripts/x11-lock.zsh
 
 
 

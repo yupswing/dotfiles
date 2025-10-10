@@ -1,0 +1,30 @@
+window {
+  background: rgba(0, 0, 0, 0.55);
+  /* #THEME_FONT */
+  font-family: "FiraCode Nerd Font";
+  font-size: 20px;
+  border: 0;
+}
+
+/* input */
+entry {
+  color: #0ff;
+  font-size: 30px;
+  padding: 30px;
+}
+
+match {
+  color: #f0f;
+}
+
+match-title {
+  color: #ff0;
+}
+
+match-desc {
+  color: #0f0;
+}
+
+plugin {
+  color: #00f;
+}

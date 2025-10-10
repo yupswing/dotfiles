@@ -131,6 +131,12 @@ dotfiles:
   hypr:
     src: config/hypr
     dst: ~/.config/hypr
+  desktop-portal:
+    src: config/xdg-desktop-portal
+    dst: ~/.config/xdg-desktop-portal
+  anyrun:
+    src: config/anyrun
+    dst: ~/.config/anyrun
   picom:
     src: config/picom
     dst: ~/.config/picom
@@ -143,6 +149,9 @@ dotfiles:
   rofi:
     src: config/rofi
     dst: ~/.config/rofi
+  wofi:
+    src: config/wofi
+    dst: ~/.config/wofi
   wal:
     src: config/wal
     dst: ~/.config/wal
@@ -253,17 +262,15 @@ profiles:
     - gsimplecal
     - fehbg
     - greenclip
-    - hypr
-    - waybar
 
   hypr:
     dotfiles:
     - hypr
     - waybar
     - wal
-    - gsimplecal
-    - fehbg
-    - greenclip
+    - wofi
+    - desktop-portal
+    - anyrun
 
   wsl:
     include:
@@ -291,6 +298,7 @@ profiles:
     - base_line
     - base_gui
     - bspwm
+    - hypr
     variables:
       DEFAULT_BROWSER: google-chrome
 trans_install:
