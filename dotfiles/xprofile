@@ -53,7 +53,21 @@ if [ ! -z $LOCAL_TOUCHPAD ]; then
   xinput set-prop $LOCAL_TOUCHPAD $LOCAL_TOUCHPAD_NATURAL 1
 fi
 
+# ------------------------------------------------------------------------------
+
+# #TAG_LINUX_THEME
+
 # Gtk4 has no config, so we set it here manually
 # because lxappearance does not work with gtk4
 export GTK_THEME=Mojave-Dark
-export GTK_ICON_THEME=Tela-blue-dark
+export GTK_ICON_THEME=Tela-dark
+export GTK_APPLICATION_PREFER_DARK_THEME=1
+
+#!/bin/bash
+# Imposta tema scuro GNOME solo se gsettings è disponibile
+
+if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface gtk-theme 'Mojave-dark'
+    gsettings set org.gnome.desktop.interface icon-theme 'Tela-dark'
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+fi

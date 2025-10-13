@@ -3,7 +3,10 @@
 # {{@@ header() @@}}
 # FILE: ~/.gtkrc-2.0
 
+# #TAG_LINUX_THEME
+
 include "/home/simo/.gtkrc-2.0.mine"
+gtk-application-prefer-dark-theme=1
 gtk-theme-name="Mojave-Dark"
 gtk-icon-theme-name="Tela-dark"
 gtk-font-name="IBM Plex Sans 10"
