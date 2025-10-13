@@ -67,7 +67,7 @@ export GTK_APPLICATION_PREFER_DARK_THEME=1
 # Imposta tema scuro GNOME solo se gsettings è disponibile
 
 if command -v gsettings >/dev/null 2>&1; then
-    gsettings set org.gnome.desktop.interface gtk-theme 'Mojave-dark'
+    gsettings set org.gnome.desktop.interface gtk-theme 'Mojave-Dark'
     gsettings set org.gnome.desktop.interface icon-theme 'Tela-dark'
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 fi
