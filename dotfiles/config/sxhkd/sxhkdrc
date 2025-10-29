@@ -20,8 +20,6 @@ alt + shift + r ; s
 alt + Return
   kitty
 
-
-
 # == LAUNCHERS ================================================================
 
 # Program launcher (.desktop files)
@@ -33,10 +31,8 @@ alt + shift + @space
   rofi -show run
 
 # Direct launchers (chords)
-alt + x ; {c,s,e,n,f,d}
-  {google-chrome-stable,spotify,enpass,nemo,firefox,discord}
-
-
+alt + x ; {c,s,e,n,f,d,b}
+  {google-chrome-stable,spotify,enpass,nemo,firefox,discord,blueman-manager}
 
 # == TOOLS ====================================================================
 

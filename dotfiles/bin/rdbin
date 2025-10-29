@@ -1,0 +1,247 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+############################################
+# COLORI / STILE
+
+esc_reset='\033[0m'
+esc_red='\033[91m'
+esc_green='\033[92m'
+esc_cyan='\033[96m'
+esc_yellow='\033[93m'
+esc_ruby='\033[31m'   # rosso
+esc_python='\033[34m' # blu
+esc_node='\033[32m'   # verde
+
+# Log helpers
+log_info() { echo -e "${esc_cyan}>>${esc_reset} $*"; }
+log_ok()   { echo -e "${esc_green}[OK]${esc_reset}  $*"; }
+log_warn() { echo -e "${esc_yellow}[WARN]${esc_reset} $*"; }
+log_err()  { echo -e "${esc_red}[ERR]${esc_reset}  $*"; }
+
+banner() {
+  # linea separatrice
+  printf '%b\n' "${esc_cyan}------------------------------------------------------------------------------${esc_reset}"
+  # se c'è almeno un argomento, stampa il titolo
+  if [ -n "${1-}" ]; then
+    # "$*" è sicuro qui perché abbiamo già verificato che esista almeno $1
+    printf '%b\n' "${esc_cyan}>>${esc_reset} $*"
+  fi
+}
+
+############################################
+# USO
+
+usage() {
+  echo -e "${esc_cyan}Uso:${esc_reset} rdbin [${esc_yellow}-d DUMPS_DIR${esc_reset}] [${esc_yellow}-f /PATH/TO/FILENAME.sql.gz${esc_reset}] [${esc_yellow}-u DB_USER${esc_reset}] [${esc_yellow}-b DB_NAME${esc_reset}] [${esc_yellow}-e RAILS_ENV${esc_reset}] [${esc_yellow}-t${esc_reset}] [${esc_yellow}-y${esc_reset}] [${esc_yellow}-n${esc_reset}]"
+  echo
+  echo -e "${esc_cyan}Opzioni:${esc_reset}"
+  echo -e "  ${esc_yellow}-d${esc_reset}   Directory dei dump (default: ~/dumps)"
+  echo -e "  ${esc_yellow}-f${esc_reset}   Path completa del file dump .sql.gz (se omesso prende il più recente nella dir)"
+  echo -e "  ${esc_yellow}-u${esc_reset}   Utente Postgres (default: dotvocal_dev)"
+  echo -e "  ${esc_yellow}-b${esc_reset}   Database Postgres (se omesso, letto da config Rails per env)"
+  echo -e "  ${esc_yellow}-e${esc_reset}   Ambiente Rails (default: development)"
+  echo -e "  ${esc_yellow}-t${esc_reset}   Skip TRUNCATE delle tabelle GoodJob al termine (se esistono)"
+  echo -e "  ${esc_yellow}-y${esc_reset}   Non chiedere conferma (autoconferma)"
+  echo -e "  ${esc_yellow}-n${esc_reset}   Dry run (mostra le azioni senza eseguirle)"
+  echo -e "  ${esc_yellow}-h${esc_reset}   Mostra questo help"
+  echo
+  echo -e "${esc_cyan}Esempi:${esc_reset}"
+  echo -e "  rdbin -f /tmp/dump65_4.sql.gz"
+  echo -e "  rdbin -d ~/dumps -u postgres -e development -b database"
+}
+
+############################################
+# DEFAULTS
+
+DUMPS_DIR="$HOME/dumps"
+DUMP_FILE=""
+DB_USER="dotvocal_dev"
+DB_NAME=""
+RAILS_ENV="development"
+DO_TRUNCATE=yes
+AUTOYES=no
+DRYRUN=no
+
+############################################
+# PARSE OPZIONI
+
+while getopts ":d:f:u:b:e:tynh" opt; do
+  case "$opt" in
+    d) DUMPS_DIR="$OPTARG" ;;
+    f) DUMP_FILE="$OPTARG" ;;
+    u) DB_USER="$OPTARG" ;;
+    b) DB_NAME="$OPTARG" ;;
+    e) RAILS_ENV="$OPTARG" ;;
+    t) DO_TRUNCATE=no ;;
+    y) AUTOYES=yes ;;
+    n) DRYRUN=yes ;;
+    h) usage; exit 0 ;;
+    \?) log_err "Opzione non valida: -$OPTARG"; usage; exit 2 ;;
+    :)  log_err "L'opzione -$OPTARG richiede un argomento."; usage; exit 2 ;;
+  esac
+done
+
+############################################
+# HELPERS
+
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    log_err "Comando richiesto non trovato: $1"
+    exit 3
+  fi
+}
+
+expand_path() {
+  # espande ~ e variabili
+  eval "printf '%s' \"$1\""
+}
+
+run() {
+  if [ "$DRYRUN" = yes ]; then
+    echo -e "${esc_yellow}[dry-run]${esc_reset} $*"
+  else
+    eval "$*"
+  fi
+}
+
+############################################
+# CHECK BASE
+
+require_cmd rails
+require_cmd psql
+require_cmd gunzip
+require_cmd ruby
+require_cmd awk
+require_cmd find
+require_cmd du
+require_cmd stat || true # stat non è sempre identico ovunque, usiamo du come fallback
+
+# Consistenza progetto Rails (best-effort)
+if [ ! -f "Gemfile" ] || [ ! -e "bin/rails" ] && ! command -v bundle >/dev/null 2>&1; then
+  log_warn "Non sembra una root Rails (manca Gemfile o bin/rails). Procedo comunque."
+fi
+
+############################################
+# NORMALIZZA PERCORSI / INPUT
+
+DUMPS_DIR="$(expand_path "$DUMPS_DIR")"
+if [ ! -d "$DUMPS_DIR" ]; then
+  log_err "Directory dump non trovata: $DUMPS_DIR"
+  exit 4
+fi
+
+# DB name da config Rails se mancante
+export RAILS_ENV
+if [ -z "$DB_NAME" ]; then
+  log_info "Lettura database da config Rails (env=$RAILS_ENV)…"
+  set +e
+  DB_NAME="$(RAILS_ENV=$RAILS_ENV bundle exec rails runner 'cfg=ActiveRecord::Base.configurations.configs_for(env_name: ENV["RAILS_ENV"]).first; puts cfg&.database.to_s' 2>/dev/null)"
+  rc=$?
+  set -e
+  if [ "$rc" -ne 0 ] || [ -z "$DB_NAME" ]; then
+    log_err "Impossibile determinare il DB dal config Rails. Specifica -b."
+    exit 7
+  fi
+fi
+
+# SIMPLE name (rimuove _dev/_prod/_test)
+SIMPLE_NAME="$(printf '%s' "$DB_NAME" | sed -E 's/(_prod|_dev|_test)//g; s/_+/_/g; s/^_//; s/_$//')"
+
+# --- Individua dump file (rispettando -f se passato)
+if [ -n "$DUMP_FILE" ]; then
+  DUMP_PATH=$DUMP_FILE
+else
+  pattern="*${SIMPLE_NAME}*.sql.gz"
+
+  # Trova il più recente con GNU find (Linux): ordina per mtime (%T@) desc e prendi il primo
+  DUMP_PATH="$(
+    find "$DUMPS_DIR" -maxdepth 1 -type f -name "$pattern" -printf '%T@ %p\n' 2>/dev/null \
+    | sort -nr \
+    | head -n 1 \
+    | cut -d' ' -f2-
+  )"
+
+  if [ -z "$DUMP_PATH" ]; then
+    log_err "Nessun file che combaci con pattern '$pattern' in $DUMPS_DIR. Specifica -f."
+    exit 5
+  fi
+fi
+
+if [ ! -f "$DUMP_PATH" ]; then
+  log_err "File dump non trovato: $DUMP_PATH"
+  exit 6
+fi
+
+# --- Info dump (dimensioni)
+DUMP_SIZE="$(du -h "$DUMP_PATH" | awk 'NR==1{print $1}')"
+
+############################################
+# RIEPILOGO
+banner "Rails DB Importer"
+echo -e "  ${esc_cyan}Autoyes:${esc_reset}       $AUTOYES"
+echo -e "  ${esc_cyan}Dry run:${esc_reset}       $DRYRUN"
+echo -e "  ${esc_cyan}Environment:${esc_reset}   $RAILS_ENV"
+echo -e "  ${esc_cyan}DB User:${esc_reset}       $DB_USER"
+echo -e "  ${esc_cyan}DB Name:${esc_reset}       $DB_NAME"
+echo -e "  ${esc_cyan}Dump:${esc_reset}          $DUMP_PATH (${esc_yellow}$DUMP_SIZE${esc_reset})"
+echo -e "  ${esc_cyan}GoodJob Trunc:${esc_reset} $DO_TRUNCATE"
+banner
+
+############################################
+# CONFERMA
+confirm=no
+if [ "$AUTOYES" = yes ] || [ "$DRYRUN" = yes ]; then
+  confirm=yes
+else
+  echo -en "${esc_red}ATTENZIONE${esc_reset}: verranno eseguite operazioni distruttive (drop/create/import) su ${esc_green}$DB_NAME${esc_reset}.\n"
+  echo -en "Procedere? (y/${esc_yellow}N${esc_reset}) "
+  read -n 1 -p "" answer
+  case ${answer:0:1} in
+    y|Y) confirm=yes ;;
+  esac
+  echo
+fi
+
+if [ "$confirm" = no ]; then
+  echo -e "Aborted"
+  exit 0
+fi
+
+############################################
+# OPERAZIONI
+banner "Drop & Create ($DB_NAME)"
+
+
+run "bundle exec rails db:drop RAILS_ENV=$RAILS_ENV"
+
+run "bundle exec rails db:create RAILS_ENV=$RAILS_ENV"
+log_ok "Schema ripristinato"
+
+banner "Import dump ($DUMP_PATH -> $DB_USER:$DB_NAME)"
+# Import senza psql \copy (qui è schema + dati)
+run "gunzip -c \"$DUMP_PATH\" | psql -U \"$DB_USER\" \"$DB_NAME\""
+log_ok "Import completato"
+
+banner "Set env & migrate ($RAILS_ENV)"
+run "bundle exec rails db:environment:set RAILS_ENV=$RAILS_ENV"
+run "bundle exec rails db:migrate RAILS_ENV=$RAILS_ENV"
+log_ok "Migrazioni eseguite"
+
+if [ "$DO_TRUNCATE" = yes ]; then
+  banner "Truncate tabelle GoodJob"
+
+  # potrebbero non esistere, || true per evitare errore
+  run "psql -U \"$DB_USER\" -d \"$DB_NAME\" -c \
+\"TRUNCATE TABLE
+  public.good_job_executions,
+  public.good_job_processes,
+  public.good_job_batches,
+  public.good_jobs
+RESTART IDENTITY CASCADE;\"" || true
+
+  log_ok "GoodJob truncate completato"
+fi
+
+banner "Completato"
+echo -e "${esc_green}Import terminato con successo${esc_reset}"
