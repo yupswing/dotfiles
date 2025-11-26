@@ -37,7 +37,7 @@ usage() {
   echo
   echo -e "${esc_cyan}Opzioni:${esc_reset}"
   echo -e "  ${esc_yellow}-d${esc_reset}   Directory dei dump (default: ~/dumps)"
-  echo -e "  ${esc_yellow}-f${esc_reset}   Path completa del file dump .sql.gz (se omesso prende il più recente nella dir)"
+  echo -e "  ${esc_yellow}-f${esc_reset}   Path completa o relativa a Directory del file dump .sql.gz (se omesso prende il più recente nella Directory)"
   echo -e "  ${esc_yellow}-u${esc_reset}   Utente Postgres (default: dotvocal_dev)"
   echo -e "  ${esc_yellow}-b${esc_reset}   Database Postgres (se omesso, letto da config Rails per env)"
   echo -e "  ${esc_yellow}-e${esc_reset}   Ambiente Rails (default: development)"
@@ -126,10 +126,6 @@ fi
 # NORMALIZZA PERCORSI / INPUT
 
 DUMPS_DIR="$(expand_path "$DUMPS_DIR")"
-if [ ! -d "$DUMPS_DIR" ]; then
-  log_err "Directory dump non trovata: $DUMPS_DIR"
-  exit 4
-fi
 
 # DB name da config Rails se mancante
 export RAILS_ENV
@@ -145,13 +141,29 @@ if [ -z "$DB_NAME" ]; then
   fi
 fi
 
-# SIMPLE name (rimuove _dev/_prod/_test)
-SIMPLE_NAME="$(printf '%s' "$DB_NAME" | sed -E 's/(_prod|_dev|_test)//g; s/_+/_/g; s/^_//; s/_$//')"
 
 # --- Individua dump file (rispettando -f se passato)
 if [ -n "$DUMP_FILE" ]; then
-  DUMP_PATH=$DUMP_FILE
+  case "$DUMP_FILE" in
+    /*)
+      # -f assoluto: usa così com'è, ignora DUMPS_DIR
+      DUMP_PATH="$DUMP_FILE"
+      ;;
+    *)
+      # -f relativo: prepend DUMPS_DIR
+      DUMP_PATH="$DUMPS_DIR/$DUMP_FILE"
+      ;;
+  esac
 else
+  # Nessun -f: cerco il più recente in DUMPS_DIR che combacia col SIMPLE_NAME
+  if [ ! -d "$DUMPS_DIR" ]; then
+    log_err "Directory dump non trovata: $DUMPS_DIR"
+    exit 4
+  fi
+
+  # SIMPLE name (rimuove _dev/_prod/_test)
+  SIMPLE_NAME="$(printf '%s' "$DB_NAME" | sed -E 's/(_prod|_dev|_test)//g; s/_+/_/g; s/^_//; s/_$//')"
+
   pattern="*${SIMPLE_NAME}*.sql.gz"
 
   # Trova il più recente con GNU find (Linux): ordina per mtime (%T@) desc e prendi il primo
@@ -175,6 +187,7 @@ fi
 
 # --- Info dump (dimensioni)
 DUMP_SIZE="$(du -h "$DUMP_PATH" | awk 'NR==1{print $1}')"
+
 
 ############################################
 # RIEPILOGO
