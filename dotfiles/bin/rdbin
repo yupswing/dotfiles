@@ -128,7 +128,6 @@ fi
 DUMPS_DIR="$(expand_path "$DUMPS_DIR")"
 
 # DB name da config Rails se mancante
-export RAILS_ENV
 if [ -z "$DB_NAME" ]; then
   log_info "Lettura database da config Rails (env=$RAILS_ENV)…"
   set +e
@@ -226,9 +225,13 @@ fi
 banner "Drop & Create ($DB_NAME)"
 
 
-run "bundle exec rails db:drop RAILS_ENV=$RAILS_ENV"
+# sovrascrivi env del db per assicurarci sia development
+# (in locale dovrebbe esserlo ma alle volte un import bloccato lascia production o staging)
+run "RAILS_ENV=$RAILS_ENV bundle exec rails db:environment:set"
 
-run "bundle exec rails db:create RAILS_ENV=$RAILS_ENV"
+run "RAILS_ENV=$RAILS_ENV bundle exec rails db:drop"
+
+run "RAILS_ENV=$RAILS_ENV bundle exec rails db:create"
 log_ok "Schema ripristinato"
 
 banner "Import dump ($DUMP_PATH -> $DB_USER:$DB_NAME)"
@@ -237,8 +240,8 @@ run "gunzip -c \"$DUMP_PATH\" | psql -U \"$DB_USER\" \"$DB_NAME\""
 log_ok "Import completato"
 
 banner "Set env & migrate ($RAILS_ENV)"
-run "bundle exec rails db:environment:set RAILS_ENV=$RAILS_ENV"
-run "bundle exec rails db:migrate RAILS_ENV=$RAILS_ENV"
+run "RAILS_ENV=$RAILS_ENV bundle exec rails db:environment:set"
+run "RAILS_ENV=$RAILS_ENV bundle exec rails db:migrate"
 log_ok "Migrazioni eseguite"
 
 if [ "$DO_TRUNCATE" = yes ]; then
