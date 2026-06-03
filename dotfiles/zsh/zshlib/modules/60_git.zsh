@@ -39,10 +39,11 @@ alias glb="git log --graph --decorate --date-order --date=format:'%Y-%m-%d' --fo
 # }
 
 function glall() {
-  find . -maxdepth 1 -type d | while read line; do
-    if [[ -d $line/.git ]]; then
-      echo "\n❯ git -C $line pull"
-      git -C $line pull
-    fi
-  done
+  find . -mindepth 1 -maxdepth 1 -type d -print0 |
+    while IFS= read -r -d '' dir; do
+      if [[ -d "$dir/.git" ]]; then
+        printf '\n❯ git -C %q pull --prune --ff-only\n' "$dir"
+        git -C "$dir" pull --prune --ff-only
+      fi
+    done
 }
