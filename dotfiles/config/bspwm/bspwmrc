@@ -74,7 +74,7 @@ bspc rule -a thunderbird desktop=mail follow=on
 bspc rule -a Spotify desktop=music follow=on
 
 # VSCode
-bspc rule -a Code desktop=code follow=on
+bspc rule -a code desktop=code follow=on
 bspc rule -a code-oss desktop=code follow=on
 
 # Firefox (main window and picture-in-picture)
