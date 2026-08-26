@@ -1,59 +1,379 @@
 #!/usr/bin/env python
-# Reflects the requests from HTTP methods GET, POST, PUT, and DELETE
-# Written by Nathan Hamiel (2010)
+"""
+HTTP Reflector
 
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from optparse import OptionParser
+Small development/debugging HTTP server that prints incoming requests.
+
+Inspired by Nathan Hamiel's original reflector (2010) and its many forks.
+
+Examples:
+
+    python reflect.py
+    python reflect.py -p 9000
+    python reflect.py -b 0.0.0.0 -p 8080
+    python reflect.py --cors
+    python reflect.py --echo
+    python reflect.py --no-color
+
+WARNING:
+    Requests may contain passwords, cookies, authorization tokens and
+    other secrets. Do not expose this server to untrusted networks.
+"""
+
+import argparse
+import json
+import os
 import sys
+from datetime import datetime
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+
+# ---------------------------------------------------------------------------
+# Colors
+# ---------------------------------------------------------------------------
+
+class Color:
+    RESET = "\033[0m"
+    BOLD = "\033[1m"
+
+    BLUE = "\033[94m"
+    CYAN = "\033[96m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    RED = "\033[91m"
+    MAGENTA = "\033[95m"
+    GRAY = "\033[90m"
+
+
+def colors_supported():
+    if os.environ.get("NO_COLOR") is not None:
+        return False
+
+    return sys.stdout.isatty()
+
+
+def paint(text, color):
+    if not RequestHandler.use_color:
+        return str(text)
+
+    return f"{color}{text}{Color.RESET}"
+
+
+# ---------------------------------------------------------------------------
+# Request handler
+# ---------------------------------------------------------------------------
 
 class RequestHandler(BaseHTTPRequestHandler):
 
-    def do_GET(self):
-        request_path = self.path
+    use_color = colors_supported()
+    cors = False
+    echo = False
+    response_status = 200
+    response_cookie = None
 
-        print("\n----- Request Start ----->\n")
-        print(request_path)
-        print(self.headers)
-        print("<----- Request End -----\n")
+    # Disable BaseHTTPRequestHandler's standard access log.
+    def log_message(self, fmt, *args):
+        pass
 
-        self.send_response(200)
-        self.send_header("Set-Cookie", "foo=bar")
+    def _read_body(self):
+        content_length = self.headers.get("Content-Length")
 
-    def do_POST(self):
-        request_path = self.path
+        if not content_length:
+            return b""
 
-        print("\n----- Request Start ----->\n")
-        print(request_path)
+        try:
+            length = int(content_length)
+        except ValueError:
+            return b""
 
-        request_headers = self.headers
-        content_length = request_headers.getheaders('content-length')
-        length = int(content_length[0]) if content_length else 0
+        return self.rfile.read(length)
 
-        print(request_headers)
-        print(self.rfile.read(length))
-        print("<----- Request End -----\n")
+    def _body_as_text(self, body):
+        if not body:
+            return ""
 
-        self.send_response(200)
+        content_type = self.headers.get("Content-Type", "")
 
-    do_PUT = do_POST
-    do_DELETE = do_GET
+        charset = "utf-8"
 
+        for item in content_type.split(";")[1:]:
+            item = item.strip()
+
+            if item.lower().startswith("charset="):
+                charset = item.split("=", 1)[1].strip()
+                break
+
+        try:
+            return body.decode(charset)
+        except (LookupError, UnicodeDecodeError):
+            try:
+                return body.decode("utf-8", errors="replace")
+            except Exception:
+                return repr(body)
+
+    def _print_body(self, body):
+        if not body:
+            return
+
+        text = self._body_as_text(body)
+        content_type = self.headers.get("Content-Type", "").lower()
+
+        print()
+        print(paint("Body:", Color.YELLOW))
+
+        # Pretty-print JSON when possible.
+        if "application/json" in content_type or "+json" in content_type:
+            try:
+                parsed = json.loads(text)
+                text = json.dumps(
+                    parsed,
+                    indent=2,
+                    ensure_ascii=False,
+                )
+            except (json.JSONDecodeError, TypeError):
+                pass
+
+        print(paint(text, Color.BOLD))
+
+    def _print_request(self, body):
+        timestamp = datetime.now().astimezone().isoformat(
+            timespec="seconds"
+        )
+
+        client_ip, client_port = self.client_address
+
+        print()
+        print(
+            paint("─" * 72, Color.GRAY)
+        )
+
+        print(
+            paint(timestamp, Color.GRAY),
+            paint(f"{client_ip}:{client_port}", Color.GRAY),
+        )
+
+        print()
+
+        print(
+            paint(self.command, Color.BLUE),
+            paint(self.path, Color.MAGENTA),
+            paint(self.request_version, Color.GREEN),
+        )
+
+        print()
+
+        for key, value in self.headers.items():
+            print(
+                f"{paint(key, Color.CYAN)}: "
+                f"{paint(value, Color.BOLD)}"
+            )
+
+        self._print_body(body)
+
+        print(
+            paint("─" * 72, Color.GRAY)
+        )
+
+    def _response_payload(self, body):
+        headers = [
+            {
+                "name": key,
+                "value": value,
+            }
+            for key, value in self.headers.items()
+        ]
+
+        return {
+            "method": self.command,
+            "path": self.path,
+            "http_version": self.request_version,
+            "client": self.client_address[0],
+            "headers": headers,
+            "body": self._body_as_text(body),
+        }
+
+    def _send_cors_headers(self):
+        if not self.cors:
+            return
+
+        self.send_header(
+            "Access-Control-Allow-Origin",
+            "*",
+        )
+
+        self.send_header(
+            "Access-Control-Allow-Methods",
+            "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS",
+        )
+
+        requested_headers = self.headers.get(
+            "Access-Control-Request-Headers"
+        )
+
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            requested_headers or "*",
+        )
+
+        self.send_header(
+            "Access-Control-Max-Age",
+            "600",
+        )
+
+    def _handle_request(self):
+        body = self._read_body()
+
+        self._print_request(body)
+
+        response_body = b""
+
+        if self.echo:
+            response_body = json.dumps(
+                self._response_payload(body),
+                indent=2,
+                ensure_ascii=False,
+            ).encode("utf-8")
+
+        self.send_response(self.response_status)
+
+        self._send_cors_headers()
+
+        if self.response_cookie:
+            self.send_header(
+                "Set-Cookie",
+                self.response_cookie,
+            )
+
+        if self.echo:
+            self.send_header(
+                "Content-Type",
+                "application/json; charset=utf-8",
+            )
+
+            self.send_header(
+                "Content-Length",
+                str(len(response_body)),
+            )
+
+        self.end_headers()
+
+        # HEAD responses must never contain a response body.
+        if self.command != "HEAD" and response_body:
+            self.wfile.write(response_body)
+
+    do_GET = _handle_request
+    do_HEAD = _handle_request
+    do_POST = _handle_request
+    do_PUT = _handle_request
+    do_PATCH = _handle_request
+    do_DELETE = _handle_request
+    do_OPTIONS = _handle_request
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 def main():
-    port = 8080
-    if len(sys.argv) > 1:
-        port = int(sys.argv[1])
-    print('Listening on localhost:%s' % port)
-    server = HTTPServer(('', port), RequestHandler)
-    server.serve_forever()
+    parser = argparse.ArgumentParser(
+        description="HTTP request reflector for development and debugging."
+    )
+
+    parser.add_argument(
+        "-b",
+        "--bind",
+        default="127.0.0.1",
+        help="Address to bind to (default: 127.0.0.1)",
+    )
+
+    parser.add_argument(
+        "-p",
+        "--port",
+        type=int,
+        default=8080,
+        help="Port to listen on (default: 8080)",
+    )
+
+    parser.add_argument(
+        "--cors",
+        action="store_true",
+        help="Enable permissive CORS response headers",
+    )
+
+    parser.add_argument(
+        "--echo",
+        action="store_true",
+        help="Return the received request as JSON",
+    )
+
+    parser.add_argument(
+        "--status",
+        type=int,
+        default=200,
+        help="HTTP response status code (default: 200)",
+    )
+
+    parser.add_argument(
+        "--set-cookie",
+        metavar="COOKIE",
+        help='Add a Set-Cookie response header, e.g. "foo=bar"',
+    )
+
+    parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help="Disable ANSI colors",
+    )
+
+    args = parser.parse_args()
+
+    RequestHandler.use_color = (
+        colors_supported() and not args.no_color
+    )
+
+    RequestHandler.cors = args.cors
+    RequestHandler.echo = args.echo
+    RequestHandler.response_status = args.status
+    RequestHandler.response_cookie = args.set_cookie
+
+    server = ThreadingHTTPServer(
+        (args.bind, args.port),
+        RequestHandler,
+    )
+
+    print()
+    print(
+        paint(
+            f"HTTP Reflector listening on "
+            f"http://{args.bind}:{args.port}",
+            Color.GREEN,
+        )
+    )
+
+    if args.cors:
+        print(paint("CORS enabled", Color.YELLOW))
+
+    if args.echo:
+        print(paint("JSON echo response enabled", Color.YELLOW))
+
+    if args.bind not in ("127.0.0.1", "localhost", "::1"):
+        print(
+            paint(
+                "WARNING: server is reachable from outside localhost",
+                Color.RED,
+            )
+        )
+
+    print("Press Ctrl-C to stop.")
+    print()
+
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nShutting down.")
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":
-    parser = OptionParser()
-    parser.usage = ("Creates an http-server that will echo out any GET or POST parameters\n"
-                    "Run:\n\n"
-                    "   reflect")
-    (options, args) = parser.parse_args()
-
     main()

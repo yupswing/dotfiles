@@ -7,17 +7,34 @@ require 'optparse'
 
 # Default options:
 options = {
-  port: 63_988,
+  port: 63988,
   instance_id: nil,
   instance_name: nil,
+  command: nil,
   list_only: false,
   ip_only: false,
-  user: `whoami`.chomp
+  user: `whoami`.chomp,
+  aws: {
+    profile: 'default',
+    region: 'eu-central-1'
+  }
 }
 
 # Parameters parser:
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME.split(%r{[\\/]}).last} <switches>"
+
+  opts.on '-P p', '--profile',
+          "AWS profile to use (default: #{options[:aws][:profile]})" \
+  do |p|
+    options[:aws][ :profile ] = p
+  end
+
+  opts.on '-R r', '--region',
+          "AWS region to use (default: #{options[:aws][:region]})" \
+  do |r|
+    options[:aws][ :region ] = r
+  end
 
   opts.on '-L', '--list-only', 'Lists available instances' do
     options[:list_only] = true
@@ -45,6 +62,10 @@ parser = OptionParser.new do |opts|
     options[:instance_name] = n
   end
 
+  opts.on '-c c', '--command c', 'Command to run on instance' do |c|
+    options[:command] = "\"#{c}\""
+  end
+
   opts.on '-h', '--help', 'Displays the help reference' do
     puts opts
     exit
@@ -53,12 +74,19 @@ end
 parser.parse!
 
 # Get data from aws:
-data = JSON.parse `aws ec2 describe-instances --instance-ids`
+data = JSON.parse \
+  `aws ec2 describe-instances --instance-ids \
+    --profile "#{options[:aws][:profile]}" \
+    --region "#{options[:aws][:region]}"
+  `
 
 # Parse data:
 instances = {}
 data['Reservations'].each do |d|
   d['Instances'].each do |i|
+    # Only show running instances:
+    next unless i['State']['Code'] == 16
+
     name = i['Tags'].select { |x| x['Key'] == 'Name' }&.first
     name = name['Value'] unless name.nil?
     name = "unnamed_#{i['InstanceId']}" if name.nil? || name.empty?
@@ -77,7 +105,7 @@ data['Reservations'].each do |d|
     }
   end
 end
-instances = instances.sort_by { |_k, v| v[:name] }.to_h
+instances = instances.sort_by { |_k, v| v[:name].downcase }.to_h
 
 # If we only need to print out the list, do so:
 if options[:list_only] && options[:instance_id].nil? &&
@@ -92,7 +120,7 @@ choice = nil if choice.empty?
 
 # If no valid choice id has been given, check if a valid name has been
 # specified:
-if choice.nil? && !options[:instance_name].nil?
+if choice.nil? and !options[:instance_name].nil?
   choice = instances.select { |_k, v| v[:name] == options[:instance_name] }
 end
 
@@ -107,11 +135,11 @@ if choice.nil?
       puts " #{idx} => #{c}"
     end
     print 'Pick an instance to ssh to: '
-    choice = STDIN.gets.chomp
+    choice = $stdin.gets.chomp
 
     # If a number has been given:
-    if (choice == choice.to_i.to_s) &&
-       (0..choices.size - 1).include?(choice.to_i)
+    if choice == choice.to_i.to_s &&
+       (0..(choices.size - 1)).include?(choice.to_i)
       choice = choices[choice.to_i]
 
     # If an invalid choice has been made:
@@ -145,5 +173,5 @@ puts " - Security groups: #{data[:security_groups].join ', '}"
 exit if options[:list_only]
 
 # If we got here, it's ssh time:
-Kernel.exec "ssh #{options[:user]}@#{data[:public_ip]} " +
-            "-p #{options[:port]}"
+Kernel.exec "ssh #{options[:user]}@#{data[:public_ip]} " \
+            "-p #{options[:port]} #{options[:command]}"
