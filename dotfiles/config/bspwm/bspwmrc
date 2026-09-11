@@ -68,7 +68,7 @@ bspc config external_rules_command "$HOME/.config/bspwm/external-rules"
 # bspc rule -a 'class:instance:name'
 
 # Apps with desktop assigned
-bspc rule -a Ferdium desktop=im follow=on
+bspc rule -a ferdium desktop=im follow=on
 bspc rule -a discord desktop=im follow=on
 bspc rule -a thunderbird desktop=mail follow=on
 bspc rule -a Spotify desktop=music follow=on
@@ -78,7 +78,7 @@ bspc rule -a code desktop=code follow=on
 bspc rule -a code-oss desktop=code follow=on
 
 # Firefox (main window and picture-in-picture)
-bspc rule -a 'firefox:Navigator:*' desktop=web follow=on
+# bspc rule -a 'firefox:Navigator:*' desktop=web follow=on
 bspc rule -a 'firefox:Toolkit:*' state=floating border=off sticky=on
 
 # Chrome (remember to right click on chrome titlebar and select `Use system titlebar and borders`)
