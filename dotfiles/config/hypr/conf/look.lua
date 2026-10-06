@@ -93,7 +93,7 @@ anim("windows", 5.2, "easeOut", "popin 82%")
 anim("windowsIn", 5.0, "easeOut", "popin 82%")
 anim("windowsOut", 3.0, "linear", "popin 82%")
 
--- Layer (waybar/anyrun/notifiche)
+-- Layer (waybar/rofi/notifiche)
 anim("layers", 4.0, "easeOut", "fade")
 anim("layersIn", 4.0, "easeOut", "fade")
 anim("layersOut", 2.0, "linear", "fade")

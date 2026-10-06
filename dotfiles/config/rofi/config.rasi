@@ -88,12 +88,13 @@ window {
     // transparency:                "screenshot";
     // {%@@ endif @@%}
     background-color:            #333333;
-    location:                    center;
+    /* anchored to the top: on wayland (layer-shell) offsets are ignored with location center */
+    location:                    north;
     anchor:                      north;
     fullscreen:                  false;
     width:                       1024px;
     x-offset:                    0px;
-    y-offset:                    -400px;
+    y-offset:                    140px;
 
     /* properties for all widgets */
     enabled:                     true;

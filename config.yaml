@@ -134,9 +134,6 @@ dotfiles:
   desktop-portal:
     src: config/xdg-desktop-portal
     dst: ~/.config/xdg-desktop-portal
-  anyrun:
-    src: config/anyrun
-    dst: ~/.config/anyrun
   picom:
     src: config/picom
     dst: ~/.config/picom
@@ -149,9 +146,6 @@ dotfiles:
   rofi:
     src: config/rofi
     dst: ~/.config/rofi
-  wofi:
-    src: config/wofi
-    dst: ~/.config/wofi
   wal:
     src: config/wal
     dst: ~/.config/wal
@@ -268,9 +262,8 @@ profiles:
     - hypr
     - waybar
     - wal
-    - wofi
+    - rofi
     - desktop-portal
-    - anyrun
 
   wsl:
     include:

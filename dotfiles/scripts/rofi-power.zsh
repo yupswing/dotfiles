@@ -1,12 +1,20 @@
 #!/usr/bin/env zsh
 
-LOCKER=$HOME/.scripts/x11-lock.zsh
+# Session dependent commands (wayland: Hyprland, x11: bspwm/i3)
+if [[ -n $WAYLAND_DISPLAY ]]; then
+  # hyprlock does not fork, so run it in background (only once)
+  LOCKER='{ pidof -q hyprlock || hyprlock & }'
+  END_SESSION="hyprctl dispatch 'hl.dsp.exit()'"
+else
+  LOCKER=$HOME/.scripts/x11-lock.zsh
+  END_SESSION=$HOME/.config/bspwm/scripts/quit.sh
+fi
 
 # Commands to execute in an ordered array which will be used as a sort of hash:
 MENU=(
   ' Power-off system'    'systemctl poweroff'
   ' Reboot system'       'systemctl reboot'
-  ' End session'         '$HOME/.config/bspwm/scripts/quit.sh'
+  ' End session'         '$END_SESSION'
   ' Lock screen'         '$LOCKER'
   ' Suspend system'      '$LOCKER && systemctl suspend'
   # ' Hibernate system'    '$LOCKER && systemctl hibernate' #WARNING DO NOT USE WITH ZFS!
@@ -28,4 +36,5 @@ SELECTED=$(printf "%s\n" "${MENU_LABELS[@]}" | ${(s: :)LAUNCHER})
 [[ -z $SELECTED ]] && exit
 
 # Selected an index (-format i), but it is zerobased
-eval $MENU_COMMANDS[SELECTED+1]
+# (double eval: the first expands $LOCKER/$END_SESSION, the second runs them)
+eval "eval $MENU_COMMANDS[SELECTED+1]"
