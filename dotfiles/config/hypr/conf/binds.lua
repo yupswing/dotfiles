@@ -91,6 +91,7 @@ local apps = {
   N = "nemo",
   F = "firefox",
   D = "discord",
+  Z = "nemo",
 }
 
 hl.bind(mod .. " + X", hl.dsp.submap("apps"))

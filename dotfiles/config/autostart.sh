@@ -43,7 +43,7 @@ i3 | bspwm)
   # Background
   $HOME/.fehbg &
   # Notifications
-  launch dunst -config $HOME/.config/dunst/dunst.conf
+  launch dunst
   # Clipboard
   launch greenclip daemon
   # Autolock

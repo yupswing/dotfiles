@@ -30,11 +30,16 @@ else
   )
 fi
 
-ARGS=(--node-type $TYPE --node-blacklist $BLACKLIST --volume-max 150)
+ARGS=(--node-type $TYPE --node-blacklist $BLACKLIST --volume-max 150 --volume-step 5)
 
 case $ACTION in
 listen)
   for n in $NICKNAMES; do ARGS+=(--node-nickname $n); done
+  # when waybar dies it does not stop its scripts, and pulseaudio-control
+  # ignores the broken pipe and lives on: stop the whole process group (waybar
+  # gives each script its own) on exit, and exit once nobody reads the output
+  trap 'trap - TERM; kill 0' EXIT
+  trap 'exit' TERM HUP INT
   # one JSON line per change: waybar adds the `muted` class (colors from CSS)
   pulseaudio-control $ARGS --node-nicknames-from "device.description" \
     --color-muted "" --format '$IS_MUTED $NODE_NICKNAME' listen |
@@ -47,7 +52,7 @@ listen)
       name=${name//\\/\\\\}
       name=${name//\"/\\\"}
       [[ $muted == yes ]] && class=muted || class=
-      print -r -- "{\"text\":\"$name\",\"class\":\"$class\"}"
+      print -r -- "{\"text\":\"$name\",\"class\":\"$class\"}" 2>/dev/null || exit
     done
   ;;
 next) pulseaudio-control $ARGS next-node ;;

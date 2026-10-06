@@ -11,7 +11,6 @@
     "modules-center": ["clock", "custom/media"],
     "modules-right": [
       "group/utils",
-      "battery",
       "group/system",
       "group/audio",
       "tray",
@@ -29,7 +28,6 @@
     "modules-center": ["clock", "custom/media"],
     "modules-right": [
       "group/utils",
-      "battery",
       "group/system",
       "group/audio",
       "tray",

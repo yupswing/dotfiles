@@ -24,8 +24,13 @@ variables:
   ROUNDED: 10
   COMPOSITOR: false
   COMPOSITOR_FANCY: false
+  # waybar: THEME_PRIMARY must match color5 of the wal colorscheme
+  THEME_PRIMARY: '#9358fe'
+  THEME_SECONDARY: '#f19d3a'
 actions:
   wal: wal -R
+  # dunst cannot import files: the pywal colors are a drop-in linked from the cache
+  dunst_wal: mkdir -p ~/.config/dunst/dunstrc.d && ln -sf ~/.cache/wal/dunst.conf ~/.config/dunst/dunstrc.d/50-wal.conf
   ssh_permissions: find ~/.ssh -type f -name '*' -exec chmod 600 {{}} \;
 dotfiles:
   bin:
@@ -154,6 +159,8 @@ dotfiles:
   dunst:
     src: config/dunst
     dst: ~/.config/dunst
+    actions:
+    - dunst_wal
   gsimplecal:
     src: config/gsimplecal
     dst: ~/.config/gsimplecal
@@ -248,11 +255,11 @@ profiles:
   bspwm:
     dotfiles:
     - bspwm
+    - picom
+    - wal
     - dunst
     - rofi
-    - picom
     - polybar
-    - wal
     - gsimplecal
     - fehbg
     - greenclip
@@ -260,10 +267,11 @@ profiles:
   hypr:
     dotfiles:
     - hypr
-    - waybar
-    - wal
-    - rofi
     - desktop-portal
+    - wal
+    - dunst
+    - rofi
+    - waybar
 
   wsl:
     include:

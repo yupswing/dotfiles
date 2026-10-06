@@ -1,6 +1,6 @@
 #!/bin/bash
 pkill dunst
-dunst -config ~/.config/dunst/dunst.conf &
+dunst &
 
 notify-send -u critical "Test message: critical test 1"
 notify-send -u normal "Test message: normal test 2"

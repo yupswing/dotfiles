@@ -4,8 +4,8 @@
 
 /* #THEME_MAIN_COLORS (stessi ruoli di polybar) */
 @define-color primary @color5;
-/* tieni allineato alle icone di modules.jsonc (span color) */
-@define-color secondary #f19d3a;
+/* THEME_SECONDARY (config.yaml), lo stesso delle icone di modules.jsonc */
+@define-color secondary {{@@ THEME_SECONDARY @@}};
 @define-color normal @color7;
 @define-color success @color2;
 @define-color warning @color3;
@@ -24,9 +24,11 @@
 
 * {
   font-family:
-    "IBM Plex Sans", "Fira Code", "icomoon-feather",
+    "SF Pro Text", "Fira Code", "icomoon-feather",
     "Font Awesome 5 Brands", "Material Design Icons";
   font-size: 14px;
+  /* cifre tutte della stessa larghezza anche nei font proporzionali */
+  font-feature-settings: "tnum";
   min-height: 0;
   border: none;
   border-radius: 0;
@@ -40,10 +42,10 @@ window#waybar {
 }
 
 .modules-left {
-  margin-left: 10px;
+  margin-left: 5px;
 }
 .modules-right {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 #workspaces,
@@ -52,7 +54,6 @@ window#waybar {
 #utils,
 #audio,
 #system,
-#custom-extras,
 #tray {
   background: @surface;
   border: 1px solid @edge;
@@ -61,31 +62,36 @@ window#waybar {
 }
 
 #workspaces {
-  padding: 0 3px;
+  padding: 0;
+}
+
+#window {
+  padding-left: 6px;
+}
+#window label {
+  font-size: 14px;
 }
 
 #workspaces button {
   color: @muted;
   background: transparent;
   padding: 1px 10px;
-  margin: 2px 2px;
-  border-radius: 6px;
+  margin: 0;
+  /* i bottoni toccano il bordo (raggio 9px, spesso 1px) e ne seguono la curva */
+  border-radius: 8px;
 }
 
 #workspaces button label {
-  font-size: 16px;
+  font-size: 20px;
 }
 
-#workspaces button.visible {
-  color: @text;
-}
 #workspaces button.empty {
   color: @dim;
 }
 
 #workspaces button:hover {
-  color: @primary;
-  background: @hover;
+  color: @text;
+  /* background: @hover; */
 }
 
 #workspaces button.focused,
@@ -98,10 +104,6 @@ window#waybar {
 #workspaces button.urgent {
   color: @text;
   background: @danger;
-}
-
-.icon {
-  color: @accent;
 }
 
 #clock {
@@ -117,7 +119,7 @@ window#waybar {
   color: @text;
 }
 #custom-online.updating {
-  color: @accent;
+  color: @warning;
 }
 #custom-online.offline {
   color: @danger;
@@ -143,11 +145,9 @@ window#waybar {
   padding: 0 6px;
 }
 
-#custom-temperature,
+#temperature,
 #memory,
-#cpu,
-#battery,
-#network {
+#cpu {
   padding: 0 8px;
 }
 
@@ -155,19 +155,12 @@ window#waybar {
 #memory.warning {
   color: @warning;
 }
+#temperature.critical,
 #cpu.critical,
 #memory.critical {
   color: @danger;
 }
 
-#battery.charging {
-  color: @success;
-}
-#battery.critical:not(.charging) {
-  color: @text;
-  background: @danger;
-  border-radius: 7px;
-}
 #custom-audio-output,
 #custom-audio-input {
   padding: 0 6px;
@@ -183,18 +176,6 @@ window#waybar {
 #custom-audio-output.muted,
 #custom-audio-input.muted {
   color: @muted;
-}
-#network.disconnected {
-  color: @danger;
-}
-
-#custom-extras {
-  padding: 0 10px;
-  color: @accent;
-}
-
-#custom-extras:hover {
-  background: @hover;
 }
 
 #tray {

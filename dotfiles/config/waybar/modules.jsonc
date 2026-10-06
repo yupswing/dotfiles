@@ -15,16 +15,22 @@
       "01:web": "",
       "02:code": "",
       "03:term": "",
-      "04": "04",
-      "05": "05",
-      "06": "06",
-      "07": "07",
-      "08": "08",
-      "09": "09",
-      "10": "10",
+      "04": "<span size='70%' rise='2pt'>04</span>",
+      "05": "<span size='70%' rise='2pt'>05</span>",
+      "06": "<span size='70%' rise='2pt'>06</span>",
+      "07": "<span size='70%' rise='2pt'>07</span>",
+      "08": "<span size='70%' rise='2pt'>08</span>",
+      "09": "<span size='70%' rise='2pt'>09</span>",
+      "10": "<span size='70%' rise='2pt'>10</span>",
       // "alert": "",
       "default": "", // se non trova mapping
     },
+  },
+
+  // finestra attiva del monitor della barra, non quella col focus globale
+  "hyprland/window": {
+    "separate-outputs": true,
+    "max-length": 60,
   },
 
   "tray": {
@@ -42,7 +48,7 @@
 
   "group/system": {
     "orientation": "inherit",
-    "modules": ["custom/temperature", "cpu", "memory"],
+    "modules": ["temperature", "cpu", "memory"],
   },
 
   "group/audio": {
@@ -52,36 +58,17 @@
 
   // ---------------------------------------------------------------------------
   // MODULES
-
-  "network": {
-    "format-wifi": "<span color='#f19d3a' size='130%' rise='-2pt'>󰤨</span>",
-    "format-ethernet": "<span color='#f19d3a' size='130%' rise='-2pt'></span>",
-    "format-linked": "<span color='#f19d3a' size='130%' rise='-2pt'>󱘖</span>{ifname} (No IP) ",
-    "format-disconnected": "<span size='130%' rise='-2pt'></span>",
-    "tooltip-format": " {essid} <span color='#f19d3a'>󰅧</span>{bandwidthUpBytes} <span color='#f19d3a'>󰅢</span>{bandwidthDownBytes}",
-    "interval": 1,
-  },
-
-  // come in polybar: icona, percentuale e barra di carica; "Full" dal 98%.
-  // Senza una batteria in /sys/class/power_supply il modulo resta nascosto
-  "battery": {
-    "interval": 5,
-    "full-at": 98,
-    "states": { "critical": 37 },
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {capacity:3}% {icon}",
-    "format-charging": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {capacity:3}% {icon}",
-    "format-plugged": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {capacity:3}% {icon}",
-    "format-full": "<span color='#f19d3a' size='130%' rise='-2pt'></span> Full {icon}",
-    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-    "tooltip": true,
-  },
+  // Nei numeri `\u2007>` riempie a sinistra con uno spazio largo quanto una
+  // cifra, cosi' il modulo non cambia larghezza anche con un font proporzionale
 
   "pulseaudio": {
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {volume}% ",
-    "format-muted": "<span size='130%' rise='-2pt'></span> {volume}% ",
+    "scroll-step": 5,
+    "max-volume": 150,
+    "format": "<span color='{{@@ THEME_SECONDARY @@}}' size='130%' rise='-2pt'></span> {volume:\u2007>3}% ",
+    "format-muted": "<span size='130%' rise='-2pt'></span> {volume:\u2007>3}% ",
     "on-click-right": "pavucontrol -t 3",
     "on-click": "pactl -- set-sink-mute 0 toggle",
-    "tooltip": true,
+    "tooltip": false,
   },
 
   // sink/source di default: click per ruotare (vedi scripts/audio-node.zsh)
@@ -107,9 +94,13 @@
     "tooltip": false,
   },
 
-  "custom/temperature": {
-    "exec": "sensors | awk '/^Package id 0:/ {print int($4)}'",
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {}°C",
+  // Temperatura del package CPU da coretemp (hwmon-path-abs perche' il numero
+  // di hwmonN cambia tra un boot e l'altro); oltre la soglia la colora il CSS
+  "temperature": {
+    "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+    "input-filename": "temp1_input",
+    "critical-threshold": 90,
+    "format": "<span color='{{@@ THEME_SECONDARY @@}}' size='130%' rise='-2pt'></span> {temperatureC:\u2007>2}°C",
     "interval": 5,
     "tooltip": false,
   },
@@ -118,8 +109,8 @@
   // il modulo dal CSS agli stessi livelli della barra (6/8 e 8/8)
   "cpu": {
     "interval": 2,
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {usage:2}% {icon}",
-    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "format": "<span color='{{@@ THEME_SECONDARY @@}}' size='130%' rise='-2pt'></span> {usage:\u2007>2}%", // {icon}",
+    // "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
     "states": { "warning": 63, "critical": 88 },
     "on-click": "kitty btop",
     "tooltip": false,
@@ -127,16 +118,16 @@
 
   "memory": {
     "interval": 2,
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {percentage:2}% {icon}",
-    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "format": "<span color='{{@@ THEME_SECONDARY @@}}' size='130%' rise='-2pt'></span> {percentage:\u2007>2}%", // {icon}",
+    // "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
     "states": { "warning": 63, "critical": 88 },
     "tooltip": false,
   },
 
   "clock": {
-    "interval": 1,
+    "interval": 60,
     "timezone": "Europe/Rome",
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span>  {:%a %d %b   <span color='#f19d3a' size='130%%' rise='-2pt'></span>  %H:%M}",
+    "format": "<span color='{{@@ THEME_SECONDARY @@}}' size='130%' rise='-2pt'></span> {:%a %d %b <span color='{{@@ THEME_SECONDARY @@}}' size='130%%' rise='-2pt'></span> %H:%M}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -153,29 +144,6 @@
     },
   },
 
-  "backlight": {
-    "device": "intel_backlight",
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'>{icon}</span>{percent}% ",
-    "tooltip": true,
-    "tooltip-format": "当前屏幕亮度: {percent}%",
-    "format-icons": [
-      "<span color='#f19d3a'>󰃞</span>",
-      "<span color='#f19d3a'>󰃝</span>",
-      "<span color='#f19d3a'>󰃟</span>",
-      "<span color='#f19d3a'>󰃠</span>",
-    ],
-  },
-
-  "bluetooth": {
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> ",
-    // "format-connected": "<span color='#f19d3a' size='130%' rise='-2pt'></span> ",
-    // "format-connected-battery": "<span color='#f19d3a' size='130%' rise='-2pt'></span> ",
-    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-  },
-
   // Player multimediale (qualsiasi player MPRIS), nascosto quando nulla suona:
   // lo script emette testo vuoto e hide-empty-text nasconde il modulo.
   // Per seguire solo Spotify sostituisci media.py con media-spotify.py (stesso
@@ -184,9 +152,8 @@
     "exec": "python3 ~/.config/waybar/scripts/media.py",
     "return-type": "json",
     "restart-interval": 3,
-    "exec-on-event": false,
     "hide-empty-text": true,
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {icon}  {text}",
+    "format": "<span color='{{@@ THEME_SECONDARY @@}}' size='130%' rise='-2pt'></span> {icon} {text}",
     "format-icons": {
       "playing": "",
       "paused": "",
@@ -198,18 +165,20 @@
     "on-click": "python3 ~/.config/waybar/scripts/media.py toggle",
     "on-click-right": "python3 ~/.config/waybar/scripts/media.py open",
     "on-click-middle": "python3 ~/.config/waybar/scripts/media.py next",
+    "on-scroll-up": "python3 ~/.config/waybar/scripts/media.py next",
     "on-scroll-down": "python3 ~/.config/waybar/scripts/media.py previous",
+    "smooth-scrolling-threshold": 1,
   },
 
   // Aggiornamenti in attesa (repo + AUR), nascosto se non ce ne sono.
-  // Icona in primary: tieni l'hex allineato a color5 del tema wal.
+  // Icona in primary: THEME_PRIMARY (config.yaml), allineato a color5 di wal.
   // Il click apre paru e, chiuso il terminale, rilegge il conteggio (signal)
   "custom/updates": {
     "exec": "~/.config/waybar/scripts/updates.sh",
     "interval": 600,
     "signal": 8,
     "hide-empty-text": true,
-    "format": "<span color='#9358fe' size='130%' rise='-2pt'></span> {}",
+    "format": "<span color='{{@@ THEME_PRIMARY @@}}' size='130%' rise='-2pt'></span> {}",
     "on-click": "kitty --hold paru; pkill -RTMIN+8 waybar",
     "tooltip": false,
   },

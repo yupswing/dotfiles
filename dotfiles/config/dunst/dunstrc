@@ -34,7 +34,7 @@
     origin = top-right
 
     # Offset from the origin
-    offset = 15x50
+    offset = (15, 15)
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -69,15 +69,15 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.). (X11 only)
-    transparency = 10
+    transparency = 0
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
-    separator_height = 2
+    separator_height = 3
 
     # Padding between text and separator.
-    padding = 15
+    padding = 16
 
     # Horizontal padding.
     horizontal_padding = 20
@@ -87,10 +87,10 @@
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 0
+    frame_width = 3
 
     # Defines color of the frame around the notification window.
-    frame_color = "#aaaaaa"
+    frame_color = "#9358fe"
 
     # Define a color for the separator.
     # possible values are:
@@ -112,12 +112,12 @@
 
     ### Text ###
 
-    font = IBM Plex Sans Condensed 10
+    font = FiraCode Nerd Font 11
 
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
-    line_height = 3
+    line_height = 2
 
     # Possible values are:
     # full: Allow a small subset of html markup in notifications:
@@ -235,7 +235,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 0
+    corner_radius = {{@@ ROUNDED @@}}
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -294,28 +294,35 @@
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
 
+# #THEME_MAIN_COLORS same look as rofi: dark background, primary border.
+# The colors below are fallbacks: pywal overrides them with the drop-in
+# dunstrc.d/50-wal.conf (template in ~/.config/wal/templates/dunst.conf)
+
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    frame_color = "#cccccc"
+    frame_color = "#9358fe"
     foreground = "#aaaaaa"
     background = "#333333"
+    highlight = "#9358fe"
     timeout = 4
     # Icon for notifications with low urgency, uncomment to enable
     #new_icon = /path/to/icon
 
 [urgency_normal]
-    frame_color = "#cccccc"
-    foreground = "#cccccc"
+    frame_color = "#9358fe"
+    foreground = "#f8f8f2"
     background = "#333333"
+    highlight = "#9358fe"
     timeout = 6
     # Icon for notifications with normal urgency, uncomment to enable
     #new_icon = /path/to/icon
 
 [urgency_critical]
-    frame_color = "#B7472A"
-    foreground = "#cccccc"
-    background = "#553333"
+    frame_color = "#dc2566"
+    foreground = "#f8f8f2"
+    background = "#333333"
+    highlight = "#dc2566"
     timeout = 8
     # Icon for notifications with critical urgency, uncomment to enable
     #new_icon = /path/to/icon
