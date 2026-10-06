@@ -9,7 +9,7 @@
 {%@@ if profile == VM_HOST @@%}
 xrandr --output VGA-1 --primary
 {%@@ elif profile == WORK_HOST @@%}
-$HOME/.scripts/monitors.zsh
+$HOME/.scripts/x11-monitors.zsh
 {%@@ endif @@%}
 
 # #TAG_HIGH_DPI see also Xresources, xdpi.zsh, xprofile

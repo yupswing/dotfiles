@@ -55,7 +55,7 @@ local app_workspaces = {
   { "discord", "^(Discord|discord)$", "!1:im" },
   { "thunderbird", "^(Thunderbird|thunderbird)$", "!2:mail" },
   { "spotify", "^(Spotify|spotify)$", "!3:music" },
-  { "code", "^(Code|code|code-oss)$", "02:code" },
+  { "code", "^(Code|code|code-oss|com.microsoft.VSCode)$", "02:code" },
   { "firefox", "^(firefox)$", "01:web" },
   { "chrome", "^(Chromium|chromium|Google-chrome|google-chrome)$", "01:web" },
 }

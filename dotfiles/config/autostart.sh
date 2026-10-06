@@ -7,7 +7,8 @@ launch() {
 
 ### Hotkeys
 ###############################################################################
-launch sxhkd
+# X11 only: on wayland the compositor handles the binds
+[[ -z $WAYLAND_DISPLAY ]] && launch sxhkd
 
 sleep 1
 
@@ -61,7 +62,22 @@ i3 | bspwm)
   # xfce)
   #   ;;
 hyprland)
-  wayland &
+  # Portals: the systemd user manager may survive a previous X11 session,
+  # import the current env and restart them (they would not open windows)
+  dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+  systemctl --user stop xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+  systemctl --user start xdg-desktop-portal
+  # Bar
+  launch waybar
+  # Background
+  launch hyprpaper
+  # Notifications
+  launch dunst
+  # Clipboard
+  launch wl-paste --watch cliphist store
+  # launch udiskie --tray       # mount tray
+  # launch wlsunset -l 44 -L 9  # warm screen evening (set coordinates)
+  ;;
 esac
 
 sleep 1
@@ -69,9 +85,9 @@ sleep 1
 ### Applications
 ###############################################################################
 # launch spotify
-# launch google-chrome-stable
+launch google-chrome-stable
 launch ferdium
-# launch discord
+launch discord
 # launch linphone
 # launch thunderbird
 launch code

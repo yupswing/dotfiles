@@ -70,13 +70,13 @@ alt + s
 
 # Screenshot (with scrot+xclip)
 Print
-  $HOME/.scripts/screenshot.zsh
+  $HOME/.scripts/x11-screenshot.zsh
 # Screenshot of an area (with scrot+xclip)
 shift + Print
-  $HOME/.scripts/screenshot.zsh --select
+  $HOME/.scripts/x11-screenshot.zsh --select
 # Open screenshot folder
 ctrl + Print
-  $HOME/.scripts/screenshot.zsh --open
+  $HOME/.scripts/x11-screenshot.zsh --open
 
 alt + n
   dunstctl history-pop
