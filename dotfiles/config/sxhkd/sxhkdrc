@@ -68,15 +68,15 @@ alt + shift + ctrl + c
 alt + s
   $HOME/.scripts/locate.zsh
 
-# Screenshot (with scrot+xclip)
+# Screenshot (with scrot+xclip, or grim+slurp on wayland)
 Print
-  $HOME/.scripts/x11-screenshot.zsh
-# Screenshot of an area (with scrot+xclip)
+  $HOME/.scripts/screenshot.zsh
+# Screenshot of an area (with scrot+xclip, or grim+slurp on wayland)
 shift + Print
-  $HOME/.scripts/x11-screenshot.zsh --select
+  $HOME/.scripts/screenshot.zsh --select
 # Open screenshot folder
 ctrl + Print
-  $HOME/.scripts/x11-screenshot.zsh --open
+  $HOME/.scripts/screenshot.zsh --open
 
 alt + n
   dunstctl history-pop

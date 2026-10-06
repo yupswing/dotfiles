@@ -280,12 +280,12 @@ bindsym $mod+Shift+space exec --no-startup-id rofi -show run
 # Windows switcher
 bindsym $mod+Tab exec --no-startup-id rofi -show window -show-icons
 
-# Screenshot (with scrot+xclip)
-bindsym --release Print exec --no-startup-id $HOME/.scripts/x11-screenshot.zsh
+# Screenshot (with scrot+xclip, or grim+slurp on wayland)
+bindsym --release Print exec --no-startup-id $HOME/.scripts/screenshot.zsh
 
-# Screenshot of an area (with scrot+xclip)
-bindsym --release Shift+Print exec --no-startup-id $HOME/.scripts/x11-screenshot.zsh -s
-bindsym --release $mod+y exec --no-startup-id $HOME/.scripts/x11-screenshot.zsh -s
+# Screenshot of an area (with scrot+xclip, or grim+slurp on wayland)
+bindsym --release Shift+Print exec --no-startup-id $HOME/.scripts/screenshot.zsh -s
+bindsym --release $mod+y exec --no-startup-id $HOME/.scripts/screenshot.zsh -s
 
 # Open screenshot folder
 bindsym Ctrl+Print exec --no-startup-id xdg-open "$HOME/Pictures/screenshots"

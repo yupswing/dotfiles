@@ -25,6 +25,11 @@ hl.bind(mod .. " + CTRL + C", exec("~/.scripts/clipboard.zsh --clear"))
 hl.bind(mod .. " + SHIFT + C", exec("~/.scripts/calculator.zsh --rofi"))
 hl.bind(mod .. " + SHIFT + CTRL + C", exec("~/.scripts/calculator.zsh --clear"))
 
+-- Screenshot con grim+slurp (stessi tasti di sxhkdrc)
+hl.bind("Print", exec("~/.scripts/screenshot.zsh"))
+hl.bind("SHIFT + Print", exec("~/.scripts/screenshot.zsh --select")) -- area
+hl.bind("CTRL + Print", exec("~/.scripts/screenshot.zsh --open")) -- apre la cartella
+
 -- Focus con mod + frecce, swap nel tiling con mod + SHIFT + frecce
 for _, dir in ipairs({ "left", "right", "up", "down" }) do
   hl.bind(mod .. " + " .. dir, hl.dsp.focus({ direction = dir }))
