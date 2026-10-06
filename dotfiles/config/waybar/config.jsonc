@@ -5,11 +5,16 @@
     "include": ["~/.config/waybar/modules.jsonc"],
     "layer": "top",
     "position": "top",
-    "height": 32,
+    "height": 36,
     "spacing": 0,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": [],
-    "modules-right": ["clock"]
+    "modules-center": ["clock"],
+    "modules-right": [
+      "battery",
+      "group/system",
+      "group/audio",
+      "tray",
+    ],
   },
   {
     "name": "external",
@@ -17,20 +22,15 @@
     "include": ["~/.config/waybar/modules.jsonc"],
     "layer": "top",
     "position": "top",
-    "height": 32,
+    "height": 36,
     "spacing": 0,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": [],
+    "modules-center": ["clock"],
     "modules-right": [
-      "network",
-      "bluetooth",
-      "pulseaudio",
-      "cpu",
-      "custom/temperature",
-      "memory",
       "battery",
-      "clock",
-      "tray"
-    ]
-  }
+      "group/system",
+      "group/audio",
+      "tray",
+    ],
+  },
 ]

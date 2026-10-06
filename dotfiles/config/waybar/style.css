@@ -1,122 +1,220 @@
+/* Palette (color0..15, background, foreground) generata da pywal:
+   template in ~/.config/wal/templates/waybar.css, rigenera con `wal -R` */
+@import url("../../.cache/wal/waybar.css");
+
+/* #THEME_MAIN_COLORS (stessi ruoli di polybar) */
+@define-color primary @color5;
+/* tieni allineato alle icone di modules.jsonc (span color) */
+@define-color secondary #f19d3a;
+@define-color normal @color7;
+@define-color success @color2;
+@define-color warning @color3;
+@define-color danger @color1;
+@define-color danger-dark @color9;
+
+/* Derivati */
+@define-color accent @secondary;
+@define-color base @background;
+@define-color text @foreground;
+@define-color surface mix(@background, @foreground, 0.06);
+@define-color hover mix(@background, @foreground, 0.14);
+@define-color edge mix(@background, @foreground, 0.16);
+@define-color dim mix(@background, @foreground, 0.4);
+@define-color muted mix(@background, @foreground, 0.6);
+
 * {
-  font-family: "IBM Plex Sans Condensed", "Fira Code", "icomoon-feather",
+  /* "SF Pro Text", */
+  font-family:
+    "IBM Plex Sans", "Fira Code", "icomoon-feather",
     "Font Awesome 5 Brands", "Material Design Icons";
-  /* "Font Awesome 5 Free:style=Regular:size=12;3" Regular */
-  /* font-4 = "Font Awesome 5 Free:style=Solid:size=12;3" Solid */
-  font-weight: bold;
-  font-size: 16px;
-  color: #dcdfe1;
-}
-
-#waybar {
-  background-color: rgba(0, 0, 0, 0);
+  font-size: 14px;
+  min-height: 0;
   border: none;
+  border-radius: 0;
   box-shadow: none;
+  text-shadow: none;
 }
 
-/* .module {
-  background-color: rgba(15, 27, 53, 0.9);
-  padding: 5px 10px;
-  margin: 0 5px;
-  border-radius:10px;
-  border-width:0px;
-} */
+window#waybar {
+  background: @base;
+  color: @text;
+}
+
+.modules-left {
+  margin-left: 10px;
+}
+.modules-right {
+  margin-right: 10px;
+}
 
 #workspaces,
-#window,
-#tray {
-  background-color: rgba(15, 27, 53, 0.9);
-  padding: 4px 6px;
-  margin-top: 6px;
-  margin-left: 6px;
-  margin-right: 6px;
-  border-radius: 10px;
-  border-width: 0px;
-}
-
+#custom-doto,
 #clock,
-#custom-power {
-  background-color: rgba(15, 27, 53, 0.9);
-  margin-top: 6px;
-  margin-right: 6px;
-  padding: 4px 2px;
-  border-radius: 0 10px 10px 0;
-  border-width: 0px;
+#media,
+#audio,
+#system,
+#custom-extras,
+#tray {
+  background: @surface;
+  border: 1px solid @edge;
+  border-radius: 9px;
+  margin: 4px;
 }
 
-#network,
-#custom-lock {
-  background-color: rgba(15, 27, 53, 0.9);
-  margin-top: 6px;
-  margin-left: 6px;
-  padding: 4px 2px;
-  border-radius: 10px 0 0 10px;
-  border-width: 0px;
-}
-
-#custom-reboot,
-#bluetooth,
-#battery,
-#pulseaudio,
-#backlight,
-#custom-temperature,
-#memory,
-#cpu {
-  background-color: rgba(15, 27, 53, 0.9);
-  margin-top: 6px;
-  padding: 4px 2px;
-  border-width: 0px;
-}
-
-#custpm-temperature.critical,
-#pulseaudio.muted {
-  color: #ff0000;
-  padding-top: 0;
-}
-
-#bluetooth:hover,
-#network:hover,
-#tray:hover,
-#backlight:hover,
-#battery:hover,
-#pulseaudio:hover,
-#custom-temperature:hover,
-#memory:hover,
-#cpu:hover,
-#clock:hover,
-#custom-lock:hover,
-#custom-reboot:hover,
-#custom-power:hover,
-#workspaces:hover,
-#window:hover {
-  background-color: rgba(70, 75, 90, 0.9);
-}
-
-#workspaces button:hover {
-  background-color: rgba(97, 175, 239, 0.2);
-  padding: 2px 8px;
-  margin: 0 2px;
-  border-radius: 10px;
-}
-
-#workspaces button.active {
-  background-color: #61afef;
-  color: #ffffff;
-  padding: 2px 8px;
-  margin: 0 2px;
-  border-radius: 10px;
+#workspaces {
+  padding: 0 3px;
 }
 
 #workspaces button {
+  color: @muted;
   background: transparent;
-  border: none;
-  color: #888888;
-  padding: 2px 8px;
-  margin: 0 2px;
-  font-weight: bold;
+  padding: 1px 10px;
+  margin: 2px 2px;
+  border-radius: 6px;
 }
 
-#window {
-  font-weight: 500;
-  font-style: italic;
+#workspaces button label {
+  font-size: 16px;
+}
+
+#workspaces button.visible {
+  color: @text;
+}
+#workspaces button.empty {
+  color: @dim;
+}
+
+#workspaces button:hover {
+  color: @primary;
+  background: @hover;
+}
+
+#workspaces button.focused,
+#workspaces button.visible,
+#workspaces button.active {
+  color: @text;
+  background: @primary;
+}
+
+#workspaces button.urgent {
+  color: @text;
+  background: @danger;
+}
+
+.icon {
+  color: @accent;
+}
+
+#clock {
+  padding: 0 12px;
+}
+
+#custom-spotify {
+  padding: 0 5px;
+  color: @accent;
+}
+
+#custom-spotify.closed,
+#custom-spotify.paused {
+  color: @muted;
+}
+
+#custom-spotify-prev,
+#custom-spotify-next {
+  padding: 0 8px;
+  color: @accent;
+}
+
+#custom-spotify:hover,
+#custom-spotify-prev:hover,
+#custom-spotify-next:hover {
+  color: @text;
+}
+
+#audio,
+#system {
+  padding: 0 6px;
+}
+
+#pulseaudio {
+  padding: 0 6px;
+}
+
+#custom-temperature,
+#memory,
+#cpu,
+#battery,
+#network {
+  padding: 0 8px;
+}
+
+#cpu.warning,
+#memory.warning {
+  color: @warning;
+}
+#cpu.critical,
+#memory.critical {
+  color: @danger;
+}
+
+#battery.charging {
+  color: @success;
+}
+#battery.warning {
+  color: @warning;
+}
+#battery.critical:not(.charging) {
+  color: @text;
+  background: @danger;
+  border-radius: 7px;
+}
+#custom-audio-output,
+#custom-audio-input {
+  padding: 0 6px;
+  color: @text;
+  font-size: 16px;
+}
+#custom-audio-output:hover,
+#custom-audio-input:hover {
+  color: @accent;
+}
+
+#pulseaudio.muted,
+#custom-audio-output.muted,
+#custom-audio-input.muted {
+  color: @muted;
+}
+#network.disconnected {
+  color: @danger;
+}
+
+#custom-extras {
+  padding: 0 10px;
+  color: @accent;
+}
+
+#custom-extras:hover {
+  background: @hover;
+}
+
+#tray {
+  padding: 0 10px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+tooltip {
+  background: @base;
+  color: @text;
+  border: 1px solid @edge;
+  border-radius: 8px;
+}
+
+tooltip label {
+  padding: 6px;
 }

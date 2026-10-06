@@ -71,6 +71,9 @@ hl.config({
     force_default_wallpaper = -1, -- -1 = lascia com'è, 0/1 = disabilita wallpaper mascotte
     disable_hyprland_logo = true,
     focus_on_activate = true, -- segui le finestre che chiedono il focus (es. link aperto nel browser su un altro workspace)
+    -- We want keyboard events to wake up the screen, but not mouse ones:
+    key_press_enables_dpms = true,
+    mouse_move_enables_dpms = false
   },
 })
 

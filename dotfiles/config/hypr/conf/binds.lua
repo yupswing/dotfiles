@@ -7,7 +7,7 @@ local mod = vars.mod
 local exec = hl.dsp.exec_cmd
 
 hl.bind(mod .. " + Q", hl.dsp.window.close())
-hl.bind(mod .. " + M", hl.dsp.exit())
+-- hl.bind(mod .. " + M", hl.dsp.exit())
 hl.bind(mod .. " + E", exec(vars.file_manager))
 hl.bind(mod .. " + B", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mod .. " + N", hl.dsp.window.pseudo()) -- dwindle
@@ -105,3 +105,28 @@ hl.define_submap("apps", "reset", function()
     hl.bind(key, hl.dsp.submap("reset"))
   end
 end)
+
+--------------------------------------------------------------------------------
+
+-- Per gestire il bug nvidia in cui lo schermo diventa nero
+
+-- Screen off:
+hl.bind(
+  mod .. " + SHIFT + O",
+  function()
+    hl.timer(
+      function()
+        hl.dispatch( hl.dsp.dpms( { action = "disable" } ) )
+      end,
+      { timeout = 500, type = "oneshot" }
+    )
+  end,
+  { locked = true }
+)
+
+-- Screen on:
+hl.bind(
+  mod .. " + SHIFT + P",
+  hl.dsp.dpms( "on" ),
+  { locked = true }
+)

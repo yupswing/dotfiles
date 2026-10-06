@@ -1,4 +1,7 @@
 {
+  // ---------------------------------------------------------------------------
+  // BASIC
+
   "hyprland/workspaces": {
     "disable-scroll": false,
     "all-outputs": false,
@@ -20,63 +23,113 @@
       "09": "09",
       "10": "10",
       // "alert": "",
-      "default": "" // se non trova mapping
-    }
+      "default": "", // se non trova mapping
+    },
   },
+
+  "tray": {
+    "icon-size": 17,
+    "spacing": 6,
+  },
+
+  // ---------------------------------------------------------------------------
+  // GROUPS
+
+  "group/system": {
+    "orientation": "inherit",
+    "modules": ["custom/temperature", "cpu", "memory"],
+  },
+
+  "group/audio": {
+    "orientation": "inherit",
+    "modules": ["custom/audio-input", "custom/audio-output", "pulseaudio"],
+  },
+
+  // ---------------------------------------------------------------------------
+  // MODULES
+
   "network": {
-    "format-wifi": "<span color='#00FFFF'>󰤨</span>",
-    "format-ethernet": "<span color='#7FFF00'></span>",
-    "format-linked": "<span color='#FFA500'>󱘖</span>{ifname} (No IP) ",
-    "format-disconnected": "<span color='#FF4040'></span>",
-    "tooltip-format": " {essid} <span color='#FF1493'>󰅧</span>{bandwidthUpBytes} <span color='#00BFFF'>󰅢</span>{bandwidthDownBytes}",
-    "interval": 1
+    "format-wifi": "<span color='#f19d3a'>󰤨</span>",
+    "format-ethernet": "<span color='#f19d3a'></span>",
+    "format-linked": "<span color='#f19d3a'>󱘖</span>{ifname} (No IP) ",
+    "format-disconnected": "",
+    "tooltip-format": " {essid} <span color='#f19d3a'>󰅧</span>{bandwidthUpBytes} <span color='#f19d3a'>󰅢</span>{bandwidthDownBytes}",
+    "interval": 1,
   },
+
   "battery": {
     "states": {
       "warning": 30,
-      "critical": 15
+      "critical": 15,
     },
-    "format": "<span color='#28CD41'>{icon}</span> {capacity}% ",
+    "format": "<span color='#f19d3a'>{icon}</span> {capacity}% ",
     "format-charging": "󱐋 {capacity}%",
     "interval": 1,
     "format-icons": ["󰂎", "󰁼", "󰁿", "󰂁", "󰁹"],
-    "tooltip": true
+    "tooltip": true,
   },
+
   "pulseaudio": {
-    "format": "<span color='#00FF7F'>{icon}</span> {volume}% ",
-    "format-muted": "<span color='#FF4040'>󰖁</span> 0% ",
-    "format-icons": {
-      "headphone": "<span color='#BF00FF'></span>",
-      "hands-free": "<span color='#BF00FF'></span>",
-      "headset": "<span color='#BF00FF'></span>",
-      "phone": "<span color='#00FFFF'></span>",
-      "portable": "<span color='#00FFFF'></span>",
-      "car": "<span color='#FFA500'></span>",
-      "default": [
-        "<span color='#808080'></span>",
-        "<span color='#FFFF66'></span>",
-        "<span color='#00FF7F'></span>"
-      ]
-    },
+    "format": "<span color='#f19d3a'></span> {volume}% ",
+    "format-muted": " {volume}% ",
     "on-click-right": "pavucontrol -t 3",
     "on-click": "pactl -- set-sink-mute 0 toggle",
-    "tooltip": true
+    "tooltip": true,
   },
+
+  // sink/source di default: click per ruotare (vedi scripts/audio-node.zsh)
+  "custom/audio-output": {
+    "exec": "~/.config/waybar/scripts/audio-node.zsh output listen",
+    "return-type": "json",
+    "on-click": "~/.config/waybar/scripts/audio-node.zsh output next",
+    "on-click-middle": "~/.config/waybar/scripts/audio-node.zsh output mute",
+    "on-click-right": "pavucontrol -t 3",
+    "on-scroll-up": "~/.config/waybar/scripts/audio-node.zsh output up",
+    "on-scroll-down": "~/.config/waybar/scripts/audio-node.zsh output down",
+    "tooltip": false,
+  },
+
+  "custom/audio-input": {
+    "exec": "~/.config/waybar/scripts/audio-node.zsh input listen",
+    "return-type": "json",
+    "on-click": "~/.config/waybar/scripts/audio-node.zsh input next",
+    "on-click-middle": "~/.config/waybar/scripts/audio-node.zsh input mute",
+    "on-click-right": "pavucontrol -t 4",
+    "on-scroll-up": "~/.config/waybar/scripts/audio-node.zsh input up",
+    "on-scroll-down": "~/.config/waybar/scripts/audio-node.zsh input down",
+    "tooltip": false,
+  },
+
   "custom/temperature": {
     "exec": "sensors | awk '/^Package id 0:/ {print int($4)}'",
-    "format": "<span color='#FFA500'></span> {}°C ",
+    "format": "<span color='#f19d3a'></span> {}°C",
     "interval": 5,
+    "tooltip": false,
   },
-  "memory": {
-    "format": "<span color='#8A2BE2'></span> {used:0.1f}G",
-  },
+
+  // icona, barra di carico e percentuale come in polybar; le soglie colorano
+  // il modulo dal CSS agli stessi livelli della barra (6/8 e 8/8)
   "cpu": {
-    "format": "<span color='#FF9F0A'></span> {usage}% ",
+    "interval": 2,
+    "format": "<span color='#f19d3a'></span> {usage:2}% {icon}",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "states": { "warning": 63, "critical": 88 },
+    "on-click": "kitty btop",
+    "tooltip": false,
   },
+
+  "memory": {
+    "interval": 2,
+    "format": "<span color='#f19d3a'></span> {percentage:2}% {icon}",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    "states": { "warning": 63, "critical": 88 },
+    "tooltip": false,
+  },
+
   "clock": {
     "interval": 1,
     "timezone": "Europe/Rome",
-    "format": "<span color='#BF00FF'></span> {:%H:%M} ",
+    "format": "<span color='#f19d3a'></span> {:%a %d %b  <span color='#f19d3a'></span> %H:%M}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "year",
@@ -88,33 +141,31 @@
         "days": "<span color='#ecc6d9'><b>{}</b></span>",
         "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
         "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
-      }
-    }
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>",
+      },
+    },
   },
-  "tray": {
-    "icon-size": 17,
-    "spacing": 6
-  },
+
   "backlight": {
     "device": "intel_backlight",
-    "format": "<span color='#FFD700'>{icon}</span>{percent}% ",
+    "format": "<span color='#f19d3a'>{icon}</span>{percent}% ",
     "tooltip": true,
     "tooltip-format": "当前屏幕亮度: {percent}%",
     "format-icons": [
-      "<span color='#696969'>󰃞</span>", // 暗 - 深灰
-      "<span color='#A9A9A9'>󰃝</span>", // 中 - 灰
-      "<span color='#FFFF66'>󰃟</span>", // 亮 - 柠檬黄
-      "<span color='#FFD700'>󰃠</span>" // 最亮 - 金色
-    ]
+      "<span color='#f19d3a'>󰃞</span>",
+      "<span color='#f19d3a'>󰃝</span>",
+      "<span color='#f19d3a'>󰃟</span>",
+      "<span color='#f19d3a'>󰃠</span>",
+    ],
   },
+
   "bluetooth": {
-    "format": "<span color='#00BFFF'></span> ",
-    // "format-connected": "<span color='#00BFFF'></span> ",
-    // "format-connected-battery": "<span color='#00BFFF'></span> ",
+    "format": "<span color='#f19d3a'></span> ",
+    // "format-connected": "<span color='#f19d3a'></span> ",
+    // "format-connected-battery": "<span color='#f19d3a'></span> ",
     "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
     "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
     "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
-  }
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+  },
 }
