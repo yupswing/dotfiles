@@ -4,7 +4,7 @@ set -euo pipefail
 # --- Config personali ---------------------------------------------------------
 LOCKER="${HOME}/.scripts/wayland-lock.zsh"
 
-WM_QUIT_CMD="hyprctl dispatch exit"
+WM_QUIT_CMD="hyprctl dispatch hl.dsp.exit()"
 # -----------------------------------------------------------------------------
 
 # Coppie [label, comando] come nel tuo script

@@ -5,7 +5,7 @@ set -euo pipefail
 LOCKER=${LOCKER:-"$HOME/.scripts/wayland-lock.zsh"}
 
 # Hyprland: end session (al posto dello script di bspwm)
-END_SESSION_CMD=${END_SESSION_CMD:-"hyprctl dispatch exit"}
+END_SESSION_CMD=${END_SESSION_CMD:-"hyprctl dispatch 'hl.dsp.exit()'"}
 
 # --- Menu (label, cmd) --------------------------------------------------------
 # NB: mantieni accoppiate label/cmd e usa && quando vuoi chaining.
