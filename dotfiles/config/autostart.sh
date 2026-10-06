@@ -25,8 +25,16 @@ launch dropbox start
 
 ### DE Dependent
 ###############################################################################
-case ${GDMSESSION:l} in
+# GDMSESSION is set by lightdm/gdm only, other DMs (ly) set the XDG ones
+SESSION=${GDMSESSION:-${XDG_CURRENT_DESKTOP:-${XDG_SESSION_DESKTOP:-$DESKTOP_SESSION}}}
+case ${SESSION:l} in
 i3 | bspwm)
+  # Portals: the systemd user manager may survive a previous Hyprland session,
+  # drop its stale wayland env and restart them with the current one
+  systemctl --user unset-environment WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE
+  dbus-update-activation-environment --systemd DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+  systemctl --user stop xdg-desktop-portal-hyprland
+  systemctl --user try-restart xdg-desktop-portal-gtk xdg-desktop-portal
   {%@@ if COMPOSITOR @@%}
   # Composite manager (highest priority)
   launch picom -b

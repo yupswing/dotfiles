@@ -70,6 +70,7 @@ hl.config({
   misc = {
     force_default_wallpaper = -1, -- -1 = lascia com'è, 0/1 = disabilita wallpaper mascotte
     disable_hyprland_logo = true,
+    focus_on_activate = true, -- segui le finestre che chiedono il focus (es. link aperto nel browser su un altro workspace)
   },
 })
 

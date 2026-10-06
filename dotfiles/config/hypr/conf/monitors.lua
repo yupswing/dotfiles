@@ -4,10 +4,14 @@
 
 local vars = require("conf.vars")
 
-hl.monitor({ output = vars.monitors.front, mode = "1920x1080@60", position = "0x0", scale = 1 })
-hl.monitor({ output = vars.monitors.side, mode = "1920x1080@60", position = "1920x0", scale = 1 })
+-- hl.monitor({ output = vars.monitors.front, mode = "1920x1080@60", position = "0x0", scale = 1 })
+-- hl.monitor({ output = vars.monitors.side, mode = "1920x1080@60", position = "1920x0", scale = 1 }) -- laptop
 -- hl.monitor({ output = vars.monitors.front, mode = "2560x1440@143.93", position = "0x0", scale = 1 })
 -- hl.monitor({ output = vars.monitors.side, mode = "1920x1080@60.20", position = "2560x360", scale = 1 })
+
+hl.monitor({ output = vars.monitors.front, mode = "preferred", position = "0x0", scale = 1 })
+hl.monitor({ output = vars.monitors.side, mode = "preferred", position = "auto-right", scale = 1 }) -- laptop
+
 
 -- Qualsiasi altro monitor: risoluzione preferita, a destra degli altri
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
