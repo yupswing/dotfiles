@@ -23,7 +23,6 @@
 @define-color muted mix(@background, @foreground, 0.6);
 
 * {
-  /* "SF Pro Text", */
   font-family:
     "IBM Plex Sans", "Fira Code", "icomoon-feather",
     "Font Awesome 5 Brands", "Material Design Icons";
@@ -50,7 +49,7 @@ window#waybar {
 #workspaces,
 #custom-doto,
 #clock,
-#media,
+#custom-spotify,
 #audio,
 #system,
 #custom-extras,
@@ -110,25 +109,13 @@ window#waybar {
 }
 
 #custom-spotify {
-  padding: 0 5px;
-  color: @accent;
-}
-
-#custom-spotify.closed,
-#custom-spotify.paused {
-  color: @muted;
-}
-
-#custom-spotify-prev,
-#custom-spotify-next {
-  padding: 0 8px;
-  color: @accent;
-}
-
-#custom-spotify:hover,
-#custom-spotify-prev:hover,
-#custom-spotify-next:hover {
+  padding: 0 12px;
   color: @text;
+}
+
+#custom-spotify.paused,
+#custom-spotify.stopped {
+  color: @muted;
 }
 
 #audio,
@@ -159,9 +146,6 @@ window#waybar {
 
 #battery.charging {
   color: @success;
-}
-#battery.warning {
-  color: @warning;
 }
 #battery.critical:not(.charging) {
   color: @text;
