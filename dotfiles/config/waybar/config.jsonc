@@ -8,8 +8,9 @@
     "height": 36,
     "spacing": 0,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock", "custom/spotify"],
+    "modules-center": ["clock", "custom/media"],
     "modules-right": [
+      "group/utils",
       "battery",
       "group/system",
       "group/audio",
@@ -25,8 +26,9 @@
     "height": 36,
     "spacing": 0,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock", "custom/spotify"],
+    "modules-center": ["clock", "custom/media"],
     "modules-right": [
+      "group/utils",
       "battery",
       "group/system",
       "group/audio",

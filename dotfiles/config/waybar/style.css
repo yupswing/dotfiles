@@ -47,9 +47,9 @@ window#waybar {
 }
 
 #workspaces,
-#custom-doto,
 #clock,
-#custom-spotify,
+#custom-media,
+#utils,
 #audio,
 #system,
 #custom-extras,
@@ -108,16 +108,32 @@ window#waybar {
   padding: 0 12px;
 }
 
-#custom-spotify {
+#custom-updates {
+  padding: 0 8px;
+}
+
+#custom-online {
+  padding: 0 8px;
+  color: @text;
+}
+#custom-online.updating {
+  color: @accent;
+}
+#custom-online.offline {
+  color: @danger;
+}
+
+#custom-media {
   padding: 0 12px;
   color: @text;
 }
 
-#custom-spotify.paused,
-#custom-spotify.stopped {
+#custom-media.paused,
+#custom-media.stopped {
   color: @muted;
 }
 
+#utils,
 #audio,
 #system {
   padding: 0 6px;

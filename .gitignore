@@ -14,3 +14,5 @@ Thumbs.db
 # Stuff
 *.swp
 *.pyc
+
+__pycache__

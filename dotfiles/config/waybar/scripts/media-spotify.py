@@ -80,6 +80,10 @@ class Spotify:
 
 
 def control(action):
+    if action in ("next", "previous"):
+        subprocess.run(["playerctl", "-p", "spotify", action],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return
     if action == "toggle":
         result = subprocess.run(["playerctl", "-p", "spotify", "play-pause"],
                                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -91,8 +95,8 @@ def control(action):
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        if sys.argv[1:] not in (["toggle"], ["open"]):
-            sys.exit("Usage: waybar-spotify.py [toggle|open]")
+        if len(sys.argv) > 2 or sys.argv[1] not in ("toggle", "next", "previous", "open"):
+            sys.exit("Usage: spotify.py [toggle|next|previous|open]")
         control(sys.argv[1])
     else:
         Spotify()

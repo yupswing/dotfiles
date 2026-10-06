@@ -35,6 +35,11 @@
   // ---------------------------------------------------------------------------
   // GROUPS
 
+  "group/utils": {
+    "orientation": "inherit",
+    "modules": ["custom/updates", "custom/online"],
+  },
+
   "group/system": {
     "orientation": "inherit",
     "modules": ["custom/temperature", "cpu", "memory"],
@@ -171,26 +176,53 @@
     "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
   },
 
-  // nascosto quando Spotify e' chiuso: lo script emette testo vuoto e
-  // hide-empty-text nasconde il modulo anche se il format ha l'icona fissa
-  "custom/spotify": {
-    "exec": "python3 ~/.config/waybar/scripts/spotify.py",
+  // Player multimediale (qualsiasi player MPRIS), nascosto quando nulla suona:
+  // lo script emette testo vuoto e hide-empty-text nasconde il modulo.
+  // Per seguire solo Spotify sostituisci media.py con media-spotify.py (stesso
+  // output e stessi comandi) e, volendo, l'icona nel format con il logo 
+  "custom/media": {
+    "exec": "python3 ~/.config/waybar/scripts/media.py",
     "return-type": "json",
     "restart-interval": 3,
     "exec-on-event": false,
     "hide-empty-text": true,
-    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {icon}  {text}",
+    "format": "<span color='#f19d3a' size='130%' rise='-2pt'></span> {icon}  {text}",
     "format-icons": {
       "playing": "",
       "paused": "",
-      "stopped": ""
+      "stopped": "",
     },
     "min-length": 20,
     "max-length": 40,
     "align": 0,
-    "on-click": "python3 ~/.config/waybar/scripts/spotify.py toggle",
-    "on-click-right": "python3 ~/.config/waybar/scripts/spotify.py open",
-    "on-click-middle": "playerctl -p spotify next",
-    "on-scroll-down": "playerctl -p spotify previous"
+    "on-click": "python3 ~/.config/waybar/scripts/media.py toggle",
+    "on-click-right": "python3 ~/.config/waybar/scripts/media.py open",
+    "on-click-middle": "python3 ~/.config/waybar/scripts/media.py next",
+    "on-scroll-down": "python3 ~/.config/waybar/scripts/media.py previous",
+  },
+
+  // Aggiornamenti in attesa (repo + AUR), nascosto se non ce ne sono.
+  // Icona in primary: tieni l'hex allineato a color5 del tema wal.
+  // Il click apre paru e, chiuso il terminale, rilegge il conteggio (signal)
+  "custom/updates": {
+    "exec": "~/.config/waybar/scripts/updates.sh",
+    "interval": 600,
+    "signal": 8,
+    "hide-empty-text": true,
+    "format": "<span color='#9358fe' size='130%' rise='-2pt'></span> {}",
+    "on-click": "kitty --hold paru; pkill -RTMIN+8 waybar",
+    "tooltip": false,
+  },
+
+  // Controllo internet: il colore viene dal CSS secondo lo stato
+  // (online/offline/updating), IP pubblico e locale sono nel tooltip.
+  // Il click manda un segnale allo script per ricontrollare subito
+  "custom/online": {
+    "exec": "python3 ~/.config/waybar/scripts/online.py 60",
+    "return-type": "json",
+    "restart-interval": 5,
+    "format": "<span size='130%' rise='-2pt'></span>{}",
+    "on-click": "pkill -USR1 -f 'waybar/scripts/[o]nline.py'",
+    "on-click-right": "xdg-open https://ifconfig.co",
   },
 }
