@@ -218,8 +218,7 @@ alt + x ; d ....................... launch discord
 alt + x ; e ....................... launch enpass
 alt + x ; {esc,backspace,space} ... leave the launcher without running anything
 
-alt + shift + o ................... screen off (dpms, for the nvidia black screen bug)
-alt + shift + p ................... screen on
+alt + o ........................... screen off (dpms, any key turns it back on)
 ```
 
 ## Kitty

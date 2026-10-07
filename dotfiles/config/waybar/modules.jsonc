@@ -25,6 +25,7 @@
       // "alert": "",
       "default": "", // se non trova mapping
     },
+    "tooltip": false
   },
 
   // finestra attiva del monitor della barra, non quella col focus globale

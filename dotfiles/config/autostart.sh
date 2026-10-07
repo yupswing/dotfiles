@@ -82,6 +82,8 @@ hyprland)
   launch waybar
   # Background
   launch hyprpaper
+  # Idle (screen off)
+  launch hypridle
   # Notifications
   launch dunst
   # Clipboard

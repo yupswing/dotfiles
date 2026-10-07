@@ -107,11 +107,14 @@ end)
 
 --------------------------------------------------------------------------------
 
--- Per gestire il bug nvidia in cui lo schermo diventa nero
-
--- Screen off:
+-- Schermo on/off (utile anche per il bug nvidia in cui lo schermo diventa nero).
+-- Il bind spegne soltanto: a riaccendere ci pensa qualsiasi tasto
+-- (misc.key_press_enables_dpms in look.lua), quindi anche ripremere MOD + O.
+-- Un vero toggle non servirebbe: a schermo spento la pressione di MOD lo
+-- riaccende prima ancora che scatti il bind.
+-- Il ritardo evita che il rilascio dei tasti riaccenda subito lo schermo.
 hl.bind(
-  mod .. " + SHIFT + O",
+  mod .. " + O",
   function()
     hl.timer(
       function()
@@ -120,12 +123,5 @@ hl.bind(
       { timeout = 500, type = "oneshot" }
     )
   end,
-  { locked = true }
-)
-
--- Screen on:
-hl.bind(
-  mod .. " + SHIFT + P",
-  hl.dsp.dpms( "on" ),
   { locked = true }
 )

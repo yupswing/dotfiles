@@ -241,7 +241,10 @@
     # Useful to enforce the timeout set by dunst configuration. Without this
     # parameter, an application may close the notification sent before the
     # user defined timeout.
-    ignore_dbusclose = false
+    # Enabled: a notification stays until its timeout or a click, even when the
+    # app that sent it asks to withdraw it (e.g. Discord and Ferdium once they
+    # consider the message seen)
+    ignore_dbusclose = true
 
     ### Wayland ###
     # These settings are Wayland-specific. They have no effect when using X11
