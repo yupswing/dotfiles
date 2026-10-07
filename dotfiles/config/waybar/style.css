@@ -37,7 +37,8 @@
 }
 
 window#waybar {
-  background: @base;
+  /* sfondo della barra al 90% di opacità (i gruppi restano opachi) */
+  background: alpha(@base, 0.9);
   color: @text;
 }
 

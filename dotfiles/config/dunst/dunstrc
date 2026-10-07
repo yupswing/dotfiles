@@ -299,11 +299,12 @@
 # dunstrc.d/50-wal.conf (template in ~/.config/wal/templates/dunst.conf)
 
 [urgency_low]
+    # background: last two hex digits = alpha (same as rofi); blur comes from a hyprland layer rule
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
     frame_color = "#9358fe"
     foreground = "#aaaaaa"
-    background = "#333333"
+    background = "#33333355"
     highlight = "#9358fe"
     timeout = 4
     # Icon for notifications with low urgency, uncomment to enable
@@ -312,7 +313,7 @@
 [urgency_normal]
     frame_color = "#9358fe"
     foreground = "#f8f8f2"
-    background = "#333333"
+    background = "#33333355"
     highlight = "#9358fe"
     timeout = 6
     # Icon for notifications with normal urgency, uncomment to enable
@@ -321,7 +322,7 @@
 [urgency_critical]
     frame_color = "#dc2566"
     foreground = "#f8f8f2"
-    background = "#333333"
+    background = "#33333355"
     highlight = "#dc2566"
     timeout = 8
     # Icon for notifications with critical urgency, uncomment to enable

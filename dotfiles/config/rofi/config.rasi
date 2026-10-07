@@ -82,12 +82,8 @@ configuration {
 /*****----- Main Window -----*****/
 window {
     /* properties for window widget */
-    // {%@@ if COMPOSITOR @@%}
-    // transparency:                "real";
-    // {%@@ else @@%}
-    // transparency:                "screenshot";
-    // {%@@ endif @@%}
-    background-color:            #333333;
+    /* slightly translucent (last two hex digits = alpha); blur and dim come from hyprland layer rules */
+    background-color:            #33333355;
     /* anchored to the top: on wayland (layer-shell) offsets are ignored with location center */
     location:                    north;
     anchor:                      north;

@@ -91,22 +91,47 @@ end
 
 anim("global", 6, "default")
 
--- Finestre (tiling + floating)
-anim("windows", 5.2, "easeOut", "popin 82%")
-anim("windowsIn", 5.0, "easeOut", "popin 82%")
-anim("windowsOut", 3.0, "linear", "popin 82%")
+-- Finestre: aprono crescendo dal 90% + fade, chiudono speculari (più rapide),
+-- senza overshoot; il tiling fa spazio in fretta così il fade della nuova
+-- finestra non si sovrappone alle altre ancora in movimento
+anim("windows", 2.6, "easeOut", "popin 90%")
+anim("windowsIn", 2.6, "easeOut", "popin 90%")
+anim("windowsOut", 2.2, "quick", "popin 90%")
+anim("windowsMove", 1.6, "quick")
 
--- Layer (waybar/rofi/notifiche)
-anim("layers", 4.0, "easeOut", "fade")
-anim("layersIn", 4.0, "easeOut", "fade")
-anim("layersOut", 2.0, "linear", "fade")
+-- Layer (rofi, menu): pop leggero; le notifiche hanno la loro regola sotto
+anim("layers", 3.0, "easeOut", "popin 92%")
+anim("layersIn", 3.0, "easeOut", "popin 92%")
+anim("layersOut", 1.8, "quick", "popin 92%")
 
 -- Fade generici
-anim("fadeIn", 2.2, "easeInOut")
+anim("fadeIn", 2.6, "easeInOut")
 anim("fadeOut", 2.0, "easeInOut")
 anim("fade", 2.4, "quick")
 
--- Workspace
-anim("workspaces", 2.4, "easeInOut", "slide")
-anim("workspacesIn", 2.0, "easeInOut", "fade")
-anim("workspacesOut", 2.0, "easeInOut", "fade")
+-- Bordo: il colore sfuma quando cambia il focus
+anim("border", 5.0, "easeInOut")
+
+-- Workspace: slide orizzontale; quelli speciali entrano dall'alto
+anim("workspaces", 3.2, "easeInOut", "slide")
+anim("specialWorkspace", 3.2, "easeInOut", "slidevert")
+
+-- Notifiche dunst: entrano scivolando da destra; sfondo semitrasparente
+-- (alpha in dunst/dunstrc) sfocato come rofi
+hl.layer_rule({
+  name = "notifications-look",
+  match = { namespace = "^(notifications)$" },
+  animation = "slide right",
+  blur = true,
+  ignore_alpha = 0.3,
+})
+
+-- Rofi: il resto dello schermo si abbassa di tono e lo sfondo semitrasparente
+-- (alpha in rofi/config.rasi) viene sfocato
+hl.layer_rule({
+  name = "rofi-dim-blur",
+  match = { namespace = "^(rofi)$" },
+  dim_around = true,
+  blur = true,
+  ignore_alpha = 0.3, -- niente blur dove rofi è trasparente (angoli arrotondati)
+})
