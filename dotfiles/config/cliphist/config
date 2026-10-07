@@ -1,0 +1,15 @@
+# cliphist: clipboard history on wayland (see scripts/clipboard.zsh)
+# One `option value` per line, same names as the command line flags
+# (`cliphist -h`); the values below are the defaults
+
+# maximum number of items to store
+max-items 750
+
+# maximum number of last items to look through when finding duplicates
+max-dedupe-search 100
+
+# minimum number of characters to store
+min-store-length 0
+
+# maximum number of characters to preview
+preview-width 100

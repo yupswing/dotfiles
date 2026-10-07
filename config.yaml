@@ -148,6 +148,9 @@ dotfiles:
   waybar:
     src: config/waybar
     dst: ~/.config/waybar
+  cliphist:
+    src: config/cliphist
+    dst: ~/.config/cliphist
   rofi:
     src: config/rofi
     dst: ~/.config/rofi
@@ -272,6 +275,7 @@ profiles:
     - dunst
     - rofi
     - waybar
+    - cliphist
 
   wsl:
     include:
