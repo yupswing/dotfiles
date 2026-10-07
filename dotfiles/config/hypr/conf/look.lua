@@ -135,3 +135,11 @@ hl.layer_rule({
   blur = true,
   ignore_alpha = 0.3, -- niente blur dove rofi è trasparente (angoli arrotondati)
 })
+
+-- Screenshot ad area: gli overlay a tutto schermo (frame congelato di
+-- hyprpicker, selezione di slurp) compaiono e spariscono senza animazione
+hl.layer_rule({
+  name = "screenshot-no-anim",
+  match = { namespace = "^(hyprpicker|selection)$" },
+  no_anim = true,
+})
