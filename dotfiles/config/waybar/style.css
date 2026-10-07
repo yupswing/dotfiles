@@ -115,6 +115,23 @@ window#waybar {
   padding: 0 8px;
 }
 
+#idle_inhibitor {
+  padding: 0 8px;
+  color: @muted;
+}
+#idle_inhibitor.activated {
+  color: @warning;
+}
+
+#bluetooth {
+  padding: 0 8px;
+  color: @text;
+}
+#bluetooth.off,
+#bluetooth.disabled {
+  color: @muted;
+}
+
 #custom-online {
   padding: 0 8px;
   color: @text;

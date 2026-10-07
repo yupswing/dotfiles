@@ -147,6 +147,7 @@ Using
 - **slurp + grim** screenshot tool
 - **kitty** terminal
 - **hyprlock** screenlock
+- **hypridle** idle daemon (screen off after 10 min, lock after 15 min)
 
 Also needed by the bar and the keybindings
 
@@ -173,6 +174,7 @@ alt + enter ....................... run terminal (kitty)
 alt + e ........................... run file manager (nemo)
 
 alt + q ........................... close window
+alt + shift + q ................... kill window (unresponsive app)
 alt + b ........................... toggle floating
 alt + n ........................... toggle pseudo-tiled (dwindle)
 

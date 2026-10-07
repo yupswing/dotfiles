@@ -25,7 +25,7 @@
       // "alert": "",
       "default": "", // se non trova mapping
     },
-    "tooltip": false
+    "tooltip": false,
   },
 
   // finestra attiva del monitor della barra, non quella col focus globale
@@ -44,12 +44,12 @@
 
   "group/utils": {
     "orientation": "inherit",
-    "modules": ["custom/updates", "custom/online"],
+    "modules": ["custom/updates", "idle_inhibitor", "bluetooth", "custom/online"],
   },
 
   "group/system": {
     "orientation": "inherit",
-    "modules": ["temperature", "cpu", "memory"],
+    "modules": ["cpu", "memory"],
   },
 
   "group/audio": {
@@ -182,6 +182,35 @@
     "format": "<span color='{{@@ THEME_PRIMARY @@}}' size='130%' rise='-2pt'></span> {}",
     "on-click": "kitty --hold paru; pkill -RTMIN+8 waybar",
     "tooltip": false,
+  },
+
+  // Caffeina: finché è attivo hypridle non spegne lo schermo né blocca la
+  // sessione (~/.config/hypr/hypridle.conf). Il click lo attiva/disattiva
+  "idle_inhibitor": {
+    "format": "<span size='130%'>{icon}</span>",
+    "format-icons": {
+      "activated": "󰅶",
+      "deactivated": "󰛊",
+    },
+    "tooltip-format-activated": "Keep on",
+    "tooltip-format-deactivated": "Turn off and lock",
+  },
+
+  // Bluetooth: grigio dal CSS quando è spento, l'icona cambia se c'è un
+  // dispositivo connesso; i dispositivi e la loro batteria sono nel tooltip.
+  // Il click apre blueman-manager
+  "bluetooth": {
+    "format": "<span size='130%' rise='-2pt'>󰂯</span>",
+    "format-connected": "<span size='130%' rise='-2pt'>󰂱</span>",
+    "format-off": "<span size='130%' rise='-2pt'>󰂲</span>",
+    "format-disabled": "<span size='130%' rise='-2pt'>󰂲</span>",
+    "tooltip-format": "{controller_alias}: nessun dispositivo connesso",
+    "tooltip-format-off": "Bluetooth spento",
+    "tooltip-format-disabled": "Bluetooth disabilitato",
+    "tooltip-format-connected": "{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias} ({device_battery_percentage}%)",
+    "on-click": "blueman-manager",
   },
 
   // Controllo internet: il colore viene dal CSS secondo lo stato

@@ -7,6 +7,7 @@ local mod = vars.mod
 local exec = hl.dsp.exec_cmd
 
 hl.bind(mod .. " + Q", hl.dsp.window.close())
+hl.bind(mod .. " + SHIFT + Q", hl.dsp.window.kill()) -- kill forzato (app bloccata)
 -- hl.bind(mod .. " + M", hl.dsp.exit())
 hl.bind(mod .. " + E", exec(vars.file_manager))
 hl.bind(mod .. " + B", hl.dsp.window.float({ action = "toggle" }))
@@ -19,11 +20,13 @@ hl.bind(mod .. " + space", exec(vars.menu)) -- applicazioni (.desktop)
 hl.bind(mod .. " + SHIFT + space", exec("rofi -show run")) -- eseguibili nel $PATH
 hl.bind(mod .. " + Tab", exec("rofi -show window -show-icons"))
 hl.bind(mod .. " + P", exec("~/.scripts/rofi-power.zsh"))
-hl.bind(mod .. " + L", exec("pidof hyprlock || { playerctl -a pause; hyprlock; }")) -- blocca lo schermo
+hl.bind(mod .. " + L", exec("~/.scripts/wayland-lock.zsh")) -- blocca lo schermo
 hl.bind(mod .. " + C", exec("~/.scripts/clipboard.zsh --rofi")) -- cliphist
 hl.bind(mod .. " + CTRL + C", exec("~/.scripts/clipboard.zsh --clear"))
 hl.bind(mod .. " + SHIFT + C", exec("~/.scripts/calculator.zsh --rofi"))
 hl.bind(mod .. " + SHIFT + CTRL + C", exec("~/.scripts/calculator.zsh --clear"))
+-- Richiama l'ultima notifica chiusa (mod + N è già la pseudo-tile)
+-- hl.bind(mod .. " + SHIFT + N", exec("dunstctl history-pop"))
 
 -- Screenshot con grim+slurp (stessi tasti di sxhkdrc)
 hl.bind("Print", exec("~/.scripts/screenshot.zsh"))

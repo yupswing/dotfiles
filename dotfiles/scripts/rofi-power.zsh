@@ -2,8 +2,8 @@
 
 # Session dependent commands (wayland: Hyprland, x11: bspwm/i3)
 if [[ -n $WAYLAND_DISPLAY ]]; then
-  # hyprlock does not fork, so run it in background (only once)
-  LOCKER='{ pidof -q hyprlock || { playerctl -a pause; hyprlock; } & }'
+  # the lock script returns only on unlock, so run it in background
+  LOCKER='{ $HOME/.scripts/wayland-lock.zsh & }'
   END_SESSION="hyprctl dispatch 'hl.dsp.exit()'"
 else
   LOCKER=$HOME/.scripts/x11-lock.zsh

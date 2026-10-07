@@ -49,7 +49,13 @@ hl.window_rule({
   center = true,
 })
 
--- App → workspace
+-- Popup di Chrome (window.open: email aperta in finestra, login OAuth, ecc.):
+-- su Wayland non hanno un ruolo come su X11 (WM_WINDOW_ROLE=pop-up), l'unica
+-- cosa che li distingue è il titolo con cui nascono, "Untitled - Google Chrome"
+-- (una finestra normale nasce come "New tab - Google Chrome")
+local chrome_popup = "^Untitled - Google Chrome$"
+
+-- App → workspace (il quarto campo, facoltativo, aggiunge condizioni al match)
 local app_workspaces = {
   { "ferdium", "^(Ferdium|ferdium)$", "!1:im" },
   { "discord", "^(Discord|discord)$", "!1:im" },
@@ -57,25 +63,41 @@ local app_workspaces = {
   { "spotify", "^(Spotify|spotify)$", "!3:music" },
   { "code", "^(Code|code|code-oss|com.microsoft.VSCode)$", "02:code" },
   -- { "firefox", "^(firefox)$", "01:web" },
-  { "chrome", "^(Chromium|chromium|Google-chrome|google-chrome)$", "01:web" },
+  -- i popup restano sul workspace da cui vengono aperti
+  { "chrome", "^(Chromium|chromium|Google-chrome|google-chrome)$", "01:web", { initial_title = "negative:" .. chrome_popup } },
 }
 
 for _, app in ipairs(app_workspaces) do
   local name, class, workspace = app[1], app[2], app[3]
+  local match = { class = class }
+  for key, value in pairs(app[4] or {}) do
+    match[key] = value
+  end
   hl.window_rule({
     name = "workspace-" .. name,
-    match = { class = class },
+    match = match,
     workspace = vars.ws(workspace),
   })
 end
 
+hl.window_rule({
+  name = "chrome-popup",
+  match = { class = "^(Chromium|chromium|Google-chrome|google-chrome)$", initial_title = chrome_popup },
+  float = true,
+  center = true,
+})
+
 -- Hack per firefox
+-- PiP senza decorazioni, come quello di Chrome qui sotto
 hl.window_rule({
   name = "firefox-pip",
   match = { class = "^(firefox)$", title = "^(Picture-in-Picture)$" },
   float = true,
   center = true,
   border_size = 0,
+  no_blur = true,
+  no_shadow = true,
+  opacity = "1.0 1.0",
   stay_focused = true,
 })
 
@@ -117,6 +139,7 @@ local floating = {
   gpick = "^(Gpick|gpick)$",
   ["file-roller"] = "^(file-roller)$",
   lxappearance = "^(Lxappearance|lxappearance)$",
+  blueman = "^(blueman-manager)$",
 }
 
 for name, class in pairs(floating) do

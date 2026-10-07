@@ -4,6 +4,7 @@
 hl.config({
   input = {
     kb_layout = "us",
+    kb_options = "compose:ralt", -- AltGr come tasto Compose (come su X11, xprofile)
     numlock_by_default = true,
 
     follow_mouse = 1,
