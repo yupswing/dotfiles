@@ -99,7 +99,9 @@ if __name__ == "__main__":
             sys.exit("Usage: spotify.py [toggle|next|previous|open]")
         control(sys.argv[1])
     else:
-        Spotify()
+        # keep a reference: with Spotify closed nothing else holds the manager,
+        # and once collected it never reports that Spotify appeared
+        spotify = Spotify()
         try:
             GLib.MainLoop().run()
         except (KeyboardInterrupt, BrokenPipeError):

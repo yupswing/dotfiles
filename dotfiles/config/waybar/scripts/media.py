@@ -139,7 +139,9 @@ if __name__ == "__main__":
             sys.exit("Usage: media.py [toggle|next|previous|open]")
         control(sys.argv[1])
     else:
-        Media()
+        # keep a reference: with no player running nothing else holds the
+        # manager, and once collected it never reports the players that appear
+        media = Media()
         try:
             GLib.MainLoop().run()
         except (KeyboardInterrupt, BrokenPipeError):
