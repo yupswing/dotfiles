@@ -182,6 +182,7 @@ alt + space ....................... run application menu
 alt + shift + space ............... run command menu
 alt + tab ......................... window menu
 alt + p ........................... power menu
+alt + shift + f ................... search files (locate)
 alt + c ........................... clipboard menu (cliphist)
 alt + ctrl + c .................... clear clipboard (cliphist)
 alt + shift + c ................... calculator (qalc)

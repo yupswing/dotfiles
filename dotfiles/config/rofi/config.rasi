@@ -17,7 +17,8 @@ configuration {
   /* lines: 10; */
   /* columns: 1; */
   /* bw: 0; */
-  eh: 1;
+  eh: 1; /* drun is launched with -eh 2 (name + description) */
+  drun-display-format: "{name}\n<span size='small' alpha='65%'>{comment}</span>";
   /* color-enabled: true; */
   /* separator-style: "none"; */
   location: 2;
@@ -26,162 +27,157 @@ configuration {
   fixed-num-lines: false;
 
   /* #THEME_FONT */
-  /*font: "IBM Plex Sans 14";*/
-  font: "FiraCode Nerd Font 16";
-
-  timeout {
-    delay: 15;
-    action: "kb-cancel";
-  }
+  /* the second family is the fallback for nerd font icons (e.g. the power menu) */
+  font: "SF Pro Text, FiraCode Nerd Font Propo 14";
 }
 
 
 @import "~/.cache/wal/colors.rasi"
 
 * {
-  background:                    #333333;
-  accent:                        @secondary-colour;
-  scrollbar:                     @primary-colour;
-  spacing:                       2;
+  /* blue end of the hyprland active window border (general.col.active_border in hypr/conf/look.lua) */
+  border-color:                  #33ccffee;
+  /* overlays on top of @background-colour: they follow whatever palette wal generates */
+  /* unselected rows: dark overlay on the translucent window; selected row: translucent
+     primary (primary-colour-soft, from the wal template) */
+  card:                          #00000040;
+  dimmed:                        #ffffff66;
+
+  background-color:              transparent;
   text-color:                    @foreground-colour;
-
-  active-background:             @background-colour;
-  active-foreground:             @foreground-colour;
-  normal-background:             @background-colour;
-  normal-foreground:             @foreground-colour;
-  urgent-background:             @danger-colour;
-  urgent-foreground:             @foreground-colour;
-
-  alternate-active-background:   @background-colour;
-  alternate-active-foreground:   @foreground-colour;
-  alternate-normal-background:   @background-colour;
-  alternate-normal-foreground:   @foreground-colour;
-  alternate-urgent-background:   @danger-colour;
-  alternate-urgent-foreground:   @foreground-colour;
-
-  /* #THEME_FOREGROUND_COLOR */
-  selected-active-background:    @primary-colour;
-  selected-active-foreground:    @background-colour;
-  selected-normal-background:    @primary-colour;
-  selected-normal-foreground:    @background-colour;
-  selected-urgent-background:    @danger-colour;
-  selected-urgent-foreground:    @background-colour;
-
-  /* background-color: @background; */
-  border-color:                  @primary-colour;
-
 }
 
 
 /*****----- Main Window -----*****/
 window {
-    /* properties for window widget */
-    /* slightly translucent (last two hex digits = alpha); blur and dim come from hyprland layer rules */
-    background-color:            #33333355;
     /* anchored to the top: on wayland (layer-shell) offsets are ignored with location center */
     location:                    north;
     anchor:                      north;
     fullscreen:                  false;
-    width:                       1024px;
+    width:                       840px;
     x-offset:                    0px;
     y-offset:                    140px;
 
-    /* properties for all widgets */
     enabled:                     true;
     margin:                      0px;
     padding:                     0px;
-    border:                      3px solid;
+    border:                      1px solid; /* = hyprland border_size */
     border-radius:               {{@@ ROUNDED @@}}px;
-    border-color:                @primary-colour;
+    /* translucent (last two hex digits = alpha); blur and dim come from hyprland layer rules */
+    background-color:            #33333355;
     cursor:                      "default";
+}
+mainbox {
+    spacing:                     0px;
+    padding:                     6px;
+    children:                    [ "inputbar", "message", "listview" ];
 }
 
 /*****----- Inputbar -----*****/
 inputbar {
-    enabled:                     true;
-    spacing:                     20px;
-    margin:                      0px;
-    padding:                     20px;
-    border:                      0px solid;
-    border-radius:               12px;
-    border-color:                @primary-colour;
-    background-color:            transparent;
     text-color:                  @foreground-colour;
+    enabled:                     true;
+    spacing:                     12px;
+    /* 14px + the 6px of mainbox on top = 20px below: same gap from the border and from the list */
+    padding:                     24px 12px 30px 12px;
     children:                    [ "prompt", "entry" ];
+}
+prompt {
+    /* the prompt glyphs (display-*) are nerd font icons, missing in SF Pro; the
+       Propo variant gives them their real width (the monospace cell clips them) */
+    font:                        "FiraCode Nerd Font Propo 15";
+    text-color:                  @dimmed;
+    vertical-align:              0.5;
+}
+entry {
+    text-color:                  @foreground-colour;
+    placeholder:                 "";
+    placeholder-color:           @dimmed;
+    vertical-align:              0.5;
+    cursor:                      text;
 }
 textbox-prompt-colon {
     enabled:                     false;
 }
 
-// /*****----- Listview -----*****/
+/*****----- Listview -----*****/
 listview {
+    border:                      0px; /* no dashed separator of the built-in theme */
+    padding:                     0px;
     enabled:                     true;
     columns:                     1;
-    lines:                       12;
+    lines:                       8;
     cycle:                       true;
     dynamic:                     true;
-    scrollbar:                   true;
+    scrollbar:                   false;
     layout:                      vertical;
     reverse:                     false;
 
-    spacing:                     0px;
-    margin:                      0px;
-    padding:                     0px;
-    border:                      0px solid;
-    border-radius:               0px;
-    border-color:                @primary-colour;
-    background-color:            transparent;
-    text-color:                  @foreground-colour;
+    spacing:                     4px;
     cursor:                      "default";
-}
-scrollbar {
-    handle-width:                10px ;
-    handle-color:                @primary-colour;
-    border-radius:               0px;
 }
 
 /*****----- Elements -----*****/
 element {
     enabled:                     true;
-    spacing:                     10px;
-    margin:                      0px;
-    padding:                     20px;
-    border:                      0px solid;
-    border-radius:               0px;
-    background-color:            transparent;
-    text-color:                  @foreground-colour;
+    spacing:                     12px;
+    padding:                     20px 12px;
+    border-radius:               {{@@ ROUNDED - 3 @@}}px;
+    background-color:            @card;
     cursor:                      pointer;
 }
-element normal.normal {
-    background-color:            transparent;
+/* every state is spelled out: rofi's built-in theme styles them one by one
+   (light background, dark text) and would win over a plain "element" rule */
+element normal.normal, element alternate.normal {
+    background-color:            @card;
     text-color:                  @foreground-colour;
 }
 element selected.normal {
-    background-color:            @primary-colour;
+    background-color:            @primary-colour-soft;
     text-color:                  @foreground-colour;
 }
-element alternate.normal {
-    background-color:            transparent;
-    text-color:                  @foreground-colour;
+element normal.active, element alternate.active {
+    background-color:            @card;
+    text-color:                  @secondary-colour;
+}
+element selected.active {
+    background-color:            @primary-colour-soft;
+    text-color:                  @secondary-colour;
+}
+element normal.urgent, element alternate.urgent {
+    background-color:            @card;
+    text-color:                  @danger-colour;
+}
+element selected.urgent {
+    background-color:            @primary-colour-soft;
+    text-color:                  @danger-colour;
+}
+element-icon {
+    size:                        1.8em;
+    vertical-align:              0.5;
+    cursor:                      inherit;
+}
+element-text {
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    highlight:                   bold;
+    cursor:                      inherit;
 }
 
-// /*****----- Message -----*****/
+/*****----- Message -----*****/
 message {
+    border:                      0px;
     enabled:                     true;
-    margin:                      0px;
-    padding:                     20px;
-    border:                      0px solid;
-    border-radius:               0px;
-    background-color:            transparent;
-    text-color:                  @foreground-colour;
+    margin:                      0px 0px 6px 0px;
+    padding:                     11px 12px;
+    border-radius:               {{@@ ROUNDED - 3 @@}}px;
+    background-color:            @card;
 }
 textbox {
-    color:                       @foreground-colour;
+    text-color:                  @foreground-colour;
 }
 error-message {
-    padding:                     20px;
-    border:                      0px solid;
-    border-radius:               0px;
-    background-color:            transparent;
-    text-color:                  @foreground-colour;
+    padding:                     16px;
+    border-radius:               {{@@ ROUNDED - 1 @@}}px;
+    background-color:            @background-colour;
 }

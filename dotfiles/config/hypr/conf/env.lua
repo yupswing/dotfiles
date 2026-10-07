@@ -5,8 +5,9 @@ hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "Vimix-white-cursors")
+hl.env("XCURSOR_SIZE", "28")
+hl.env("HYPRCURSOR_SIZE", "28")
 
 -- Forza Electron/Chromium/VS Code su Wayland (Ozone)
 hl.env("ELECTRON_ENABLE_WAYLAND", "1")

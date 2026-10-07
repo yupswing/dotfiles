@@ -6,7 +6,7 @@ M.mod = "ALT"
 
 M.terminal = "kitty"
 M.file_manager = "nemo"
-M.menu = "rofi -modi drun -show drun -show-icons"
+M.menu = "rofi -modi drun -show drun -show-icons -eh 2"
 
 M.monitors = {
   front = "HDMI-A-1", -- monitor esterno

@@ -19,6 +19,7 @@ hl.bind(mod .. " + Return", exec(vars.terminal))
 hl.bind(mod .. " + space", exec(vars.menu)) -- applicazioni (.desktop)
 hl.bind(mod .. " + SHIFT + space", exec("rofi -show run")) -- eseguibili nel $PATH
 hl.bind(mod .. " + Tab", exec("rofi -show window -show-icons"))
+hl.bind(mod .. " + SHIFT + F", exec("~/.scripts/locate.zsh")) -- cerca file (locate)
 hl.bind(mod .. " + P", exec("~/.scripts/power.zsh"))
 hl.bind(mod .. " + L", exec("~/.scripts/way-lock.zsh")) -- blocca lo schermo
 hl.bind(mod .. " + C", exec("~/.scripts/clipboard.zsh --rofi")) -- cliphist

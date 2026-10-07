@@ -74,7 +74,7 @@
     # Draw a line of "separator_height" pixel height between two
     # notifications.
     # Set to 0 to disable.
-    separator_height = 3
+    separator_height = 1
 
     # Padding between text and separator.
     padding = 16
@@ -87,10 +87,10 @@
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
-    frame_width = 3
+    frame_width = 1
 
     # Defines color of the frame around the notification window.
-    frame_color = "#9358fe"
+    frame_color = "#33ccffee"
 
     # Define a color for the separator.
     # possible values are:
@@ -297,15 +297,17 @@
     # where there are multiple screens with very different dpi values.
     per_monitor_dpi = false
 
-# #THEME_MAIN_COLORS same look as rofi: dark background, primary border.
-# The colors below are fallbacks: pywal overrides them with the drop-in
+# #THEME_MAIN_COLORS same look as rofi: dark translucent background and the same
+# 1px border, the blue end of the hyprland active window border
+# (general.col.active_border in hypr/conf/look.lua); critical keeps the danger frame.
+# The other colors below are fallbacks: pywal overrides them with the drop-in
 # dunstrc.d/50-wal.conf (template in ~/.config/wal/templates/dunst.conf)
 
 [urgency_low]
     # background: last two hex digits = alpha (same as rofi); blur comes from a hyprland layer rule
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    frame_color = "#9358fe"
+    frame_color = "#33ccffee"
     foreground = "#aaaaaa"
     background = "#33333355"
     highlight = "#9358fe"
@@ -314,7 +316,7 @@
     #new_icon = /path/to/icon
 
 [urgency_normal]
-    frame_color = "#9358fe"
+    frame_color = "#33ccffee"
     foreground = "#f8f8f2"
     background = "#33333355"
     highlight = "#9358fe"

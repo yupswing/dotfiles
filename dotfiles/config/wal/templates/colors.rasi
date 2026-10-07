@@ -3,6 +3,8 @@
     background-colour: {background};
     foreground-colour: {foreground};
     primary-colour: {color5};
+    /* translucent primary: selected row in rofi */
+    primary-colour-soft: rgba({color5.rgb}, 0.5);
     secondary-colour: {color2};
     danger-colour: {color1};
 }}
