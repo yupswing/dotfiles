@@ -130,6 +130,22 @@ for name, class in pairs(no_screen_share) do
   })
 end
 
+-- Urgent: le app IM non rubano il focus quando chiedono attenzione (override di
+-- misc.focus_on_activate), così il workspace viene marcato urgent e waybar lo
+-- colora (#workspaces button.urgent)
+local urgent = {
+  ferdium = "^(Ferdium|ferdium)$",
+  discord = "^(Discord|discord)$",
+}
+
+for name, class in pairs(urgent) do
+  hl.window_rule({
+    name = "urgent-" .. name,
+    match = { class = class },
+    focus_on_activate = false,
+  })
+end
+
 -- Notifiche dunst (namespace da `hyprctl layers`)
 hl.layer_rule({
   name = "no-screen-share-notifications",
