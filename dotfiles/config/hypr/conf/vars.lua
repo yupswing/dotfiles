@@ -32,9 +32,19 @@ M.workspaces = {
   { name = "10", key = "0", monitor = M.monitors.side },
 }
 
--- Selettore Hyprland per un workspace con nome.
+-- I workspace hanno un id numerico (la posizione nella lista qui sopra) e il
+-- nome è solo un'etichetta (default_name in conf/monitors.lua): Hyprland sceglie
+-- il verso dello slide confrontando gli id, e quelli dei workspace creati per
+-- nome sono negativi e decrescenti, quindi l'animazione andava al contrario.
+local ids = {}
+for id, ws in ipairs(M.workspaces) do
+  ws.id = id
+  ids[ws.name] = id
+end
+
+-- Selettore Hyprland per un workspace della lista, dato il nome.
 function M.ws(name)
-  return "name:" .. name
+  return tostring(ids[name] or error("workspace sconosciuto: " .. name))
 end
 
 -- Colori generati da pywal (~/.config/wal/templates/hyprland.lua).

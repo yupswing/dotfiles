@@ -17,7 +17,7 @@ hl.monitor({ output = vars.monitors.side, mode = "preferred", position = "auto-r
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 
 for _, ws in ipairs(vars.workspaces) do
-  hl.workspace_rule({ workspace = vars.ws(ws.name), monitor = ws.monitor })
+  hl.workspace_rule({ workspace = vars.ws(ws.name), monitor = ws.monitor, default_name = ws.name })
 end
 
 -- Evita blur su app XWayland ridimensionate (testo più nitido)

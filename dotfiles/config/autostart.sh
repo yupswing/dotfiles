@@ -66,10 +66,17 @@ hyprland)
   # import the current env and restart them (they would not open windows)
   dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
   systemctl --user stop xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+  # The backend goes first: the frontend reads its capabilities (e.g. ScreenCast
+  # cursor modes) only once at startup. reset-failed clears the start limit hit
+  # when the backend crash-loops while the previous session goes down
+  systemctl --user reset-failed xdg-desktop-portal-hyprland
+  systemctl --user start xdg-desktop-portal-hyprland
   systemctl --user start xdg-desktop-portal
 
   # Hypr ecosystem daemons
   systemctl --user start hyprpolkitagent
+
+  sleep 1
 
   # Bar
   launch waybar

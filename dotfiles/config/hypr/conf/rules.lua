@@ -35,11 +35,11 @@ hl.window_rule({
 })
 
 -- Niente blur su terminali per testo più nitido
-hl.window_rule({
-  name = "no-blur-terminals",
-  match = { class = "^(kitty)$" },
-  no_blur = true,
-})
+-- hl.window_rule({
+--   name = "no-blur-terminals",
+--   match = { class = "^(kitty)$" },
+--   no_blur = true,
+-- })
 
 -- Dialog
 hl.window_rule({
@@ -87,6 +87,18 @@ hl.window_rule({
   border_size = 0,
 })
 
+-- Popup PiP di Chrome (Meet cambiando tab, video, ecc.): niente decorazioni.
+-- Le finestre normali nascono con titolo "... - Google Chrome", i popup PiP no
+-- (es. "Meet - <codice>"): è l'unica proprietà che li distingue
+hl.window_rule({
+  name = "chrome-pip",
+  match = { class = "^(google-chrome)$", initial_title = "negative:.* - Google Chrome$", float = true },
+  border_size = 0,
+  no_blur = true,
+  no_shadow = true,
+  opacity = "1.0 1.0",
+})
+
 -- Float, center e pin
 hl.window_rule({
   name = "float-enpass",
@@ -116,42 +128,71 @@ for name, class in pairs(floating) do
   })
 end
 
+-- -----------------------------------------------------------------------------
 -- Privacy: escluse dallo screen sharing (al loro posto si vede nero)
+
+-- lista di applicazioni escluse dallo screen sharing ()
 local no_screen_share = {
   ferdium = "^(Ferdium|ferdium)$",
   discord = "^(Discord|discord)$",
 }
 
+-- lista di regole live (per poterle attivare/disattivare)
+local privacy_rules = {}
+
 for name, class in pairs(no_screen_share) do
-  hl.window_rule({
-    name = "no-screen-share-" .. name,
-    match = { class = class },
+  table.insert(
+    privacy_rules,
+    hl.window_rule({
+      name = "no-screen-share-" .. name,
+      match = { class = class },
+      no_screen_share = true,
+    })
+  )
+end
+
+-- Notifiche dunst (namespace da `hyprctl layers`)
+table.insert(
+  privacy_rules,
+  hl.layer_rule({
+    name = "no-screen-share-notifications",
+    match = { namespace = "^(notifications)$" },
     no_screen_share = true,
   })
+)
+
+
+
+-- Le regole valgono per qualsiasi cattura, screenshot compresi: lo script
+-- ~/.scripts/screenshot.zsh le sospende dall'inizio alla fine della cattura con
+-- `hyprctl eval 'screen_share_privacy(false)'`
+function screen_share_privacy(enabled)
+  for _, rule in ipairs(privacy_rules) do
+    rule:set_enabled(enabled)
+  end
+  hl.exec_scheduled_prop_refresh_immediately()
 end
+
+-- -----------------------------------------------------------------------------
 
 -- Urgent: le app IM non rubano il focus quando chiedono attenzione (override di
 -- misc.focus_on_activate), così il workspace viene marcato urgent e waybar lo
 -- colora (#workspaces button.urgent)
-local urgent = {
-  ferdium = "^(Ferdium|ferdium)$",
-  discord = "^(Discord|discord)$",
-}
+-- local urgent = {
+--   ferdium = "^(Ferdium|ferdium)$",
+--   discord = "^(Discord|discord)$",
+-- }
 
-for name, class in pairs(urgent) do
-  hl.window_rule({
-    name = "urgent-" .. name,
-    match = { class = class },
-    focus_on_activate = false,
-  })
-end
+-- for name, class in pairs(urgent) do
+--   hl.window_rule({
+--     name = "urgent-" .. name,
+--     match = { class = class },
+--     focus_on_activate = false,
+--   })
+-- end
 
--- Notifiche dunst (namespace da `hyprctl layers`)
-hl.layer_rule({
-  name = "no-screen-share-notifications",
-  match = { namespace = "^(notifications)$" },
-  no_screen_share = true,
-})
+-- -----------------------------------------------------------------------------
+
 
 -- Smart gaps / no gaps when only (scommenta per provarli)
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
