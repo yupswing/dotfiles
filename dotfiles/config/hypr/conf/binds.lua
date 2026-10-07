@@ -19,8 +19,8 @@ hl.bind(mod .. " + Return", exec(vars.terminal))
 hl.bind(mod .. " + space", exec(vars.menu)) -- applicazioni (.desktop)
 hl.bind(mod .. " + SHIFT + space", exec("rofi -show run")) -- eseguibili nel $PATH
 hl.bind(mod .. " + Tab", exec("rofi -show window -show-icons"))
-hl.bind(mod .. " + P", exec("~/.scripts/rofi-power.zsh"))
-hl.bind(mod .. " + L", exec("~/.scripts/wayland-lock.zsh")) -- blocca lo schermo
+hl.bind(mod .. " + P", exec("~/.scripts/power.zsh"))
+hl.bind(mod .. " + L", exec("~/.scripts/way-lock.zsh")) -- blocca lo schermo
 hl.bind(mod .. " + C", exec("~/.scripts/clipboard.zsh --rofi")) -- cliphist
 hl.bind(mod .. " + CTRL + C", exec("~/.scripts/clipboard.zsh --clear"))
 hl.bind(mod .. " + SHIFT + C", exec("~/.scripts/calculator.zsh --rofi"))

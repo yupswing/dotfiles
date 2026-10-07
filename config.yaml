@@ -112,9 +112,6 @@ dotfiles:
   mimeapps.list:
     src: config/mimeapps.list
     dst: ~/.config/mimeapps.list
-  redshift:
-    src: config/redshift
-    dst: ~/.config/redshift
   alacritty:
     src: config/alacritty
     dst: ~/.config/alacritty
@@ -127,9 +124,6 @@ dotfiles:
   sxhkd:
     src: config/sxhkd
     dst: ~/.config/sxhkd
-  i3:
-    src: config/i3
-    dst: ~/.config/i3
   bspwm:
     src: config/bspwm
     dst: ~/.config/bspwm
@@ -230,7 +224,6 @@ profiles:
     - kitty
     - alacritty
     - backgrounds
-    - redshift
     - sxhkd
     - autostart
 
@@ -245,18 +238,6 @@ profiles:
     - zshlib
     - zshenv
     - zshrc
-
-  i3:
-    dotfiles:
-    - i3
-    - dunst
-    - rofi
-    - picom
-    - polybar
-    - wal
-    - gsimplecal
-    - fehbg
-    - greenclip
 
   bspwm:
     dotfiles:

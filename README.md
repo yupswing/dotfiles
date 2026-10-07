@@ -137,7 +137,7 @@ for i in $(seq 1 10); do /usr/bin/time -f %E $SHELL -i -c exit; done
 Using
 
 - **hyprland** windows manager
-- **wal** colors (pywal)
+- **wal** colors (pywal16)
 - **hyprpaper** background
 - **waybar** bar
 - **dunst** notifications
@@ -353,7 +353,7 @@ gpg2 -d -o file.txt file.txt.gpg
 Using
 
 - **bspwm** windows manager (also an old configuration with **i3**)
-- **wal** colors (pywal)
+- **wal** colors (pywal16)
 - **feh** background
 - **picom** compositor
 - **polybar** bar

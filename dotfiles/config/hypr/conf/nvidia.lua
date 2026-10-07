@@ -14,7 +14,7 @@ hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 
 -- TIP: Advantage is all the apps will be running on nvidia
 -- NOTE: it used to crash whatever window was opened after "hibernate": kept
--- enabled on purpose (hibernate is not used, see rofi-power.zsh)
+-- enabled on purpose (hibernate is not used, see power.zsh)
 hl.env("__NV_PRIME_RENDER_OFFLOAD", "1")
 hl.env("__VK_LAYER_NV_optimus", "NVIDIA_only")
 

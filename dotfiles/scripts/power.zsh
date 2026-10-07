@@ -3,7 +3,7 @@
 # Session dependent commands (wayland: Hyprland, x11: bspwm/i3)
 if [[ -n $WAYLAND_DISPLAY ]]; then
   # the lock script returns only on unlock, so run it in background
-  LOCKER='{ $HOME/.scripts/wayland-lock.zsh & }'
+  LOCKER='{ $HOME/.scripts/way-lock.zsh & }'
   END_SESSION="hyprctl dispatch 'hl.dsp.exit()'"
 else
   LOCKER=$HOME/.scripts/x11-lock.zsh

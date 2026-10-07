@@ -38,7 +38,7 @@ alt + x ; {c,s,e,n,f,d,b}
 
 # Session menu
 alt + p
-  $HOME/.scripts/rofi-power.zsh
+  $HOME/.scripts/power.zsh
 
 # Lock session
 alt + l
