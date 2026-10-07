@@ -67,6 +67,10 @@ hyprland)
   dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
   systemctl --user stop xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
   systemctl --user start xdg-desktop-portal
+
+  # Hypr ecosystem daemons
+  systemctl --user start hyprpolkitagent
+
   # Bar
   launch waybar
   # Background

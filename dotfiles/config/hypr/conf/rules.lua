@@ -116,6 +116,27 @@ for name, class in pairs(floating) do
   })
 end
 
+-- Privacy: escluse dallo screen sharing (al loro posto si vede nero)
+local no_screen_share = {
+  ferdium = "^(Ferdium|ferdium)$",
+  discord = "^(Discord|discord)$",
+}
+
+for name, class in pairs(no_screen_share) do
+  hl.window_rule({
+    name = "no-screen-share-" .. name,
+    match = { class = class },
+    no_screen_share = true,
+  })
+end
+
+-- Notifiche dunst (namespace da `hyprctl layers`)
+hl.layer_rule({
+  name = "no-screen-share-notifications",
+  match = { namespace = "^(notifications)$" },
+  no_screen_share = true,
+})
+
 -- Smart gaps / no gaps when only (scommenta per provarli)
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
 -- hl.workspace_rule({ workspace = "f[1]", gaps_out = 0, gaps_in = 0 })
