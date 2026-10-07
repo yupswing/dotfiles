@@ -36,7 +36,7 @@ i3 | bspwm)
   dbus-update-activation-environment --systemd DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
   systemctl --user stop xdg-desktop-portal-hyprland
   systemctl --user try-restart xdg-desktop-portal-gtk xdg-desktop-portal
-  {%@@ if COMPOSITOR @@%}
+  {%@@ if X11_COMPOSITOR @@%}
   # Composite manager (highest priority)
   launch picom -b
   {%@@ endif @@%}

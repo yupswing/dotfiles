@@ -26,7 +26,7 @@
   font-family:
     "SF Pro Text", "Fira Code", "icomoon-feather",
     "Font Awesome 5 Brands", "Material Design Icons";
-  font-size: 14px;
+  font-size: 16px;
   /* cifre tutte della stessa larghezza anche nei font proporzionali */
   font-feature-settings: "tnum";
   min-height: 0;
@@ -70,7 +70,7 @@ window#waybar {
   padding-left: 6px;
 }
 #window label {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 #workspaces button {
@@ -83,7 +83,7 @@ window#waybar {
 }
 
 #workspaces button label {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 #workspaces button.empty {

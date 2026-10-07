@@ -187,7 +187,7 @@
   // (online/offline/updating), IP pubblico e locale sono nel tooltip.
   // Il click manda un segnale allo script per ricontrollare subito
   "custom/online": {
-    "exec": "python3 ~/.config/waybar/scripts/online.py 60",
+    "exec": "python3 ~/.config/waybar/scripts/online.py",
     "return-type": "json",
     "restart-interval": 5,
     "format": "<span size='130%' rise='-2pt'></span>{}",

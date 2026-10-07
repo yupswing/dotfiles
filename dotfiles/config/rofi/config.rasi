@@ -39,12 +39,6 @@ configuration {
 @import "~/.cache/wal/colors.rasi"
 
 * {
-  // {%@@ if COMPOSITOR @@%}
-  // background:                    #33333300;
-  // {%@@ else @@%}
-  // background:                    #33333333;
-  // {%@@ endif @@%}
-  // background-color:              transparent;
   background:                    #333333;
   accent:                        @secondary-colour;
   scrollbar:                     @primary-colour;

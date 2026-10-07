@@ -177,19 +177,21 @@ end
 
 -- Urgent: le app IM non rubano il focus quando chiedono attenzione (override di
 -- misc.focus_on_activate), così il workspace viene marcato urgent e waybar lo
--- colora (#workspaces button.urgent)
--- local urgent = {
---   ferdium = "^(Ferdium|ferdium)$",
---   discord = "^(Discord|discord)$",
--- }
+-- colora (#workspaces button.urgent).
+-- Da sole non la chiedono mai: lo fa ~/.scripts/dunst-urgency.zsh a ogni
+-- notifica, rilanciandole.
+local urgent = {
+  ferdium = "^(Ferdium|ferdium)$",
+  discord = "^(Discord|discord)$",
+}
 
--- for name, class in pairs(urgent) do
---   hl.window_rule({
---     name = "urgent-" .. name,
---     match = { class = class },
---     focus_on_activate = false,
---   })
--- end
+for name, class in pairs(urgent) do
+  hl.window_rule({
+    name = "urgent-" .. name,
+    match = { class = class },
+    focus_on_activate = false,
+  })
+end
 
 -- -----------------------------------------------------------------------------
 

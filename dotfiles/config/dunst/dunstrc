@@ -112,7 +112,7 @@
 
     ### Text ###
 
-    font = FiraCode Nerd Font 11
+    font = SF Pro Text 11
 
 
     # The spacing between lines.  If the height is smaller than the
@@ -463,15 +463,15 @@
 
 [urgency-ferdium]
   desktop_entry = "ferdium"
-  script = ~/.scripts/x11-dunst-urgency.zsh
+  script = ~/.scripts/dunst-urgency.zsh
 
 [urgency-discord]
   desktop_entry = "discord"
-  script = ~/.scripts/x11-dunst-urgency.zsh
+  script = ~/.scripts/dunst-urgency.zsh
 
 [urgency-thunderbird]
   desktop_entry = "Thunderbird"
-  script = ~/.scripts/x11-dunst-urgency.zsh
+  script = ~/.scripts/dunst-urgency.zsh
 
 # To ding each notification in chrome
 #[ding-chrome]

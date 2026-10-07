@@ -22,8 +22,8 @@ variables:
   DEFAULT_FILE_MANAGER: nemo
   WM: bspwm
   ROUNDED: 10
-  COMPOSITOR: false
-  COMPOSITOR_FANCY: false
+  X11_COMPOSITOR: false
+  X11_COMPOSITOR_FANCY: false
   # waybar: THEME_PRIMARY must match color5 of the wal colorscheme
   THEME_PRIMARY: '#9358fe'
   THEME_SECONDARY: '#f19d3a'
@@ -300,7 +300,7 @@ profiles:
     - bspwm
     variables:
       DEFAULT_BROWSER: google-chrome
-      COMPOSITOR: false
+      X11_COMPOSITOR: false
   FoxDotPc:
     include:
     - ssh
