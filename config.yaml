@@ -151,6 +151,9 @@ dotfiles:
   cliphist:
     src: config/cliphist
     dst: ~/.config/cliphist
+  spotify-flags:
+    src: config/spotify-flags.conf
+    dst: ~/.config/spotify-flags.conf
   rofi:
     src: config/rofi
     dst: ~/.config/rofi
@@ -276,6 +279,7 @@ profiles:
     - rofi
     - waybar
     - cliphist
+    - spotify-flags
 
   wsl:
     include:
