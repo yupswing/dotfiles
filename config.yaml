@@ -21,7 +21,7 @@ variables:
   DEFAULT_BROWSER: firefox
   DEFAULT_FILE_MANAGER: nemo
   WM: bspwm
-  ROUNDED: 16
+  ROUNDED: 14
   X11_COMPOSITOR: false
   X11_COMPOSITOR_FANCY: false
   # waybar: THEME_PRIMARY must match color5 of the wal colorscheme

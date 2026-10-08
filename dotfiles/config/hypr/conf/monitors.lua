@@ -34,6 +34,7 @@ for _, ws in ipairs(vars.workspaces) do
     workspace = vars.ws(ws.name),
     monitor = ws.monitor,
     default_name = ws.name,
+    layout = ws.layout, -- nil = layout di default
   })
 end
 

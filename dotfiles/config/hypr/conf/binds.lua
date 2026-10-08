@@ -7,7 +7,7 @@ local exec = hl.dsp.exec_cmd
 
 hl.bind(mod .. " + Q", hl.dsp.window.close())
 hl.bind(mod .. " + SHIFT + Q", hl.dsp.window.kill()) -- kill forzato (app bloccata)
--- hl.bind(mod .. " + M", hl.dsp.exit())
+-- hl.bind(mod .. " + SHIFT + M", hl.dsp.exit())
 hl.bind(mod .. " + E", exec(vars.file_manager))
 hl.bind(
   mod .. " + B",
@@ -16,6 +16,8 @@ hl.bind(
   })
 )
 hl.bind(mod .. " + N", hl.dsp.window.pseudo()) -- dwindle
+hl.bind(mod .. " + F", hl.dsp.window.fullscreen({ mode = 0 })) -- toggle fullscreen
+hl.bind(mod .. " + M", hl.dsp.window.fullscreen({ mode = 1 })) -- toggle maximized
 
 hl.bind(mod .. " + Return", exec(vars.terminal))
 

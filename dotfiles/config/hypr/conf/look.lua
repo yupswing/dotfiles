@@ -1,5 +1,8 @@
 -- Look and feel
 -- Doc: https://wiki.hypr.land/Configuring/Basics/Variables/
+
+local ROUNDED = tonumber("{{@@ ROUNDED @@}}") -- per avere il formatter
+
 hl.config({
   general = {
     gaps_in = 2, -- spazio tra finestre
@@ -23,7 +26,7 @@ hl.config({
   },
 
   decoration = {
-    rounding = {{@@ ROUNDED @@}}, -- angoli arrotondati
+    rounding = ROUNDED, -- angoli arrotondati
     rounding_power = 2,
 
     -- Opacità piena per tiled → leggibilità massima
@@ -66,7 +69,7 @@ hl.config({
 
   -- Doc: https://wiki.hypr.land/Configuring/Layouts/Master-Layout/
   master = {
-    new_status = "master",
+    new_status = "slave", -- le nuove finestre vanno nella pila: la master resta la prima
   },
 
   misc = {
@@ -81,22 +84,10 @@ hl.config({
 
 -- Animazioni: rapide, curve moderne, niente lag
 -- Doc: https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
-hl.curve("easeOut", {
-  type = "bezier",
-  points = { { 0.2, 0.9 }, { 0.2, 1 } },
-})
-hl.curve("easeInOut", {
-  type = "bezier",
-  points = { { 0.4, 0 }, { 0.2, 1 } },
-})
-hl.curve("linear", {
-  type = "bezier",
-  points = { { 0, 0 }, { 1, 1 } },
-})
-hl.curve("quick", {
-  type = "bezier",
-  points = { { 0.15, 0 }, { 0.1, 1 } },
-})
+hl.curve("easeOut", { type = "bezier", points = { { 0.2, 0.9 }, { 0.2, 1 } } })
+hl.curve("easeInOut", { type = "bezier", points = { { 0.4, 0 }, { 0.2, 1 } } })
+hl.curve("linear", { type = "bezier", points = { { 0, 0 }, { 1, 1 } } })
+hl.curve("quick", { type = "bezier", points = { { 0.15, 0 }, { 0.1, 1 } } })
 
 -- speed è in decimi di secondo: 5 = 500ms
 local function anim(leaf, speed, bezier, style)
@@ -111,18 +102,18 @@ end
 
 anim("global", 6, "default")
 
--- Finestre: aprono crescendo dal 90% + fade, chiudono speculari (più rapide),
+-- Finestre: aprono crescendo dal X% + fade, chiudono speculari (più rapide),
 -- senza overshoot; il tiling fa spazio in fretta così il fade della nuova
 -- finestra non si sovrappone alle altre ancora in movimento
-anim("windows", 2.6, "easeOut", "popin 90%")
-anim("windowsIn", 2.6, "easeOut", "popin 90%")
-anim("windowsOut", 2.2, "quick", "popin 90%")
+anim("windows", 2.6, "easeOut", "popin 80%")
+anim("windowsIn", 2.6, "easeOut", "popin 80%")
+anim("windowsOut", 2.2, "quick", "popin 60%")
 anim("windowsMove", 1.6, "quick")
 
 -- Layer (rofi, menu): pop leggero; le notifiche hanno la loro regola sotto
-anim("layers", 3.0, "easeOut", "popin 92%")
-anim("layersIn", 3.0, "easeOut", "popin 92%")
-anim("layersOut", 1.8, "quick", "popin 92%")
+anim("layers", 3.0, "easeOut", "popin 80%")
+anim("layersIn", 3.0, "easeOut", "popin 80%")
+anim("layersOut", 1.8, "quick", "popin 60%")
 
 -- Fade generici
 anim("fadeIn", 2.6, "easeInOut")
@@ -132,7 +123,7 @@ anim("fade", 2.4, "quick")
 -- Bordo: il colore sfuma quando cambia il focus
 anim("border", 5.0, "easeInOut")
 
--- Workspace: slide orizzontale; quelli speciali entrano dall'alto
+-- Workspace: slide orizzontale; quelli speciali entrano dal basso
 anim("workspaces", 3.2, "easeInOut", "slide")
 anim("specialWorkspace", 3.2, "easeInOut", "slidevert")
 

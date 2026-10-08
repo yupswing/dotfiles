@@ -14,6 +14,7 @@ M.monitors = {
 
 -- Unica fonte di verità per i workspace: da qui nascono sia le workspace rule
 -- (conf/monitors.lua) sia i keybind mod+key / mod+SHIFT+key (conf/binds.lua).
+-- layout è facoltativo: senza, vale il default (general.layout in conf/look.lua).
 M.workspaces = {
   {
     name = "!0:float",
@@ -29,21 +30,25 @@ M.workspaces = {
     name = "!2:mail",
     key = "equal",
     monitor = M.monitors.side,
+    layout = "master",
   },
   {
     name = "!3:music",
     key = "grave",
     monitor = M.monitors.side,
+    layout = "master",
   },
   {
     name = "01:web",
     key = "1",
     monitor = M.monitors.front,
+    layout = "master",
   },
   {
     name = "02:code",
     key = "2",
     monitor = M.monitors.front,
+    layout = "master",
   },
   {
     name = "03:term",
