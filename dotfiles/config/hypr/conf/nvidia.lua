@@ -1,5 +1,4 @@
 -- F*** nvidia specific
-
 -- Hardware acceleration on NVIDIA GPUs
 -- (https://wiki.archlinux.org/title/Hardware_video_acceleration)
 hl.env("LIBVA_DRIVER_NAME", "nvidia")

@@ -44,7 +44,12 @@
 
   "group/utils": {
     "orientation": "inherit",
-    "modules": ["custom/updates", "idle_inhibitor", "bluetooth", "custom/online"],
+    "modules": [
+      "custom/updates",
+      "idle_inhibitor",
+      "bluetooth",
+      "custom/online",
+    ],
   },
 
   "group/system": {
@@ -160,7 +165,6 @@
       "paused": "",
       "stopped": "",
     },
-    "min-length": 20,
     "max-length": 40,
     "align": 0,
     "on-click": "python3 ~/.config/waybar/scripts/media.py toggle",

@@ -2,7 +2,6 @@
 -- Doc: https://wiki.hypr.land/Configuring/Basics/Window-Rules/
 -- Classe/titolo di una finestra: `hyprctl clients` o `hyprctl activewindow`.
 -- A parità di effetto vince l'ultima regola che fa match.
-
 --[[
 # Solo finestra attiva
 sleep 3; hyprctl activewindow
@@ -23,13 +22,14 @@ hyprctl clients -j | jq '.[] | {class, title, initialClass, initialTitle, floati
 
 Nota: Se sono finestre sorelle (chrome e una sua secondaria) la cosa migliore è aprirle entrambe e confrontarle in hyprctl clients
 ]]
-
-local vars = require("conf.vars")
+local vars = require("conf._vars")
 
 -- Ignora richieste di maximize da app (meglio col tiling)
 hl.window_rule({
   name = "suppress-maximize-events",
-  match = { class = ".*" },
+  match = {
+    class = ".*",
+  },
   suppress_event = "maximize",
 })
 
@@ -51,7 +51,9 @@ hl.window_rule({
 -- il tiling resta opaco al 100% per leggibilità
 hl.window_rule({
   name = "floating-opacity",
-  match = { float = true },
+  match = {
+    float = true,
+  },
   opacity = "0.96 0.92",
 })
 
@@ -66,7 +68,9 @@ hl.window_rule({
 -- dalla classe, qualsiasi titolo abbiano
 hl.window_rule({
   name = "portals",
-  match = { class = "^(xdg-desktop-portal-gtk)$" },
+  match = {
+    class = "^(xdg-desktop-portal-gtk)$",
+  },
   float = true,
   center = true,
   size = "800 500",
@@ -76,7 +80,9 @@ hl.window_rule({
 -- il titolo (in inglese) con cui nascono
 hl.window_rule({
   name = "portals-file-dialogs",
-  match = { title = "^(Save|Open|Choose|Export|Select) .*" },
+  match = {
+    title = "^(Save|Open|Choose|Export|Select) .*",
+  },
   float = true,
   center = true,
   size = "800 500",
@@ -97,12 +103,21 @@ local app_workspaces = {
   { "code", "^(Code|code|code-oss|com.microsoft.VSCode)$", "02:code" },
   -- { "firefox", "^(firefox)$", "01:web" },
   -- i popup restano sul workspace da cui vengono aperti
-  { "chrome", "^(Chromium|chromium|Google-chrome|google-chrome)$", "01:web", { initial_title = "negative:" .. chrome_popup } },
+  {
+    "chrome",
+    "^(Chromium|chromium|Google-chrome|google-chrome)$",
+    "01:web",
+    {
+      initial_title = "negative:" .. chrome_popup,
+    },
+  },
 }
 
 for _, app in ipairs(app_workspaces) do
   local name, class, workspace = app[1], app[2], app[3]
-  local match = { class = class }
+  local match = {
+    class = class,
+  }
   for key, value in pairs(app[4] or {}) do
     match[key] = value
   end
@@ -115,7 +130,10 @@ end
 
 hl.window_rule({
   name = "chrome-popup",
-  match = { class = "^(Chromium|chromium|Google-chrome|google-chrome)$", initial_title = chrome_popup },
+  match = {
+    class = "^(Chromium|chromium|Google-chrome|google-chrome)$",
+    initial_title = chrome_popup,
+  },
   float = true,
   center = true,
 })
@@ -124,7 +142,10 @@ hl.window_rule({
 -- PiP senza decorazioni, come quello di Chrome qui sotto
 hl.window_rule({
   name = "firefox-pip",
-  match = { class = "^(firefox)$", title = "^(Picture-in-Picture)$" },
+  match = {
+    class = "^(firefox)$",
+    title = "^(Picture-in-Picture)$",
+  },
   float = true,
   center = true,
   border_size = 0,
@@ -136,7 +157,10 @@ hl.window_rule({
 
 hl.window_rule({
   name = "firefox-toolkit",
-  match = { class = "^(firefox)$", title = "^(.*Toolkit.*)$" },
+  match = {
+    class = "^(firefox)$",
+    title = "^(.*Toolkit.*)$",
+  },
   float = true,
   center = true,
   border_size = 0,
@@ -147,7 +171,11 @@ hl.window_rule({
 -- (es. "Meet - <codice>"): è l'unica proprietà che li distingue
 hl.window_rule({
   name = "chrome-pip",
-  match = { class = "^(google-chrome)$", initial_title = "negative:.* - Google Chrome$", float = true },
+  match = {
+    class = "^(google-chrome)$",
+    initial_title = "negative:.* - Google Chrome$",
+    float = true,
+  },
   border_size = 0,
   no_blur = true,
   no_shadow = true,
@@ -157,7 +185,9 @@ hl.window_rule({
 -- Float, center e pin
 hl.window_rule({
   name = "float-enpass",
-  match = { class = "^(Enpass|enpass)$" },
+  match = {
+    class = "^(Enpass|enpass)$",
+  },
   float = true,
   center = true,
   pin = true,
@@ -180,7 +210,9 @@ local floating = {
 for name, class in pairs(floating) do
   hl.window_rule({
     name = "float-" .. name,
-    match = { class = class },
+    match = {
+      class = class,
+    },
     float = true,
     center = true,
   })
@@ -203,7 +235,9 @@ for name, class in pairs(no_screen_share) do
     privacy_rules,
     hl.window_rule({
       name = "no-screen-share-" .. name,
-      match = { class = class },
+      match = {
+        class = class,
+      },
       no_screen_share = true,
     })
   )
@@ -214,12 +248,12 @@ table.insert(
   privacy_rules,
   hl.layer_rule({
     name = "no-screen-share-notifications",
-    match = { namespace = "^(notifications)$" },
+    match = {
+      namespace = "^(notifications)$",
+    },
     no_screen_share = true,
   })
 )
-
-
 
 -- Le regole valgono per qualsiasi cattura, screenshot compresi: lo script
 -- ~/.scripts/screenshot.zsh le sospende dall'inizio alla fine della cattura con
@@ -246,13 +280,14 @@ local urgent = {
 for name, class in pairs(urgent) do
   hl.window_rule({
     name = "urgent-" .. name,
-    match = { class = class },
+    match = {
+      class = class,
+    },
     focus_on_activate = false,
   })
 end
 
 -- -----------------------------------------------------------------------------
-
 
 -- Smart gaps / no gaps when only (scommenta per provarli)
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })

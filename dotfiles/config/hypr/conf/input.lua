@@ -1,6 +1,5 @@
 -- Input
 -- Doc: https://wiki.hypr.land/Configuring/Basics/Variables/#input
-
 hl.config({
   input = {
     kb_layout = "us",
@@ -18,4 +17,8 @@ hl.config({
 
 -- Swipe a 3 dita tra workspace
 -- Doc: https://wiki.hypr.land/Configuring/Basics/Binds/Gestures/
-hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+hl.gesture({
+  fingers = 3,
+  direction = "horizontal",
+  action = "workspace",
+})

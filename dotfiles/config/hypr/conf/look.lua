@@ -1,6 +1,5 @@
 -- Look and feel
 -- Doc: https://wiki.hypr.land/Configuring/Basics/Variables/
-
 hl.config({
   general = {
     gaps_in = 2, -- spazio tra finestre
@@ -8,9 +7,12 @@ hl.config({
     border_size = 1,
 
     -- Bordi: attivo con gradiente, inattivo tenue
-    -- (per usare i colori di pywal: require("conf.vars").colors.color4, ecc.)
+    -- (per usare i colori di pywal: require("conf._vars").colors.color4, ecc.)
     col = {
-      active_border = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
+      active_border = {
+        colors = { "rgba(33ccffee)", "rgba(00ff99ee)" },
+        angle = 45,
+      },
       inactive_border = "rgba(4a4a4abb)",
     },
 
@@ -21,7 +23,7 @@ hl.config({
   },
 
   decoration = {
-    rounding = 9, -- angoli arrotondati
+    rounding = {{@@ ROUNDED @@}}, -- angoli arrotondati
     rounding_power = 2,
 
     -- Opacità piena per tiled → leggibilità massima
@@ -73,20 +75,38 @@ hl.config({
     focus_on_activate = true, -- segui le finestre che chiedono il focus (es. link aperto nel browser su un altro workspace)
     -- We want keyboard events to wake up the screen, but not mouse ones:
     key_press_enables_dpms = true,
-    mouse_move_enables_dpms = false
+    mouse_move_enables_dpms = false,
   },
 })
 
 -- Animazioni: rapide, curve moderne, niente lag
 -- Doc: https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
-hl.curve("easeOut", { type = "bezier", points = { { 0.2, 0.9 }, { 0.2, 1 } } })
-hl.curve("easeInOut", { type = "bezier", points = { { 0.4, 0 }, { 0.2, 1 } } })
-hl.curve("linear", { type = "bezier", points = { { 0, 0 }, { 1, 1 } } })
-hl.curve("quick", { type = "bezier", points = { { 0.15, 0 }, { 0.1, 1 } } })
+hl.curve("easeOut", {
+  type = "bezier",
+  points = { { 0.2, 0.9 }, { 0.2, 1 } },
+})
+hl.curve("easeInOut", {
+  type = "bezier",
+  points = { { 0.4, 0 }, { 0.2, 1 } },
+})
+hl.curve("linear", {
+  type = "bezier",
+  points = { { 0, 0 }, { 1, 1 } },
+})
+hl.curve("quick", {
+  type = "bezier",
+  points = { { 0.15, 0 }, { 0.1, 1 } },
+})
 
 -- speed è in decimi di secondo: 5 = 500ms
 local function anim(leaf, speed, bezier, style)
-  hl.animation({ leaf = leaf, enabled = true, speed = speed, bezier = bezier, style = style })
+  hl.animation({
+    leaf = leaf,
+    enabled = true,
+    speed = speed,
+    bezier = bezier,
+    style = style,
+  })
 end
 
 anim("global", 6, "default")
@@ -120,7 +140,9 @@ anim("specialWorkspace", 3.2, "easeInOut", "slidevert")
 -- (alpha in dunst/dunstrc) sfocato come rofi
 hl.layer_rule({
   name = "notifications-look",
-  match = { namespace = "^(notifications)$" },
+  match = {
+    namespace = "^(notifications)$",
+  },
   animation = "slide right",
   blur = true,
   ignore_alpha = 0.3,
@@ -130,7 +152,9 @@ hl.layer_rule({
 -- (alpha in rofi/config.rasi) viene sfocato
 hl.layer_rule({
   name = "rofi-dim-blur",
-  match = { namespace = "^(rofi)$" },
+  match = {
+    namespace = "^(rofi)$",
+  },
   dim_around = true,
   blur = true,
   ignore_alpha = 0.3, -- niente blur dove rofi è trasparente (angoli arrotondati)
@@ -140,6 +164,8 @@ hl.layer_rule({
 -- hyprpicker, selezione di slurp) compaiono e spariscono senza animazione
 hl.layer_rule({
   name = "screenshot-no-anim",
-  match = { namespace = "^(hyprpicker|selection)$" },
+  match = {
+    namespace = "^(hyprpicker|selection)$",
+  },
   no_anim = true,
 })

@@ -6,6 +6,11 @@
  * inspired by https://github.com/adi1090x/rofi/blob/master/files/launchers/type-1/style-2.rasi
  **/
 
+{#@@ inner corners are concentric with the window's: its radius minus the gap between
+   the two edges (mainbox padding + 1px window border), never below 2px @@#}
+{%@@ set mainbox_padding = 6 @@%}
+{%@@ set inner_radius = [ROUNDED - mainbox_padding - 1, 2] | max @@%}
+
 configuration {
   display-ssh: "";
   display-run: ""; /* command */
@@ -40,7 +45,7 @@ configuration {
   /* overlays on top of @background-colour: they follow whatever palette wal generates */
   /* unselected rows: dark overlay on the translucent window; selected row: translucent
      primary (primary-colour-soft, from the wal template) */
-  card:                          #00000040;
+  card:                          #00000020;
   dimmed:                        #ffffff66;
 
   background-color:              transparent;
@@ -50,134 +55,136 @@ configuration {
 
 /*****----- Main Window -----*****/
 window {
-    /* anchored to the top: on wayland (layer-shell) offsets are ignored with location center */
-    location:                    north;
-    anchor:                      north;
-    fullscreen:                  false;
-    width:                       840px;
-    x-offset:                    0px;
-    y-offset:                    140px;
+  /* anchored to the top: on wayland (layer-shell) offsets are ignored with location center */
+  location:                    north;
+  anchor:                      north;
+  fullscreen:                  false;
+  width:                       840px;
+  x-offset:                    0px;
+  /* distance from the top as a share of the usable height (below waybar), so it
+     scales with the monitor; the top edge stays put when the list shrinks */
+  y-offset:                    18%;
 
-    enabled:                     true;
-    margin:                      0px;
-    padding:                     0px;
-    border:                      1px solid; /* = hyprland border_size */
-    border-radius:               {{@@ ROUNDED @@}}px;
-    /* translucent (last two hex digits = alpha); blur and dim come from hyprland layer rules */
-    background-color:            #33333355;
-    cursor:                      "default";
+  enabled:                     true;
+  margin:                      0px;
+  padding:                     0px;
+  border:                      1px solid; /* = hyprland border_size */
+  border-radius:               {{@@ ROUNDED @@}}px;
+  /* translucent (last two hex digits = alpha); blur and dim come from hyprland layer rules */
+  background-color:            #33333355;
+  cursor:                      "default";
 }
 mainbox {
-    spacing:                     0px;
-    padding:                     6px;
-    children:                    [ "inputbar", "message", "listview" ];
+  spacing:                     0px;
+  padding:                     {{@@ mainbox_padding @@}}px;
+  children:                    [ "inputbar", "message", "listview" ];
 }
 
 /*****----- Inputbar -----*****/
 inputbar {
-    text-color:                  @foreground-colour;
-    enabled:                     true;
-    spacing:                     12px;
-    /* 14px + the 6px of mainbox on top = 20px below: same gap from the border and from the list */
-    padding:                     24px 12px 30px 12px;
-    children:                    [ "prompt", "entry" ];
+  text-color:                  @foreground-colour;
+  enabled:                     true;
+  spacing:                     12px;
+  /* 14px + the 6px of mainbox on top = 20px below: same gap from the border and from the list */
+  padding:                     24px 12px 30px 12px;
+  children:                    [ "prompt", "entry" ];
 }
 prompt {
-    /* the prompt glyphs (display-*) are nerd font icons, missing in SF Pro; the
-       Propo variant gives them their real width (the monospace cell clips them) */
-    font:                        "FiraCode Nerd Font Propo 15";
-    text-color:                  @dimmed;
-    vertical-align:              0.5;
+  /* the prompt glyphs (display-*) are nerd font icons, missing in SF Pro; the
+     Propo variant gives them their real width (the monospace cell clips them) */
+  font:                        "FiraCode Nerd Font Propo 15";
+  text-color:                  @dimmed;
+  vertical-align:              0.5;
 }
 entry {
-    text-color:                  @foreground-colour;
-    placeholder:                 "";
-    placeholder-color:           @dimmed;
-    vertical-align:              0.5;
-    cursor:                      text;
+  text-color:                  @foreground-colour;
+  placeholder:                 "";
+  placeholder-color:           @dimmed;
+  vertical-align:              0.5;
+  cursor:                      text;
 }
 textbox-prompt-colon {
-    enabled:                     false;
+  enabled:                     false;
 }
 
 /*****----- Listview -----*****/
 listview {
-    border:                      0px; /* no dashed separator of the built-in theme */
-    padding:                     0px;
-    enabled:                     true;
-    columns:                     1;
-    lines:                       8;
-    cycle:                       true;
-    dynamic:                     true;
-    scrollbar:                   false;
-    layout:                      vertical;
-    reverse:                     false;
+  border:                      0px; /* no dashed separator of the built-in theme */
+  padding:                     0px;
+  enabled:                     true;
+  columns:                     1;
+  lines:                       8;
+  cycle:                       true;
+  dynamic:                     true;
+  scrollbar:                   false;
+  layout:                      vertical;
+  reverse:                     false;
 
-    spacing:                     4px;
-    cursor:                      "default";
+  spacing:                     4px;
+  cursor:                      "default";
 }
 
 /*****----- Elements -----*****/
 element {
-    enabled:                     true;
-    spacing:                     12px;
-    padding:                     20px 12px;
-    border-radius:               {{@@ ROUNDED - 3 @@}}px;
-    background-color:            @card;
-    cursor:                      pointer;
+  enabled:                     true;
+  spacing:                     12px;
+  padding:                     20px 12px;
+  border-radius:               {{@@ inner_radius @@}}px;
+  background-color:            @card;
+  cursor:                      pointer;
 }
 /* every state is spelled out: rofi's built-in theme styles them one by one
    (light background, dark text) and would win over a plain "element" rule */
 element normal.normal, element alternate.normal {
-    background-color:            @card;
-    text-color:                  @foreground-colour;
+  background-color:            @card;
+  text-color:                  @foreground-colour;
 }
 element selected.normal {
-    background-color:            @primary-colour-soft;
-    text-color:                  @foreground-colour;
+  background-color:            @primary-colour-soft;
+  text-color:                  @foreground-colour;
 }
 element normal.active, element alternate.active {
-    background-color:            @card;
-    text-color:                  @secondary-colour;
+  background-color:            @card;
+  text-color:                  @secondary-colour;
 }
 element selected.active {
-    background-color:            @primary-colour-soft;
-    text-color:                  @secondary-colour;
+  background-color:            @primary-colour-soft;
+  text-color:                  @secondary-colour;
 }
 element normal.urgent, element alternate.urgent {
-    background-color:            @card;
-    text-color:                  @danger-colour;
+  background-color:            @card;
+  text-color:                  @danger-colour;
 }
 element selected.urgent {
-    background-color:            @primary-colour-soft;
-    text-color:                  @danger-colour;
+  background-color:            @primary-colour-soft;
+  text-color:                  @danger-colour;
 }
 element-icon {
-    size:                        1.8em;
-    vertical-align:              0.5;
-    cursor:                      inherit;
+  size:                        1.8em;
+  vertical-align:              0.5;
+  cursor:                      inherit;
 }
 element-text {
-    text-color:                  inherit;
-    vertical-align:              0.5;
-    highlight:                   bold;
-    cursor:                      inherit;
+  text-color:                  inherit;
+  vertical-align:              0.5;
+  highlight:                   bold;
+  cursor:                      inherit;
 }
 
 /*****----- Message -----*****/
 message {
-    border:                      0px;
-    enabled:                     true;
-    margin:                      0px 0px 6px 0px;
-    padding:                     11px 12px;
-    border-radius:               {{@@ ROUNDED - 3 @@}}px;
-    background-color:            @card;
+  border:                      0px;
+  enabled:                     true;
+  margin:                      0px 0px 6px 0px;
+  padding:                     11px 12px;
+  border-radius:               {{@@ inner_radius @@}}px;
+  background-color:            @card;
 }
 textbox {
-    text-color:                  @foreground-colour;
+  text-color:                  @foreground-colour;
 }
 error-message {
-    padding:                     16px;
-    border-radius:               {{@@ ROUNDED - 1 @@}}px;
-    background-color:            @background-colour;
+  padding:                     16px;
+  border-radius:               {{@@ [ROUNDED - 1, 2] | max @@}}px;
+  background-color:            @background-colour;
 }

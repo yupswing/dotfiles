@@ -9,12 +9,7 @@
     "spacing": 0,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock", "custom/media"],
-    "modules-right": [
-      "group/utils",
-      "group/system",
-      "group/audio",
-      "tray",
-    ],
+    "modules-right": ["group/utils", "group/system", "group/audio", "tray"],
   },
   {
     "name": "external",
@@ -26,11 +21,6 @@
     "spacing": 0,
     "modules-left": ["hyprland/workspaces", "hyprland/window"],
     "modules-center": ["clock", "custom/media"],
-    "modules-right": [
-      "group/utils",
-      "group/system",
-      "group/audio",
-      "tray",
-    ],
+    "modules-right": ["group/utils", "group/system", "group/audio", "tray"],
   },
 ]
