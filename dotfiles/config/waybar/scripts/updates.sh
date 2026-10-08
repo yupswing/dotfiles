@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
-# Number of pending updates (repos + AUR), empty when up to date
+# Pending updates (repos + AUR) as waybar JSON: the total as text (empty when up
+# to date), the pacman/AUR split as tooltip
 # (port of polybar's checkupdates.sh)
 # Requires: pacman-contrib (checkupdates), paru
 
@@ -13,16 +14,17 @@ exec 9>"$CACHE.lock"
 flock 9
 
 if [ -f "$CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$CACHE"))) -lt $CACHE_SECONDS ]; then
-  updates=$(cat "$CACHE")
+  read -r updates_arch updates_aur <"$CACHE"
 else
   updates_arch=$(checkupdates 2>/dev/null | wc -l)
   updates_aur=$(paru -Qum 2>/dev/null | wc -l)
-  updates=$((updates_arch + updates_aur))
-  echo "$updates" >"$CACHE"
+  echo "$updates_arch $updates_aur" >"$CACHE"
 fi
 
+updates=$((${updates_arch:-0} + ${updates_aur:-0}))
+
 if [ "$updates" -gt 0 ]; then
-  echo "$updates"
+  printf '{"text": "%s", "tooltip": "pacman: %s\\nAUR: %s"}\n' "$updates" "${updates_arch:-0}" "${updates_aur:-0}"
 else
-  echo ""
+  echo '{"text": ""}'
 fi

@@ -175,17 +175,18 @@
     "smooth-scrolling-threshold": 1,
   },
 
-  // Aggiornamenti in attesa (repo + AUR), nascosto se non ce ne sono.
+  // Aggiornamenti in attesa (repo + AUR), nascosto se non ce ne sono; il
+  // tooltip li divide tra pacman e AUR.
   // Icona in primary: THEME_PRIMARY (config.yaml), allineato a color5 di wal.
   // Il click apre paru e, chiuso il terminale, rilegge il conteggio (signal)
   "custom/updates": {
     "exec": "~/.config/waybar/scripts/updates.sh",
+    "return-type": "json",
     "interval": 600,
     "signal": 8,
     "hide-empty-text": true,
     "format": "<span color='{{@@ THEME_PRIMARY @@}}' size='130%' rise='-2pt'></span> {}",
     "on-click": "kitty --hold paru; pkill -RTMIN+8 waybar",
-    "tooltip": false,
   },
 
   // Caffeina: finché è attivo hypridle non spegne lo schermo né blocca la
