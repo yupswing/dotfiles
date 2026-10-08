@@ -2,18 +2,13 @@
 
 # Power menu: a 3x2 grid of buttons (rofi theme: ~/.config/rofi/power.rasi)
 
-# Session dependent commands (wayland: Hyprland, x11: bspwm/i3)
-if [[ -n $WAYLAND_DISPLAY ]]; then
-  # the lock script returns only on unlock, so run it in background
-  LOCKER='{ $HOME/.scripts/way-lock.zsh & }'
-  END_SESSION="hyprctl dispatch 'hl.dsp.exit()'"
-  # (the pause lets go of the Enter key, which would wake the screen right back up)
-  SCREEN_OFF="sleep 1; hyprctl eval 'hl.dispatch(hl.dsp.dpms({ action = \"disable\" }))'"
-else
-  LOCKER=$HOME/.scripts/x11-lock.zsh
-  END_SESSION=$HOME/.config/bspwm/scripts/quit.sh
-  SCREEN_OFF="sleep 1; xset dpms force off"
-fi
+
+# the lock script returns only on unlock, so run it in background
+LOCKER='{ $HOME/.scripts/lock.zsh & }'
+END_SESSION="hyprctl dispatch 'hl.dsp.exit()'"
+# (the pause lets go of the Enter key, which would wake the screen right back up)
+SCREEN_OFF="sleep 1; hyprctl eval 'hl.dispatch(hl.dsp.dpms({ action = \"disable\" }))'"
+
 
 # Buttons, row by row (icon, label, command), in an ordered array which will be
 # used as a sort of hash. The first one is selected when the menu opens

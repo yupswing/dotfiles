@@ -1,4 +1,4 @@
-# #TAG_HIGH_DPI see also Xresources, xdpi.zsh, xprofile
+# #TAG_HIGH_DPI see also xdpi.zsh (X11: Xresources, xprofile; Wayland: hypr conf/monitors.lua scale)
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_ENABLE_HIGHDPI_SCALING=1
 export GDK_SCALE=1

@@ -21,6 +21,12 @@ hl.env("KITTY_ENABLE_WAYLAND", "1")
 -- GTK: forza tema Mojave-Dark (oltre ai settings.ini)
 hl.env("GTK_THEME", "Mojave-Dark")
 hl.env("GTK_APPLICATION_PREFER_DARK_THEME", "1")
+-- Tema/icone/dark mode stanno in dconf (non in un file): le riapplico a ogni avvio, costa nulla
+hl.exec_cmd([[
+  gsettings set org.gnome.desktop.interface gtk-theme 'Mojave-Dark' &&
+  gsettings set org.gnome.desktop.interface icon-theme 'Tela-dark' &&
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+]])
 -- Qt
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("QT_QPA_PLATFORMTHEME", "gtk3")

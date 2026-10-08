@@ -15,7 +15,7 @@ share_privacy() {
 }
 
 # wayland: grim (+slurp per l'area) e wl-copy
-wayland_screenshot() {
+take_screenshot() {
   local file geometry picker_pid
   share_privacy false
   {
@@ -40,27 +40,6 @@ wayland_screenshot() {
     share_privacy true
   }
   wl-copy --type image/png <$file && notify-send "Screenshot taken $file"
-}
-
-# x11: scrot e xclip
-# #INFO in caso di glitch
-# https://github.com/resurrecting-open-source-projects/scrot/issues/36
-x11_screenshot() {
-  local file=$screenshot_date'_$wx$h.png'
-  local after='xclip -selection clipboard -t image/png -i $f && notify-send "Screenshot taken $f"'
-  if [ "$1" = "select" ]; then
-    scrot -s $file -e $after
-  else
-    scrot $file -e $after
-  fi
-}
-
-take_screenshot() {
-  if [ -n "$WAYLAND_DISPLAY" ]; then
-    wayland_screenshot $1
-  else
-    x11_screenshot $1
-  fi
 }
 
 cd $screenshot_dir

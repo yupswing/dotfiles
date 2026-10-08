@@ -6,9 +6,25 @@
 # Exit if DUNST_DESKTOP_ENTRY is not available
 [[ -z $DUNST_DESKTOP_ENTRY ]] && exit
 
-# dunstrc è lo stesso per tutte le sessioni: qui si sceglie solo lo script
-if [[ -n $HYPRLAND_INSTANCE_SIGNATURE ]]; then
-  exec $HOME/.scripts/way-dunst-urgency.zsh
-else
-  exec $HOME/.scripts/x11-dunst-urgency.zsh
-fi
+# hyprland: le app Electron su Wayland non chiedono attenzione da sole, ma
+# rilanciandole l'istanza già aperta chiede il focus per la propria finestra.
+# Con focus_on_activate = false (conf/rules.lua) Hyprland non le dà il focus e
+# la marca urgent.
+
+# Solo le app che rilanciate riusano la finestra aperta (le altre ne
+# aprirebbero una nuova)
+case $DUNST_DESKTOP_ENTRY in
+ferdium | discord) app=$DUNST_DESKTOP_ENTRY ;;
+*) exit ;;
+esac
+
+# Workspace della finestra dell'app: se non c'è (app chiusa nella tray)
+# rilanciarla la riaprirebbe
+workspace=$(hyprctl clients -j | jq -r --arg class $app \
+  'first(.[] | select(.class == $class)) | .workspace.id')
+[[ -z $workspace ]] && exit
+
+# Inutile se quel workspace è già quello col focus
+[[ $workspace == $(hyprctl activeworkspace -j | jq -r '.id') ]] && exit
+
+timeout 10 $app &>/dev/null &!

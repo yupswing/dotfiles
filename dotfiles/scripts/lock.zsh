@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# Lock the session with hyprlock (wayland counterpart of x11-lock.zsh).
+# Lock the session with hyprlock
 # Used by the keybind (hypr/conf/binds.lua), the power menu (power.zsh)
 # and the idle daemon (hypr/hypridle.conf).
 

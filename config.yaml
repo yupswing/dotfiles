@@ -22,8 +22,6 @@ variables:
   DEFAULT_FILE_MANAGER: nemo
   WM: bspwm
   ROUNDED: 14
-  X11_COMPOSITOR: false
-  X11_COMPOSITOR_FANCY: false
   # waybar: THEME_PRIMARY must match color5 of the wal colorscheme
   THEME_PRIMARY: '#9358fe'
   THEME_SECONDARY: '#f19d3a'
@@ -96,12 +94,6 @@ dotfiles:
   bat:
     src: config/bat
     dst: ~/.config/bat
-  xprofile:
-    src: xprofile
-    dst: ~/.xprofile
-  xresources:
-    src: xresources
-    dst: ~/.Xresources
   gtkrc-2.0:
     src: gtkrc-2.0
     dst: ~/.gtkrc-2.0
@@ -114,30 +106,18 @@ dotfiles:
   mimeapps.list:
     src: config/mimeapps.list
     dst: ~/.config/mimeapps.list
-  alacritty:
-    src: config/alacritty
-    dst: ~/.config/alacritty
   kitty:
     src: config/kitty
     dst: ~/.config/kitty
   autostart:
     src: config/autostart.sh
     dst: ~/.config/autostart.sh
-  sxhkd:
-    src: config/sxhkd
-    dst: ~/.config/sxhkd
-  bspwm:
-    src: config/bspwm
-    dst: ~/.config/bspwm
   hypr:
     src: config/hypr
     dst: ~/.config/hypr
   desktop-portal:
     src: config/xdg-desktop-portal
     dst: ~/.config/xdg-desktop-portal
-  picom:
-    src: config/picom
-    dst: ~/.config/picom
   polybar:
     src: config/polybar
     dst: ~/.config/polybar
@@ -166,12 +146,6 @@ dotfiles:
   gsimplecal:
     src: config/gsimplecal
     dst: ~/.config/gsimplecal
-  fehbg:
-    src: fehbg
-    dst: ~/.fehbg
-  greenclip:
-    src: config/greenclip.toml
-    dst: ~/.config/greenclip.toml
   fontconfig:
     src: config/fontconfig
     dst: ~/.config/fontconfig
@@ -216,17 +190,13 @@ profiles:
 
   base_gui:
     dotfiles:
-    - xprofile
-    - xresources
     - gtkrc-2.0
     - gtk-3.0
     - dconf
     - mimeapps.list
     - fontconfig
     - kitty
-    - alacritty
     - backgrounds
-    - sxhkd
     - autostart
 
   # Groups ===================================================================
@@ -240,18 +210,6 @@ profiles:
     - zshlib
     - zshenv
     - zshrc
-
-  bspwm:
-    dotfiles:
-    - bspwm
-    - picom
-    - wal
-    - dunst
-    - rofi
-    - polybar
-    - gsimplecal
-    - fehbg
-    - greenclip
 
   hypr:
     dotfiles:
@@ -280,16 +238,14 @@ profiles:
     - ssh
     - base_line
     - base_gui
-    - bspwm
+    - hypr
     variables:
       DEFAULT_BROWSER: google-chrome
-      X11_COMPOSITOR: false
   FoxDotPc:
     include:
     - ssh
     - base_line
     - base_gui
-    - bspwm
     - hypr
     variables:
       DEFAULT_BROWSER: google-chrome
