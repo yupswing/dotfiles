@@ -3,6 +3,27 @@
 -- Classe/titolo di una finestra: `hyprctl clients` o `hyprctl activewindow`.
 -- A parità di effetto vince l'ultima regola che fa match.
 
+--[[
+# Solo finestra attiva
+sleep 3; hyprctl activewindow
+# Tutte le finestre
+hyprctl clients -j | jq '.[] | {class, title, initialClass, initialTitle, floating, xwayland}' # -c per singola riga
+
+# Come scegliere la proprietà per la regola
+1. class è la prima scelta. Identifica l'app e non cambia mai.
+2. initial_title è il titolo alla nascita, serve quando la clase non basta.
+3. title è l'ultima risorsa. Cambia mentre usi la finestra, per regole iniziali potrebbe non essere il titolo definitivo.
+4. Poi ci sono ovviamente a disposizione altre proprietà (float, xwayland, fullscreen, workspace)
+
+# Come scrivere la regola
+- I valori sono regex e devono matchare il valore INTERO (RE2 full match): chrome non matcha google-chrome, serve .*chrome.* (^ e $ sono quindi superflui, ma innocui).
+- Il prefisso negative: inverte il match.
+- Più campi in match sono in AND.
+- A parità di effetto vince l'ultima regola che fa match.
+
+Nota: Se sono finestre sorelle (chrome e una sua secondaria) la cosa migliore è aprirle entrambe e confrontarle in hyprctl clients
+]]
+
 local vars = require("conf.vars")
 
 -- Ignora richieste di maximize da app (meglio col tiling)
@@ -41,12 +62,24 @@ hl.window_rule({
 --   no_blur = true,
 -- })
 
--- Dialog
+-- Dialog dei portal (file picker di Chrome, VSCode, ecc.): si riconoscono
+-- dalla classe, qualsiasi titolo abbiano
 hl.window_rule({
-  name = "file-dialogs",
-  match = { title = "^(Save |Open ).*" },
+  name = "portals",
+  match = { class = "^(xdg-desktop-portal-gtk)$" },
   float = true,
   center = true,
+  size = "800 500",
+})
+
+-- Rete per i file dialog delle app che non passano dal portal: qui resta solo
+-- il titolo (in inglese) con cui nascono
+hl.window_rule({
+  name = "portals-file-dialogs",
+  match = { title = "^(Save|Open|Choose|Export|Select) .*" },
+  float = true,
+  center = true,
+  size = "800 500",
 })
 
 -- Popup di Chrome (window.open: email aperta in finestra, login OAuth, ecc.):
@@ -140,6 +173,8 @@ local floating = {
   ["file-roller"] = "^(file-roller)$",
   lxappearance = "^(Lxappearance|lxappearance)$",
   blueman = "^(blueman-manager)$",
+  -- estensione Chrome: la classe è chrome-<id estensione>-<profilo>
+  bitwarden = "^chrome-nngceckbapebfimnlniiiahkandclblb-.*$",
 }
 
 for name, class in pairs(floating) do
