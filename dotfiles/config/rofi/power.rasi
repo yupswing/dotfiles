@@ -1,0 +1,35 @@
+/**
+ * rofi - power menu (~/.scripts/power.zsh)
+ * a 3x2 grid of buttons, icon on top and label below, on top of the main theme:
+ * same window, colours and radii as every other menu
+ **/
+
+@import "config.rasi"
+
+window {
+    width:                       620px;
+}
+/* no inputbar: nothing to search, the grid is driven with the arrow keys */
+mainbox {
+    children:                    [ "listview" ];
+}
+listview {
+    columns:                     3;
+    lines:                       2;
+    flow:                        horizontal; /* fill row by row */
+    fixed-columns:               true;
+    spacing:                     6px;
+}
+element {
+    orientation:                 vertical;
+    spacing:                     14px;
+    padding:                     30px 12px 24px 12px;
+    children:                    [ "element-icon", "element-text" ];
+}
+element-icon {
+    size:                        44px;
+    horizontal-align:            0.5;
+}
+element-text {
+    horizontal-align:            0.5;
+}

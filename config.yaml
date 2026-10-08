@@ -27,6 +27,8 @@ variables:
   # waybar: THEME_PRIMARY must match color5 of the wal colorscheme
   THEME_PRIMARY: '#9358fe'
   THEME_SECONDARY: '#f19d3a'
+  # desktop wallpaper (hyprpaper), also the hyprlock background
+  WALLPAPER: ~/Pictures/backgrounds/topos.jpg
 actions:
   wal: wal -R
   # dunst cannot import files: the pywal colors are a drop-in linked from the cache
