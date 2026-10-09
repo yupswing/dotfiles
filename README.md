@@ -166,6 +166,8 @@ Also needed by the bar and the keybindings
 ```
 mod ............................... using ALT as super (`vars.mod`)
 
+alt + F1 .......................... show all bindings
+
 alt + enter ....................... run terminal (kitty)
 alt + e ........................... run file manager (nemo)
 
@@ -189,6 +191,10 @@ alt + l ........................... lock screen (hyprlock)
 print ............................. screenshot screen (file+clipboard)
 shift + print ..................... screenshot area (file+clipboard)
 ctrl + print ...................... open screenshot folder (~/Pictures/screenshots)
+
+alt + k ........................... color picker
+alt + shift + k ................... color picker history
+alt + ctrl + k .................... input color manually
 
 alt + {\,-,=,`,1-9,0} ............. move to workspace
 alt + shift + {\,-,=,`,1-9,0} ..... move window to workspace

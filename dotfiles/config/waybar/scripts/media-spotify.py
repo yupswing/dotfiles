@@ -39,8 +39,8 @@ def render(player=None):
         text = " • ".join(filter(None, (short_artist, title))) or "Spotify"
         rows = zip(TOOLTIP_ICONS, (artist, title, clean(player.get_album())))
         tooltip = "\n".join(f"{icon}  {value}" for icon, value in rows if value)
-        # tooltip += "\n\nclick: play/pause · middle: next"
-        # tooltip += "\nscroll: previous · right: open Spotify"
+        tooltip += "\n\nclick: play/pause • middle: next"
+        tooltip += "\nscroll: previous • right: open Spotify"
     return {"text": html.escape(text), "tooltip": html.escape(tooltip), "alt": state, "class": state}
 
 

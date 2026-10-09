@@ -127,7 +127,7 @@ class Checker:
         public = {"updating": "Checking...", "offline": "Offline"}.get(self.state, self.ip or "Unknown")
         local = local_ip() or "No local IP"
         tooltip = f"Public: {public}\nLocal: {local}"
-        # tooltip += "\n\nclick: check · right: ifconfig.co"
+        tooltip += "\n\nclick: check • right: ifconfig.co"
         line = json.dumps({"text": "", "tooltip": tooltip, "class": self.state})
         if line != self.printed:
             print(line, flush=True)

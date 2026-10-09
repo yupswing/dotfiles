@@ -143,6 +143,14 @@ window#waybar {
   color: @danger;
 }
 
+#custom-weather {
+  padding: 0 8px;
+  color: @text;
+}
+#custom-weather.rain {
+  color: @color4;
+}
+
 #custom-media {
   padding: 0 12px;
   color: @text;

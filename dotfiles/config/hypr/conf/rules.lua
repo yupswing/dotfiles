@@ -199,7 +199,6 @@ local floating = {
   pavucontrol = "^(Pavucontrol|pavucontrol|org.pulseaudio.pavucontrol)$",
   seahorse = "^(Seahorse|seahorse)$",
   nemo = "^(Nemo|nemo)$",
-  gpick = "^(Gpick|gpick)$",
   ["file-roller"] = "^(file-roller)$",
   lxappearance = "^(Lxappearance|lxappearance)$",
   blueman = "^(blueman-manager)$",

@@ -151,6 +151,19 @@ hl.layer_rule({
   ignore_alpha = 0.3, -- niente blur dove rofi è trasparente (angoli arrotondati)
 })
 
+-- Rofi senza animazioni, ma solo quando serve: il menu dei colori
+-- (~/.scripts/colors.py) si chiude e si riapre a ogni Invio e saltellerebbe.
+-- La regola nasce disattivata e lo script la attiva/disattiva con
+-- `hyprctl eval "rofi_quiet:set_enabled(true)"` (globale di proposito)
+rofi_quiet = hl.layer_rule({
+  name = "rofi-no-anim",
+  match = {
+    namespace = "^(rofi)$",
+  },
+  no_anim = true,
+  enabled = false,
+})
+
 -- Screenshot ad area: gli overlay a tutto schermo (frame congelato di
 -- hyprpicker, selezione di slurp) compaiono e spariscono senza animazione
 hl.layer_rule({

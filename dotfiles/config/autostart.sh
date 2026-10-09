@@ -8,7 +8,6 @@ launch() {
 
 ### Applets
 ###############################################################################
-# launch redshift-gtk
 launch pasystray
 # launch blueman-applet
 launch nm-applet

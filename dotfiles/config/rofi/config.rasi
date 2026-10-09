@@ -31,6 +31,12 @@ configuration {
   xoffset: 0;
   fixed-num-lines: false;
 
+  /* rofi has no text selection, so no "select all": Ctrl+A clears the search field
+     instead (what is typed next replaces it). "Go to the start of the line" is
+     Ctrl+Home, since Home is "first row" */
+  kb-clear-line: "Control+w,Control+a";
+  kb-move-front: "Control+Home";
+
   /* #THEME_FONT */
   /* the second family is the fallback for nerd font icons (e.g. the power menu) */
   font: "SF Pro Text, FiraCode Nerd Font Propo 14";
@@ -59,7 +65,7 @@ window {
   location:                    north;
   anchor:                      north;
   fullscreen:                  false;
-  width:                       840px;
+  width:                       920px;
   x-offset:                    0px;
   /* distance from the top as a share of the usable height (below waybar), so it
      scales with the monitor; the top edge stays put when the list shrinks */
@@ -87,7 +93,7 @@ inputbar {
   spacing:                     12px;
   /* 14px + the 6px of mainbox on top = 20px below: same gap from the border and from the list */
   padding:                     24px 12px 30px 12px;
-  children:                    [ "prompt", "entry" ];
+  children:                    [ "prompt", "entry", "num-filtered-rows" ];
 }
 prompt {
   /* the prompt glyphs (display-*) are nerd font icons, missing in SF Pro; the
@@ -102,6 +108,12 @@ entry {
   placeholder-color:           @dimmed;
   vertical-align:              0.5;
   cursor:                      text;
+}
+/* number of matches, at the far right of the search bar */
+num-filtered-rows {
+  expand:                      false;
+  text-color:                  @dimmed;
+  vertical-align:              0.5;
 }
 textbox-prompt-colon {
   enabled:                     false;

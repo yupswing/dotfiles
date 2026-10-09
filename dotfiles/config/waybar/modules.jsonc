@@ -49,6 +49,7 @@
       "idle_inhibitor",
       "bluetooth",
       "custom/online",
+      "custom/weather",
     ],
   },
 
@@ -228,5 +229,19 @@
     "format": "<span size='130%' rise='-2pt'></span>{}",
     "on-click": "pkill -USR1 -f 'waybar/scripts/[o]nline.py'",
     "on-click-right": "xdg-open https://ifconfig.co",
+  },
+
+  // Meteo di Genova (Open-Meteo): emoji attuale (di notte, se sereno, la luna) e
+  // temperatura percepita; i dettagli sono nel tooltip. Blu (classe rain) se entro
+  // 2 ore è prevista pioggia. Offline: nascosto.
+  // Click: Windy su Genova, destro: ARPAL
+  "custom/weather": {
+    "exec": "python3 ~/.config/waybar/scripts/weather.py",
+    "return-type": "json",
+    "interval": 600,
+    "hide-empty-text": true,
+    "format": "{}",
+    "on-click": "xdg-open 'https://www.windy.com/44.407/8.934?44.407,8.934,10'",
+    "on-click-right": "xdg-open https://www.arpal.liguria.it/",
   },
 }
