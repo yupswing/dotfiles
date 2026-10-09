@@ -242,6 +242,6 @@
     "hide-empty-text": true,
     "format": "{}",
     "on-click": "xdg-open 'https://www.windy.com/44.407/8.934?44.407,8.934,10'",
-    "on-click-right": "xdg-open https://www.arpal.liguria.it/",
+    "on-click-right": "xdg-open https://www.arpal.liguria.it/tematiche/meteo.html",
   },
 }

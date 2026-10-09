@@ -190,7 +190,7 @@ def build(data, fetched):
 
     text = f"{icon(now['weather_code'], now['is_day'], tonight=True)} {round(now['apparent_temperature'])}°"
     # the rain of the next two hours only when the module is blue
-    forecast = f" • {millimetres} mm, {probability}% chance" if rain else ""
+    forecast = f"\n🌧️ {millimetres} mm • {probability}% chance" if rain else ""
     wind = f"{round(now['wind_speed_10m'])} km/h {WIND[round(now['wind_direction_10m'] / 45) % 8]}"
     lines = [
         f"{describe(now['weather_code'])} • {round(now['temperature_2m'])}° "

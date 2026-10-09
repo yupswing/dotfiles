@@ -506,8 +506,20 @@ def quiet_rofi():
         switch(False)
 
 
+def share_privacy(on):
+    # le regole no_screen_share oscurano le finestre anche nel frame del picker
+    try:
+        subprocess.run(["hyprctl", "eval", f"screen_share_privacy({str(on).lower()})"], capture_output=True)
+    except FileNotFoundError:
+        pass
+
+
 def pick():
-    result = subprocess.run(["hyprpicker", "-l"], capture_output=True, text=True)
+    share_privacy(False)
+    try:
+        result = subprocess.run(["hyprpicker", "-l"], capture_output=True, text=True)
+    finally:
+        share_privacy(True)
     return parse(result.stdout) if result.returncode == 0 else None
 
 
