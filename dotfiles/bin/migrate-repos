@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # MIGRATE REPO FROM X TO Y BASED ON A FILE YML WRITTEN AS FOLLOW (ONE LINE PER REPO)
-# dotvocal-projects/00-archive/alceo: git@bitbucket.org:dotzuzu/alceo_logic_in_deployer.git
+# dotvocal-projects/00-archive/alceo: git@ssh.bitbucket.org:dotzuzu/alceo_logic_in_deployer.git
 
 # IT DOES CHANGE ALL REPO IN A FOLDER ONLY IF FOUND REMOTE AND NEW REMOTE IS NOT ALREADY SET
 

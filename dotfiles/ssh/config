@@ -1,6 +1,6 @@
 AddKeysToAgent yes
 
-Host bitbucket.org
+Host bitbucket.org ssh.bitbucket.org
     IdentityFile ~/.ssh/dotvocal
     WarnWeakCrypto no
 

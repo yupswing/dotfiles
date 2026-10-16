@@ -1,7 +1,7 @@
 #######################################################################################
 # GIT
 
-alias gl='git pull'
+alias gl='git pull --ff-only'
 alias gp='git push'
 
 alias gs='git status -sb'
@@ -24,6 +24,7 @@ alias gbam='git branch -a --merged'
 
 alias gd='git diff'
 alias gds='git diff --staged'
+alias gdl='git diff HEAD~1..HEAD'
 # alias gdc='git diff-tree --no-commit-id --name-only -r'
 alias gst='git show --stat --oneline'
 alias gsu='git submodule foreach git pull origin master'
@@ -46,4 +47,19 @@ function glall() {
         git -C "$dir" pull --prune --ff-only
       fi
     done
+}
+
+function gcompare() {
+  local target="${1:-master}"
+
+  echo "=== COMMITS ==="
+  git log --oneline "$target"..HEAD
+
+  echo
+  echo "=== FILE MODIFICATI ==="
+  git diff --stat "$target"...HEAD
+
+  echo
+  echo "=== DIFFERENZE ==="
+  git diff "$target"...HEAD
 }
